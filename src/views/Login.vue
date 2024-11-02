@@ -76,4 +76,11 @@ button {
 button:hover {
   background: #70b7ac;
 }
+
+@media (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+    padding: 20px;
+  }
+}
 </style>
