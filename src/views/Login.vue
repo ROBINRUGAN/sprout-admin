@@ -48,5 +48,32 @@ const loginData = ref({
 </template>
 
 <style lang="scss" scoped>
-/* 样式部分待添加 */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  width: 80%;
+}
+input {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(187, 187, 187, 1);
+  border-radius: 5px;
+  padding-left: 10px;
+  font-size: 16px;
+}
+button {
+  width: 100%;
+  height: 40px;
+  background: #4f8980;
+  border-radius: 5px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background: #70b7ac;
+}
 </style>
