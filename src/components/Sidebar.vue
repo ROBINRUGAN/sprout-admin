@@ -20,6 +20,16 @@
       <el-icon><DocumentAdd /></el-icon>
       <template #title>发布任务</template>
     </el-menu-item>
+
+    <el-menu-item index="/home/checkActivity">
+      <el-icon><CircleCheck /></el-icon>
+      <template #title>活动审核</template>
+    </el-menu-item>
+
+    <el-menu-item index="/home/past">
+      <el-icon><Management /></el-icon>
+      <template #title>往期活动</template>
+    </el-menu-item>
   </el-menu>
 </template>
 
