@@ -3,6 +3,10 @@ import { ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 
 const authStore = useAuthStore()
+const loginData = ref({
+  username: '',
+  password: ''
+})
 </script>
 
 <template>
@@ -17,3 +21,7 @@ const authStore = useAuthStore()
     </el-row>
   </div>
 </template>
+
+<style lang="scss" scoped>
+/* 样式部分待添加 */
+</style>
