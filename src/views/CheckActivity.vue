@@ -1,3 +1,187 @@
+<script setup lang="ts">
+import { reactive, ref, computed } from 'vue'
+import { getPastApi, getPastChildApi, getTaskSubmitApi, submitAuditApi } from '@/api/api'
+import { onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
+import { ElAvatar, ElCard, ElDescriptions, ElDescriptionsItem, ElDialog } from 'element-plus'
+
+const searchForm = reactive({
+  current: 1,
+  size: 10,
+  //查询父任务 还是 单项任务 0-单项任务 1-父任务
+  queryParentTask: 1,
+  keyword: ''
+})
+const showSon = ref(false)
+const showDetail = ref(false)
+const showTask = ref(false)
+const form = ref({
+  id: '',
+  faorson: 1,
+  parentId: -1,
+  isMain: 0,
+  taskName: '',
+  taskDescription: '',
+  taskType: '',
+  taskImages: '',
+  taskPoints: 0,
+  taskRewards: '',
+  taskRectangle: '',
+  //纬度
+  taskLatitude: '',
+  //经度
+  taskLongitude: '',
+  taskRadius: '',
+  taskDifficulty: 0,
+  taskPriority: 0,
+  requiresGrade: '',
+  requiresFaculty: '',
+  requiresMajor: '',
+  requiresPhoto: 0,
+  requiresAttitude: '',
+  requiresItem: '',
+  taskRequiresType: 0,
+  requiresAudit: 0,
+  startTime: '',
+  endTime: '',
+  tree: 0,
+  chan: 0,
+  water: 0
+})
+interface brief {
+  id: ''
+  faorson: 1
+  parentId: -1
+  isMain: 0
+  taskName: ''
+  taskDescription: ''
+  taskType: ''
+  taskImages: ''
+  taskPoints: 0
+  taskRewards: ''
+  taskRectangle: ''
+  //纬度
+  taskLatitude: ''
+  //经度
+  taskLongitude: ''
+  taskRadius: ''
+  taskDifficulty: 0
+  taskPriority: 0
+  requiresGrade: ''
+  requiresFaculty: ''
+  requiresMajor: ''
+  requiresPhoto: 0
+  requiresAttitude: ''
+  requiresItem: ''
+  taskRequiresType: 0
+  requiresAudit: 0
+  startTime: ''
+  endTime: ''
+  tree: 0
+  chan: 0
+  water: 0
+}
+interface task {
+  id: 0
+  userId: 0
+  username: ''
+  realName: ''
+  studentId: ''
+  avatar: ''
+  taskId: 0
+  parentTaskId: 0
+  photo: ''
+  location: ''
+  submitTime: ''
+  submitNote: ''
+  auditsStatus: null
+  auditsSuggestion: null
+  auditsAdminId: 0
+}
+const items = ref<brief[]>([])
+const detailItems = ref<brief[]>([])
+const taskItems = ref<task[]>([])
+const taskInfo = ref<task>({
+  id: 0,
+  userId: 0,
+  username: '',
+  realName: '',
+  studentId: '',
+  avatar: '',
+  taskId: 0,
+  parentTaskId: 0,
+  photo: '',
+  location: '',
+  submitTime: '',
+  submitNote: '',
+  auditsStatus: null,
+  auditsSuggestion: null,
+  auditsAdminId: 0
+})
+const search = () => {
+  getPastApi(searchForm).then((res) => {
+    // console.log(res.data.data.records)
+    if (res.data.code == '0') {
+      ElMessage.success('查询成功')
+      items.value = res.data.data.records
+      showDetail.value = false
+      showSon.value = false
+      showTask.value = false
+    } else {
+      ElMessage.error(res.data.message)
+    }
+  })
+}
+onMounted(() => {
+  search()
+})
+const getDetail = (data: any, index: number) => {
+  getPastChildApi({
+    id: data.id,
+    querySubTask: 1
+  }).then((res) => {
+    console.log(data)
+    if (res.data.code == '0') {
+      ElMessage.success('查询成功')
+      detailItems.value = res.data.data.subTaskList
+      showSon.value = true
+      if (data.parentId == '0') {
+        showDetail.value = true
+      }
+    } else {
+      ElMessage.error(res.data.message)
+    }
+  })
+}
+
+const getDetailInfo = async (data: any) => {
+  const res = await getTaskSubmitApi({
+    current: '1',
+    size: '114514',
+    taskId: data
+  })
+  if (res.data.code === '0') {
+    taskItems.value = res.data.data.records
+    showDetail.value = true
+    taskItems.value.forEach((item) => {
+      if (item.auditsSuggestion == null) {
+        item.auditsSuggestion = '尚未填写'
+      }
+    })
+    console.log(taskItems.value)
+    ElMessage.success('查询成功')
+  } else {
+    ElMessage.error(res.data.message)
+  }
+}
+
+const getTaskInfo = (id: number, item: any) => {
+  taskInfo.value = taskItems.value[id]
+  showTask.value = true
+  auditForm.ids[0] = item.id
+}
+</script>
+
 <template>
   <div class="wrapper">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
