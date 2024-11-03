@@ -7,7 +7,6 @@ import { ElAvatar, ElCard, ElDescriptions, ElDescriptionsItem, ElDialog } from '
 
 const dialogVisible = ref(false)
 
-// 打开审核对话框
 const openAuditDialog = () => {
   dialogVisible.value = true
 }
@@ -151,7 +150,6 @@ const taskInfo = ref<task>({
 })
 const search = () => {
   getPastApi(searchForm).then((res) => {
-    // console.log(res.data.data.records)
     if (res.data.code == '0') {
       ElMessage.success('查询成功')
       items.value = res.data.data.records
@@ -354,7 +352,7 @@ const getTaskInfo = (id: number, item: any) => {
 
 .card {
   display: inline-block;
-  width: 450px; /* 这里的宽度可以根据您的设计来调整 */
+  width: 450px;
   margin-right: 16px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
