@@ -53,22 +53,41 @@ const getLng = (lng: string) => {
 const setURL = (urls: string[]) => {
   form.taskImages = urls.join('<')
 }
+const onSubmit = async () => {
+  form.requiresAudit = form.requiresAudit ? 1 : 0
+  form.taskRewards = form.water + ',' + form.chan + ',' + form.tree
+  if (form.taskRequiresType === 3 || form.taskRequiresType === 4) {
+    if (form.taskLatitude === '' || form.taskLongitude === '' || form.taskRadius === '') {
+      ElMessage.error('请填写完整的地点信息')
+      return
+    }
+    form.taskRectangle = form.taskLongitude + ',' + form.taskLatitude + ',' + form.taskRadius
+  }
+
+  console.log('上传信息' + form)
+  let res = null
+  if (form.faorson == 1) res = await CreateFatherApi(form)
+  else if (form.faorson == 0) res = await CreateSonApi(form)
+  if (res) {
+    if (res.data.code == '0') {
+      ElMessage.success('发布成功')
+    } else {
+      ElMessage.error(res.data.message)
+    }
+  }
+}
 </script>
 
 
 <template>
-  <div :gutter="0" class="wrapper">
-    <div class="left">
-      <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
-        活动信息录入
-      </h1>
-      <el-form :model="form" label-width="auto">
-        <!-- 表单内容将在后续 commits 中添加 -->
-      </el-form>
-    </div>
-  </div>
+<template>
+  <el-form-item label="活动地点" v-if="form.taskRequiresType === 3 || form.taskRequiresType === 4">
+    <el-button plain @click="mapVisible = true">打开地图定位</el-button>
+    <el-dialog v-model="mapVisible" title="请在下面点击选取活动中心点" width="800">
+      <MapContainer style="margin: auto" @getLng="getLng" @getLat="getLat" />
+    </el-dialog>
+  </el-form-item>
 </template>
-
 
 <style scoped>
 .wrapper {
