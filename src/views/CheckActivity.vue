@@ -41,6 +41,22 @@
       </div>
     </div>
 
+    <div class="scroll-container" v-if="showSon">
+      <div
+        class="card"
+        v-for="(item, index) in detailItems"
+        :key="index"
+        @click="getDetailInfo(item.id)"
+      >
+        <img :src="item.taskImages" alt="" class="card-image" />
+        <div class="card-content">
+          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-title">{{ item.taskName }}</div>
+          <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
+        </div>
+      </div>
+    </div>
+
 
 </template>
 
