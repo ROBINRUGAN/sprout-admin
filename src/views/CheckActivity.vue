@@ -5,6 +5,21 @@ import { onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { ElAvatar, ElCard, ElDescriptions, ElDescriptionsItem, ElDialog } from 'element-plus'
 
+const dialogVisible = ref(false)
+
+// 打开审核对话框
+const openAuditDialog = () => {
+  dialogVisible.value = true
+}
+
+const auditForm = reactive({
+  ids: [0],
+  //审核状态 1-审核通过 2-审核不通过
+  auditsStatus: 0,
+  completionScore: [0],
+  auditSuggestion: ['无']
+})
+
 const searchForm = reactive({
   current: 1,
   size: 10,
