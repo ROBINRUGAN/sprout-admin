@@ -20,6 +20,22 @@ const auditForm = reactive({
   auditSuggestion: ['无']
 })
 
+// 审核操作
+const handleAudit = async (type: number) => {
+  auditForm.auditsStatus = type
+
+  console.log(auditForm)
+  const res = await submitAuditApi(auditForm)
+  if (res.data.code === '0') {
+    ElMessage.success('审核操作成功')
+    dialogVisible.value = false
+    taskInfo.value.auditsSuggestion = auditForm.auditSuggestion[0]
+    taskInfo.value.auditsStatus = auditForm.auditsStatus
+  } else {
+    ElMessage.error('审核操作失败：' + res.data.message)
+  }
+}
+
 const searchForm = reactive({
   current: 1,
   size: 10,
