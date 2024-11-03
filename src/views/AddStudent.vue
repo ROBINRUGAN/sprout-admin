@@ -9,10 +9,19 @@ const fileList = ref([]) // 存储用户选择的文件
 <template>
   <div class="wrapper">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
-      学生批量录入
+      学生Excel批量录入
     </h1>
+    <!-- 下载按钮 -->
+    <el-button type="primary" style="margin-left: 15px; margin-bottom: 15px">
+      <a
+        href="https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/f852a587-389e-46d4-8422-b708c3693e0f.xlsx"
+        style="color: white; text-decoration: none"
+        >点击下载样例Excel文档</a
+      >
+    </el-button>
   </div>
 </template>
+
 
 <style scoped>
 .wrapper {
