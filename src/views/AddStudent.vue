@@ -19,8 +19,24 @@ const fileList = ref([]) // 存储用户选择的文件
         >点击下载样例Excel文档</a
       >
     </el-button>
+    <!-- 文件拖拽上传区 -->
+    <el-upload
+      class="upload-demo"
+      drag
+      :file-list="fileList"
+      :auto-upload="false"
+      :limit="1"
+      :accept=".xlsx, .xls"
+    >
+      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <template v-slot:tip>
+        <div class="el-upload__tip">只能上传Excel文件</div>
+      </template>
+    </el-upload>
   </div>
 </template>
+
 
 
 <style scoped>
