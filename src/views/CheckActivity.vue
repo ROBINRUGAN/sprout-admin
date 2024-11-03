@@ -101,21 +101,6 @@
       <el-button type="primary" @click="openAuditDialog">进行审核</el-button>
     </el-card>
   </div>
-  <!-- 审核对话框 -->
-  <el-dialog title="审核任务" v-model="dialogVisible">
-    <el-form>
-      <el-form-item label="审核意见">
-        <el-input type="textarea" v-model="auditForm.auditSuggestion[0]" rows="3"></el-input>
-      </el-form-item>
-      <el-form-item label="完成评分">
-        <el-input type="textarea" v-model="auditForm.completionScore[0]"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button type="danger" @click="handleAudit(2)">不通过</el-button>
-      <el-button type="success" @click="handleAudit(1)">通过</el-button>
-    </template>
-  </el-dialog>
 </template>
 
 <style scoped>
