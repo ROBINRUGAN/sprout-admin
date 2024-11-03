@@ -1,3 +1,61 @@
+<script lang="ts" setup>
+import { reactive, ref, onBeforeMount } from 'vue'
+import UploadImg from '@/components/UploadImg.vue'
+import MapContainer from '@/components/MapContainer.vue'
+import { ElMessage } from 'element-plus'
+import { getFacultyApi, getMajorApi, CreateFatherApi, CreateSonApi } from '@/api/api'
+
+interface Colleges {
+  facultyName: string
+  id: number
+}
+interface Majors {
+  majorName: string
+  id: number
+}
+
+const colleges = ref<Colleges[]>([])
+const majors = ref<Majors[]>([])
+const form = reactive({
+  faorson: 1,
+  parentId: -1,
+  isMain: 0,
+  taskName: '',
+  taskDescription: '',
+  taskType: '',
+  taskImages: '',
+  taskPoints: 0,
+  taskRewards: '',
+  taskRectangle: '-1',
+  taskLatitude: '',
+  taskLongitude: '',
+  taskRadius: '',
+  taskDifficulty: 0,
+  taskPriority: 0,
+  requiresGrade: '',
+  requiresFaculty: '',
+  requiresMajor: '',
+  requiresPhoto: 0,
+  requiresAttitude: '',
+  requiresItem: '',
+  taskRequiresType: 0,
+  requiresAudit: 0,
+  startTime: '',
+  endTime: '',
+})
+
+const getLat = (lat: string) => {
+  form.taskLatitude = lat
+}
+const getLng = (lng: string) => {
+  form.taskLongitude = lng
+}
+const setURL = (urls: string[]) => {
+  form.taskImages = urls.join('<')
+}
+</script>
+
+
 <template>
   <div :gutter="0" class="wrapper">
     <div class="left">
@@ -10,6 +68,7 @@
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .wrapper {
