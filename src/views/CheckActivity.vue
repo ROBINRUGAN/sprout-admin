@@ -57,7 +57,65 @@
       </div>
     </div>
 
+    <div class="scroll-container" v-if="showDetail">
+      <div
+        class="card"
+        v-for="(item, index) in taskItems"
+        :key="index"
+        @click="getTaskInfo(index, item)"
+      >
+        <img :src="item.avatar" alt="" class="card-image" />
+        <div class="card-content">
+          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-title">{{ item.realName }}</div>
+          <div class="card-description">{{ item.auditsSuggestion }}</div>
+        </div>
+      </div>
+    </div>
 
+    <el-card class="box-card" v-if="showTask">
+      <template v-slot:header>
+        <div class="clearfix">
+          <span>任务详细信息</span>
+        </div>
+      </template>
+      <el-descriptions :column="1">
+        <el-descriptions-item label="头像">
+          <el-avatar :src="taskInfo.avatar"></el-avatar>
+        </el-descriptions-item>
+        <el-descriptions-item label="定位信息">{{ taskInfo.location }}</el-descriptions-item>
+        <el-descriptions-item label="图片">
+          <el-image style="height: 100px" :src="taskInfo.photo" fit="cover" />
+        </el-descriptions-item>
+        <el-descriptions-item label="真实姓名">{{ taskInfo.realName }}</el-descriptions-item>
+        <el-descriptions-item label="学号">{{ taskInfo.studentId }}</el-descriptions-item>
+        <el-descriptions-item label="提交备注">{{ taskInfo.submitNote }}</el-descriptions-item>
+        <el-descriptions-item label="任务提交时间">{{ taskInfo.submitTime }}</el-descriptions-item>
+        <el-descriptions-item label="审核状态">{{
+          taskInfo.auditsStatus === 0 ? '不通过' : '通过'
+        }}</el-descriptions-item>
+        <el-descriptions-item label="审核意见">{{
+          taskInfo.auditsSuggestion
+        }}</el-descriptions-item>
+      </el-descriptions>
+      <el-button type="primary" @click="openAuditDialog">进行审核</el-button>
+    </el-card>
+  </div>
+  <!-- 审核对话框 -->
+  <el-dialog title="审核任务" v-model="dialogVisible">
+    <el-form>
+      <el-form-item label="审核意见">
+        <el-input type="textarea" v-model="auditForm.auditSuggestion[0]" rows="3"></el-input>
+      </el-form-item>
+      <el-form-item label="完成评分">
+        <el-input type="textarea" v-model="auditForm.completionScore[0]"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button type="danger" @click="handleAudit(2)">不通过</el-button>
+      <el-button type="success" @click="handleAudit(1)">通过</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>
