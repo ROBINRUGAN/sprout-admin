@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'
+import { getPastApi, getPastChildApi } from '@/api/api'
 import { onMounted } from 'vue'
+import { ElMessage } from 'element-plus'
 
 const searchForm = reactive({
   current: 1,
@@ -77,5 +79,22 @@ const form = ref({
   tree: 0,
   chan: 0,
   water: 0
+})
+
+const search = () => {
+  getPastApi(searchForm).then((res) => {
+    if (res.data.code == '0') {
+      ElMessage.success('查询成功')
+      items.value = res.data.data.records
+      showDetail.value = false
+      showSon.value = false
+    } else {
+      ElMessage.error(res.data.message)
+    }
+  })
+}
+
+onMounted(() => {
+  search()
 })
 </script>
