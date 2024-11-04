@@ -48,6 +48,48 @@ const loginData = ref({
 </template>
 
 <style lang="scss" scoped>
+/* 移动端布局，仅隐藏左侧内容 */
+@media (max-width: 768px) {
+  .left {
+    display: none; /* 隐藏左侧内容 */
+  }
+
+  .wrapper {
+    width: 120%;
+    justify-content: center;
+    height: auto; /* 自适应高度 */
+    padding: 20px;
+  }
+
+  .logo {
+    width: 100px; /* 调整 logo 大小以适应移动端 */
+    height: 100px;
+    margin: 0 auto;
+    margin-bottom: -50px; /* 将 logo 上移以靠近 wrapper2 */
+    display: block;
+    position: relative;
+    z-index: 10; /* 确保 logo 在文本之上 */
+  }
+
+  .wrapper2 {
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px; /* 给 wrapper2 添加 padding-top 以避免 logo 覆盖内容 */
+    width: 100%; /* 调整宽度以适应屏幕 */
+    margin-top: 0;
+    padding-bottom: 50px;
+  }
+
+  .right {
+    min-width: 80%; /* 保证右侧内容占满屏幕 */
+    display: flex;
+    padding-bottom: 20px;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -145,47 +187,5 @@ p {
   height: 100%;
   border-radius: 0px 10px 10px 0px;
   background: white;
-}
-
-/* 移动端布局，仅隐藏左侧内容 */
-@media (max-width: 768px) {
-  .left {
-    display: none; /* 隐藏左侧内容 */
-  }
-
-  .wrapper {
-    width: 120%;
-    justify-content: center;
-    height: auto; /* 自适应高度 */
-    padding: 20px;
-  }
-
-  .logo {
-    width: 100px; /* 调整 logo 大小以适应移动端 */
-    height: 100px;
-    margin: 0 auto;
-    margin-bottom: -50px; /* 将 logo 上移以靠近 wrapper2 */
-    display: block;
-    position: relative;
-    z-index: 10; /* 确保 logo 在文本之上 */
-  }
-
-  .wrapper2 {
-    align-items: center;
-    justify-content: center;
-    padding-top: 60px; /* 给 wrapper2 添加 padding-top 以避免 logo 覆盖内容 */
-    width: 100%; /* 调整宽度以适应屏幕 */
-    margin-top: 0;
-    padding-bottom: 50px;
-  }
-
-  .right {
-    min-width: 80%; /* 保证右侧内容占满屏幕 */
-    display: flex;
-    padding-bottom: 20px;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-  }
 }
 </style>
