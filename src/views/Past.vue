@@ -7,12 +7,12 @@ import { ElMessage } from 'element-plus'
 const searchForm = reactive({
   current: 1,
   size: 10,
+  //查询父任务 还是 单项任务 0-单项任务 1-父任务
   queryParentTask: 1,
   keyword: ''
 })
 const showSon = ref(false)
 const showDetail = ref(false)
-
 interface brief {
   id: ''
   faorson: 1
@@ -26,7 +26,9 @@ interface brief {
   taskPoints: 0
   taskRewards: ''
   taskRectangle: ''
+  //纬度
   taskLatitude: ''
+  //经度
   taskLongitude: ''
   taskRadius: ''
   taskDifficulty: 0
@@ -45,7 +47,6 @@ interface brief {
   chan: 0
   water: 0
 }
-
 const items = ref<brief[]>([])
 const detailItems = ref<brief[]>([])
 const form = ref({
@@ -61,7 +62,9 @@ const form = ref({
   taskPoints: 0,
   taskRewards: '',
   taskRectangle: '',
+  //纬度
   taskLatitude: '',
+  //经度
   taskLongitude: '',
   taskRadius: '',
   taskDifficulty: 0,
@@ -80,9 +83,9 @@ const form = ref({
   chan: 0,
   water: 0
 })
-
 const search = () => {
   getPastApi(searchForm).then((res) => {
+    // console.log(res.data.data.records)
     if (res.data.code == '0') {
       ElMessage.success('查询成功')
       items.value = res.data.data.records
@@ -93,16 +96,15 @@ const search = () => {
     }
   })
 }
-
 onMounted(() => {
   search()
 })
-
 const getDetail = (data: any, index: number) => {
   getPastChildApi({
     id: data.id,
     querySubTask: 1
   }).then((res) => {
+    console.log(data)
     if (res.data.code == '0') {
       ElMessage.success('查询成功')
       detailItems.value = res.data.data.subTaskList
@@ -146,11 +148,13 @@ const getDetailInfo = (id: number) => {
     </h1>
     <el-form :model="form" label-width="auto" style="margin-top: 20px" @submit.prevent="search">
       <el-row :gutter="20">
+        <!-- 活动名称 -->
         <el-col :span="8">
           <el-form-item label="活动名称">
             <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
           </el-form-item>
         </el-col>
+        <!-- 活动类型 -->
         <el-col :span="12">
           <el-form-item label="活动类型">
             <el-radio-group v-model="searchForm.queryParentTask">
@@ -167,7 +171,6 @@ const getDetailInfo = (id: number) => {
       </el-row>
     </el-form>
     <el-divider />
-
     <div class="scroll-container">
       <div class="card" v-for="(item, index) in items" :key="index" @click="getDetail(item, index)">
         <img :src="item.taskImages" alt="" class="card-image" />
@@ -221,6 +224,7 @@ const getDetailInfo = (id: number) => {
           </el-form-item>
           <el-form-item label="活动方式">
             <el-select v-model="form.taskRequiresType" placeholder="请选择...">
+              <!-- 0-其他 1-答题 2-网页浏览 3-摄像头打卡 4-定位打卡 5-图片打卡 -->
               <el-option label="其他" :value="0" />
               <el-option label="答题" :value="1" />
               <el-option label="浏览网页" :value="2" />
@@ -315,6 +319,7 @@ const getDetailInfo = (id: number) => {
           </el-form-item>
           <el-form-item label="物品识别类型" v-if="form.requiresPhoto === 1">
             <el-select v-model="form.requiresItem">
+              <!-- 身份证 录取通知书 银行卡 证件照 手机 衣物 文具 -->
               <el-option label="背包" :value="24" />
               <el-option label="雨伞" :value="25" />
               <el-option label="杯子" :value="41" />
