@@ -138,3 +138,33 @@ onMounted(() => {
   search()
 })
 </script>
+<template>
+  <div :gutter="0" class="wrapper">
+    <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
+      活动一览
+    </h1>
+    <el-form :model="form" label-width="auto" style="margin-top: 20px" @submit.prevent="search">
+      <el-row :gutter="20">
+        <el-col :span="8">
+          <el-form-item label="活动名称">
+            <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="活动类型">
+            <el-radio-group v-model="searchForm.queryParentTask">
+              <el-radio :value="1" label="父任务"></el-radio>
+              <el-radio :value="0" label="单项任务"></el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item>
+            <el-button type="primary" @click="search">查询</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <el-divider />
+  </div>
+</template>
