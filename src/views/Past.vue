@@ -166,5 +166,64 @@ onMounted(() => {
       </el-row>
     </el-form>
     <el-divider />
+
+    <div class="scroll-container">
+      <div class="card" v-for="(item, index) in items" :key="index" @click="getDetail(item, index)">
+        <img :src="item.taskImages" alt="" class="card-image" />
+        <div class="card-content">
+          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-title">{{ item.taskName }}</div>
+          <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 16px 0;
+}
+
+.card {
+  display: inline-block;
+  width: 450px;
+  margin-right: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.card-image {
+  width: 450px;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.card-description {
+  font-size: 0.9em;
+  color: #666;
+}
+.card-id {
+  justify-content: right;
+  font-size: 0.5em;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  padding: 0;
+  color: #666;
+  display: flex;
+}
+</style>
