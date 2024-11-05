@@ -1,3 +1,43 @@
+<script setup>
+import { ref, reactive, computed } from 'vue'
+import { ElMessage } from 'element-plus'
+import { putAdApi } from '@/api/api'
+
+const form = reactive({
+  adType: null,
+  wordsContent: '',
+  imgContent: '',
+  linkUrl: '',
+  keywords: '',
+  pushMethod: null,
+  pushPosition: '',
+  targetFacultyRange: '',
+  targetGenderRange: '',
+  targetGradeRange: '',
+  startTime: '',
+  endTime: '',
+  cost: '',
+  keywordsCount: 1
+})
+
+const keywordArray = computed(() => {
+  return form.keywords.split(',').filter(Boolean)
+})
+
+const keywordCount = computed(() => {
+  return keywordArray.value.length
+})
+
+const submitForm = async () => {
+  form.keywordsCount = keywordCount.value
+  const res = await putAdApi(form)
+  if (res.data.code == '0') {
+    ElMessage.success('发布成功')
+  } else {
+    ElMessage.error(res.data.message)
+  }
+}
+</script>
 <template>
   <div :gutter="0" class="wrapper">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
@@ -95,6 +135,29 @@
               placeholder="请输入目标年级范围，用逗号分隔或-1代表全部"
             ></el-input>
           </el-form-item>
+
+        <!-- 推送方式 -->
+        <el-form-item label="推送方式">
+            <el-select v-model="form.pushMethod" placeholder="请选择">
+            <el-option label="app内展示" :value="1"></el-option>
+            <el-option label="消息推送" :value="2"></el-option>
+            <el-option label="全部" :value="3"></el-option>
+            </el-select>
+        </el-form-item>
+
+        <!-- 推送位置 -->
+        <el-form-item label="推送位置">
+            <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
+            <el-option label="消息推送" value="0"></el-option>
+            <el-option label="开屏" value="1"></el-option>
+            <el-option label="首页" value="2"></el-option>
+            <el-option label="首页轮播图" value="3"></el-option>
+            </el-select>
+        </el-form-item>
+        <!-- 表单提交按钮 -->
+        <el-form-item>
+            <el-button type="primary" @click="submitForm">提交</el-button>
+        </el-form-item>
         </el-col>
       </el-row>
     </el-form>
