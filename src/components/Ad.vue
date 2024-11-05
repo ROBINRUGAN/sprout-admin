@@ -18,6 +18,29 @@ const state = reactive({
     home2: [50, 30, 200, 300, 450, 100, 120]
   }
 })
+
+window.addEventListener('resize', function () {
+  myChart.resize()
+})
+
+onMounted(() => {
+  if (adContainer.value) {
+    myChart = echarts.init(adContainer.value)
+    myChart.setOption(option)
+  }
+  state.selectedAdType = 'open'
+})
+
+watch(
+  () => state.selectedAdType,
+  (newType) => {
+    if (newType) {
+      const data = state.dataMap[newType]
+      option.series[0].data = data
+      myChart.setOption(option, true)
+    }
+  }
+)
 </script>
 
 <template>
