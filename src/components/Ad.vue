@@ -26,3 +26,14 @@
     <div ref="adContainer" style="width: 100%; height: 300px"></div>
   </div>
 </template>
+
+<style scoped>
+.adData {
+  height: 400px;
+  background-color: rgb(224, 247, 255);
+
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+</style>
