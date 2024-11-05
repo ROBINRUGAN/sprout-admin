@@ -19,6 +19,61 @@ const state = reactive({
   }
 })
 
+// 图表配置
+const option = reactive({
+  backgroundColor: 'rgba(224, 247, 255,1)', // 设置图表的背景颜色为淡蓝色
+  grid: { left: '5%', right: '5%', top: '5%', bottom: '5%', containLabel: true },
+  tooltip: {
+    trigger: 'axis',
+    borderColor: 'transparent',
+    borderRadius: 10,
+    padding: 10,
+    textStyle: { color: '#000' },
+    backgroundColor: 'rgba(236,245,253,0.7)',
+    formatter: function (params) {
+      let result = '<h1>' + params[0].name + '</h1>'
+      result +=
+        '<div style="background: #fff; padding: 10px; border-radius: 5px; margin-top: 5px; width:200px; display: flex; justify-content: space-between">'
+      result += '<p>'
+      result += params[0].seriesName
+      result += '</p>'
+      result += '<p>'
+      result += params[0].value + '<br/>'
+      result += '</p>'
+      result += '</div>'
+      return result
+    }
+  },
+  xAxis: {
+    type: 'category',
+    data: [
+      '2024-03-09',
+      '2024-03-10',
+      '2024-03-11',
+      '2024-03-12',
+      '2024-03-13',
+      '2024-03-14',
+      '2024-03-15'
+    ],
+    boundaryGap: true
+  },
+  yAxis: { type: 'value' },
+  series: [
+    {
+      name: '点击次数',
+      type: 'bar',
+      barWidth: '20%',
+      data: [],
+      itemStyle: {
+        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          { offset: 0, color: 'rgb(5, 236, 255)' },
+          { offset: 1, color: 'rgb(138, 43, 236)' }
+        ])
+      }
+    }
+  ]
+})
+
 window.addEventListener('resize', function () {
   myChart.resize()
 })
