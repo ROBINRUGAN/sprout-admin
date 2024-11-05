@@ -1,3 +1,25 @@
+<script setup lang="ts">
+import { onMounted, ref, watch, reactive } from 'vue'
+import * as echarts from 'echarts'
+
+const adContainer = ref(null)
+let myChart = null
+
+const state = reactive({
+  selectedAdType: '',
+  adTypes: [
+    { value: 'open', label: '开屏页' },
+    { value: 'home1', label: '风景图' },
+    { value: 'home2', label: '欢迎新同学' }
+  ],
+  dataMap: {
+    open: [131, 202, 400, 329, 541, 122, 188],
+    home1: [300, 450, 520, 410, 600, 200, 330],
+    home2: [50, 30, 200, 300, 450, 100, 120]
+  }
+})
+</script>
+
 <template>
   <div class="adData">
     <div
