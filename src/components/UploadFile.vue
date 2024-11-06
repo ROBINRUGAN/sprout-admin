@@ -16,4 +16,13 @@
       <div class="el-upload__tip">支持上传jpg/png/avi/mov/mp4文件，不超过50M</div>
     </template>
   </el-upload>
+
+  <el-dialog v-model="dialogVisible">
+    <template v-if="isVideo(dialogFileType)">
+      <video :src="dialogImageUrl" controls style="max-width: 100%"></video>
+    </template>
+    <template v-else>
+      <img :src="dialogImageUrl" alt="Preview" style="max-width: 100%" />
+    </template>
+  </el-dialog>
 </template>
