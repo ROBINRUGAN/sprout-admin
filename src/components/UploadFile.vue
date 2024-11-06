@@ -71,4 +71,13 @@ const uploadImage: UploadProps['httpRequest'] = async ({ file }) => {
   const res = await GetURLApi(formData)
   return res.data
 }
+
+const handleRemove: UploadProps['onRemove'] = (uploadFile: any) => {
+  if (uploadFile.response) {
+    const index = urlList.value.indexOf(uploadFile.response.data.fileUrl)
+    if (index > -1) {
+      urlList.value.splice(index, 1)
+    }
+  }
+}
 </script>
