@@ -247,3 +247,67 @@ const fetchAdList = async () => {
     </el-form>
   </div>
 </template>
+
+<style scoped>
+.scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 16px 0;
+}
+
+.card {
+  display: inline-block;
+  width: 550px;
+  margin-right: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.card-image {
+  width: 550px;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.card-id {
+  justify-content: right;
+  font-size: 0.5em;
+  margin-top: 10px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+  color: #666;
+  display: flex;
+}
+
+.card-description {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.wrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.el-button--primary {
+  width: 100px;
+}
+
+.el-divider--horizontal {
+  margin: 0;
+}
+</style>
