@@ -123,4 +123,15 @@ const fetchAdList = async () => {
       </el-row>
     </el-form>
   </div>
+    <!-- 显示广告列表 -->
+  <el-divider />
+  <div class="scroll-container">
+    <div class="card" v-for="(item, index) in items" :key="index" @click="getDetail(index)">
+      <img :src="item.imgContent" alt="" class="card-image" />
+      <div class="card-id">{{ '广告id: ' + item.id }}</div>
+      <div class="card-content">
+        <div class="card-title">{{ item.wordsContent }}</div>
+      </div>
+    </div>
+  </div>
 </template>
