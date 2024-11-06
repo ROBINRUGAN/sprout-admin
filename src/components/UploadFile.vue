@@ -89,4 +89,11 @@ const handleSuccess: UploadProps['onSuccess'] = (res) => {
 const handleChange: UploadProps['onChange'] = () => {
   emit('urls', urlList.value)
 }
+
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url!
+  dialogVisible.value = true
+  dialogFileType.value = uploadFile.raw?.type!
+  console.log(uploadFile)
+}
 </script>
