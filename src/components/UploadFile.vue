@@ -26,3 +26,21 @@
     </template>
   </el-dialog>
 </template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+import type { UploadProps, UploadUserFile } from 'element-plus'
+const emit = defineEmits(['urls'])
+import { GetURLApi } from '@/api/api'
+const fileList = ref<UploadUserFile[]>([])
+const urlList = ref<string[]>([])
+import { ElMessage } from 'element-plus'
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const dialogFileType = ref('')
+const isVideo = (fileType: string) => {
+  // 视频文件的MIME类型通常以"video/"开头
+  return fileType.startsWith('video/')
+}
+</script>
