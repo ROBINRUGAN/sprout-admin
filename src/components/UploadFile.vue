@@ -80,4 +80,13 @@ const handleRemove: UploadProps['onRemove'] = (uploadFile: any) => {
     }
   }
 }
+const handleSuccess: UploadProps['onSuccess'] = (res) => {
+  // console.log('成功了')
+  if (res.code === '0') {
+    urlList.value.push(res.data.fileUrl)
+  }
+}
+const handleChange: UploadProps['onChange'] = () => {
+  emit('urls', urlList.value)
+}
 </script>
