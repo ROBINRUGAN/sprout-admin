@@ -72,3 +72,55 @@ const fetchAdList = async () => {
   }
 }
 </script>
+
+<template>
+  <div :gutter="0" class="wrapper">
+    <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
+      广告一览
+    </h1>
+    <!-- 查询部分 -->
+    <el-form :model="searchForm" label-width="120px">
+      <el-row>
+        <el-col :span="6">
+          <el-form-item label="广告类型">
+            <el-select v-model="searchForm.adType" placeholder="请选择">
+              <el-option label="文本" :value="1"></el-option>
+              <el-option label="图片" :value="2"></el-option>
+              <el-option label="视频" :value="3"></el-option>
+              <el-option label="文本+图片" :value="4"></el-option>
+              <el-option label="文本+视频" :value="5"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="广告时间范围">
+            <el-col :span="11">
+              <el-date-picker
+                v-model="searchForm.startTime"
+                type="datetime"
+                value-format="YYYY-MM-DDTHH:mm:ss"
+                placeholder="开始时间"
+                style="width: 100%"
+              />
+            </el-col>
+            <el-col :span="2" style="text-align: center">—</el-col>
+            <el-col :span="11">
+              <el-date-picker
+                v-model="searchForm.endTime"
+                type="datetime"
+                value-format="YYYY-MM-DDTHH:mm:ss"
+                placeholder="结束时间"
+                style="width: 100%"
+              />
+            </el-col>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item>
+            <el-button type="primary" @click="fetchAdList">查询</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+  </div>
+</template>
