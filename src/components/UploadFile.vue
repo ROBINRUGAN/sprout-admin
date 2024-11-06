@@ -64,4 +64,11 @@ const beforeUpload = (file: { type: string; size: number }) => {
   }
   return true
 }
+
+const uploadImage: UploadProps['httpRequest'] = async ({ file }) => {
+  const formData = new FormData()
+  formData.append('files', file)
+  const res = await GetURLApi(formData)
+  return res.data
+}
 </script>
