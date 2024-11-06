@@ -3,7 +3,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { adDetailApi } from '@/api/api' // 确保API路径正确
 import { ElMessage } from 'element-plus'
 
-// 初始化响应式数据
 const isShow = ref(false)
 const searchForm = reactive({
   current: 1,
@@ -28,13 +27,9 @@ const form = ref({
   cost: '',
   keywordsCount: 1
 })
-
-// 创建生命周期钩子
 onMounted(() => {
   fetchAdList()
 })
-
-// 数据接口类型定义
 interface brief {
   id: number
   adType: null
@@ -54,14 +49,14 @@ interface brief {
 }
 const items = ref<brief[]>([])
 
-// 获取广告详细信息
 const getDetail = (id: number) => {
   isShow.value = true
+  // console.log(items.value[id])
   form.value = items.value[id]
 }
 
-// 获取广告列表数据
 const fetchAdList = async () => {
+  // console.log(searchForm)
   const res = await adDetailApi(searchForm)
   if (res.data.code == '0') {
     ElMessage.success('查询成功')
@@ -257,7 +252,7 @@ const fetchAdList = async () => {
 
 .card {
   display: inline-block;
-  width: 550px;
+  width: 550px; /* 这里的宽度可以根据您的设计来调整 */
   margin-right: 16px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -296,17 +291,14 @@ const fetchAdList = async () => {
   font-size: 0.9em;
   color: #666;
 }
-
 .wrapper {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
-
 .el-button--primary {
   width: 100px;
 }
-
 .el-divider--horizontal {
   margin: 0;
 }
