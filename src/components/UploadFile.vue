@@ -43,4 +43,25 @@ const isVideo = (fileType: string) => {
   // 视频文件的MIME类型通常以"video/"开头
   return fileType.startsWith('video/')
 }
+
+const beforeUpload = (file: { type: string; size: number }) => {
+  const allowedTypes = [
+    'video/mp4',
+    'video/quicktime',
+    'video/x-msvideo',
+    'image/jpeg',
+    'image/png'
+  ]
+  const isAllowedType = allowedTypes.includes(file.type)
+  if (!isAllowedType) {
+    ElMessage.error('只允许上传 mp4, mov, avi, jpg, png, jpeg 格式的文件')
+    return false
+  }
+  const isLt500M = file.size / 1024 / 1024 < 50
+  if (!isLt500M) {
+    ElMessage.error('文件大小不能超过 50MB')
+    return false
+  }
+  return true
+}
 </script>
