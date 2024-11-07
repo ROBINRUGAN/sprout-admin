@@ -64,7 +64,7 @@ const onSubmit = async () => {
     form.taskRectangle = form.taskLongitude + ',' + form.taskLatitude + ',' + form.taskRadius
   }
 
-  console.log('上传信息' + form)
+  console.log(form)
   let res = null
   if (form.faorson == 1) res = await CreateFatherApi(form)
   else if (form.faorson == 0) res = await CreateSonApi(form)
@@ -100,17 +100,16 @@ onBeforeMount(() => {
   fetchColleges()
 })
 </script>
-
 <template>
-  <div :gutter="0" class="wrapper">
+  <div class="wrapper">
     <div class="left">
       <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
         活动信息录入
       </h1>
 
       <el-form :model="form" label-width="auto">
-        <el-row :gutter="0">
-          <el-col :span="12" style="padding: 0 40px">
+        <div class="form-grid">
+          <div class="form-item">
             <el-form-item label="活动等级">
               <el-radio-group v-model="form.faorson">
                 <el-radio :value="1" label="父" />
@@ -164,7 +163,6 @@ onBeforeMount(() => {
             </el-form-item>
             <el-form-item label="活动方式">
               <el-select v-model="form.taskRequiresType" placeholder="请选择...">
-                <!-- 0-其他 1-答题 2-网页浏览 3-摄像头打卡 4-定位打卡 5-图片打卡 -->
                 <el-option label="其他" :value="0" />
                 <el-option label="答题" :value="1" />
                 <el-option label="浏览网页" :value="2" />
@@ -190,7 +188,7 @@ onBeforeMount(() => {
             </el-form-item>
 
             <el-form-item label="活动时段">
-              <el-col :span="11">
+              <div class="time-picker">
                 <el-date-picker
                   v-model="form.startTime"
                   type="datetime"
@@ -198,11 +196,7 @@ onBeforeMount(() => {
                   placeholder="Pick a date"
                   style="width: 100%"
                 />
-              </el-col>
-              <el-col :span="2" style="display: flex; justify-content: center">
                 <span>—</span>
-              </el-col>
-              <el-col :span="11">
                 <el-date-picker
                   v-model="form.endTime"
                   placeholder="Pick a time"
@@ -210,28 +204,20 @@ onBeforeMount(() => {
                   value-format="YYYY-MM-DD HH:mm:ss"
                   type="datetime"
                 />
-              </el-col>
+              </div>
             </el-form-item>
 
             <el-form-item label="活动描述">
               <el-input v-model="form.taskDescription" type="textarea" :rows="6" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12" style="padding: 0 40px">
+          </div>
+
+          <div class="form-item">
             <el-form-item label="活动封面">
               <UploadImg @urls="setURL"></UploadImg>
             </el-form-item>
             <el-form-item label="活动奖励">
-              <div
-                style="
-                  display: flex;
-                  flex-direction: column;
-                  justify-content: space-between;
-                  border: 1px solid rgba(187, 187, 187, 1);
-                  border-radius: 5px;
-                  padding: 10px;
-                "
-              >
+              <div class="reward-inputs">
                 <div>
                   <span style="margin-right: 20px">小水滴</span>
                   <el-input-number v-model="form.water" :min="1" :max="10" />
@@ -268,7 +254,6 @@ onBeforeMount(() => {
             </el-form-item>
             <el-form-item label="物品识别类型" v-if="form.requiresPhoto === 1">
               <el-select v-model="form.requiresItem">
-                <!-- 身份证 录取通知书 银行卡 证件照 手机 衣物 文具 -->
                 <el-option label="背包" :value="24" />
                 <el-option label="雨伞" :value="25" />
                 <el-option label="杯子" :value="41" />
@@ -332,8 +317,8 @@ onBeforeMount(() => {
                 >创建任务</el-button
               >
             </el-form-item>
-          </el-col>
-        </el-row>
+          </div>
+        </div>
       </el-form>
     </div>
   </div>
@@ -345,11 +330,40 @@ onBeforeMount(() => {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
+
 .left {
   background-color: #fff;
   width: 100%;
 }
-.right {
-  background-color: #ab0e0e;
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-item {
+  padding: 0 20px;
+}
+
+.time-picker {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.reward-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(187, 187, 187, 1);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

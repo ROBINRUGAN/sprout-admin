@@ -99,12 +99,14 @@ const search = () => {
 onMounted(() => {
   search()
 })
+
+//展示子任务列表
 const getDetail = (data: any, index: number) => {
   getPastChildApi({
     id: data.id,
     querySubTask: 1
   }).then((res) => {
-    console.log(data)
+    // console.log(res.data)
     if (res.data.code == '0') {
       ElMessage.success('查询成功')
       detailItems.value = res.data.data.subTaskList
@@ -127,8 +129,10 @@ const getDetail = (data: any, index: number) => {
   })
 }
 
+//展示子任务详情
 const getDetailInfo = (id: number) => {
   showDetail.value = true
+  console.log(detailItems.value)
   form.value = detailItems.value[id]
   if (form.value.requiresAudit === 1) {
     form.value.Audit = true
