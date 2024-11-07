@@ -7,6 +7,8 @@
     :on-preview="handlePictureCardPreview"
     :on-remove="handleRemove"
     :on-success="handleSuccess"
+    :on-change="handleChange"
+    :limit="2"
     :auto-upload="true"
   >
     <el-icon><Plus /></el-icon>
@@ -24,9 +26,9 @@ import type { UploadProps, UploadUserFile } from 'element-plus'
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { GetURLApi } from '@/api/api'
-
 const fileList = ref<UploadUserFile[]>([])
 const urlList = ref<string[]>([])
+const emit = defineEmits(['urls'])
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
@@ -52,16 +54,26 @@ const uploadImage: UploadProps['httpRequest'] = async ({ file }) => {
   return res.data
 }
 
-const handleRemove = (uploadFile, uploadFiles) => {
-  // handle file removal if needed
+const handleRemove: UploadProps['onRemove'] = (uploadFile: any, uploadFiles) => {
+  if (uploadFile.response) {
+    const index = urlList.value.indexOf(uploadFile.response.data.fileUrl)
+    if (index > -1) {
+      urlList.value.splice(index, 1)
+    }
+  }
+}
+const handleSuccess: UploadProps['onSuccess'] = (res, file, fileList) => {
+  // console.log('成功了')
+  if (res.code === '0') {
+    urlList.value.push(res.data.fileUrl)
+  }
+}
+const handleChange: UploadProps['onChange'] = (uploadFiles) => {
+  emit('urls', urlList.value)
 }
 
-const handleSuccess = (res, file, fileList) => {
-  // handle success if needed
-}
-
-const handlePictureCardPreview = (uploadFile) => {
-  dialogImageUrl.value = uploadFile.url
+const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
+  dialogImageUrl.value = uploadFile.url!
   dialogVisible.value = true
 }
 </script>
