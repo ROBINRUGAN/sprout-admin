@@ -127,8 +127,10 @@ function setFocus(index: number) {
   toolSelect.focused = index
 }
 
+// 页面加载完成后触发 resize 事件来确保布局正常渲染
 onMounted(async () => {
   await nextTick()
+  // 加入短暂延迟后再触发 resize，确保布局稳定
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'))
   }, 50)
@@ -136,23 +138,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-@media (max-width: 1024px) {
-  .dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .userData,
-  .tool,
-  .info,
-  .bottompart,
-  .image {
-    width: 100%;
-    grid-column: unset;
-    grid-row: unset;
-  }
-}
 .dashboard {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -293,5 +278,24 @@ onMounted(async () => {
   gap: 10px;
   margin-top: 20px;
   width: 100%;
+}
+
+/* Mobile layout: Each module takes full width */
+@media (max-width: 1024px) {
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .userData,
+  .tool,
+  .info,
+  .bottompart,
+  .image {
+    width: 100%;
+    grid-column: unset;
+    grid-row: unset;
+  }
 }
 </style>
