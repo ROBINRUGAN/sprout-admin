@@ -8,7 +8,7 @@
         <div class="activity-info">
           <p>总活动</p>
           <div class="activity-count">
-            <p class="count">12</p>
+            <p class="count">{{ count }}</p>
             <p>个</p>
           </div>
         </div>
@@ -116,6 +116,8 @@ import InfoItem from '@/components/InfoItem.vue'
 import RegisterPie from '@/components/RegisterPie.vue'
 import { ElIcon } from 'element-plus'
 import { useToolSelectStore } from '@/stores/toolSelectStore'
+import { getTaskCountApi } from '@/api/api'
+const count = ref(0)
 
 const toolSelect = useToolSelectStore()
 
@@ -134,6 +136,10 @@ onMounted(async () => {
   setTimeout(() => {
     window.dispatchEvent(new Event('resize'))
   }, 50)
+
+  getTaskCountApi().then((res) => {
+    count.value = res.data.data
+  })
 })
 </script>
 

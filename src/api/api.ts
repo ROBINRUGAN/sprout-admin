@@ -113,3 +113,10 @@ export const getDailyActiveApi = (data: any) => {
     data
   })
 }
+
+export const getTaskCountApi = () => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/task-count`
+  })
+}
