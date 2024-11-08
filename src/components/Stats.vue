@@ -1,3 +1,4 @@
+
 <template>
   <div ref="chartContainer" style="width: 100%; height: 300px"></div>
 </template>
@@ -5,6 +6,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
+import { getDailyActiveApi } from '@/api/api'
 
 const chartContainer = ref(null)
 let myChart = null
@@ -76,15 +78,7 @@ const option = {
   xAxis: {
     type: 'category',
     boundaryGap: false,
-    data: [
-      '2024-03-09',
-      '2024-03-10',
-      '2024-03-11',
-      '2024-03-12',
-      '2024-03-13',
-      '2024-03-14',
-      '2024-03-15'
-    ]
+    data: []
   },
   yAxis: {
     type: 'value',
@@ -135,7 +129,7 @@ const option = {
           { offset: 1, color: 'rgba(255, 255, 255, 0)' } // 底部颜色（淡蓝色，透明度0%）
         ])
       },
-      data: [12000, 20000, 39068, 30000, 31000, 30000, 32000]
+      data:  []
     }
   ]
 }
@@ -143,10 +137,43 @@ window.addEventListener('resize', function () {
     myChart.resize();
 });
 
-onMounted(() => {
+const xAxisData = ref([])
+const seriesData = ref([])
+const getDailyActive = () => {
+  getDailyActiveApi().then((res) => {
+    if (res.data.code === '0') {
+      // 更新图表数据
+      const data = res.data.data || []
+      xAxisData.value = data.map(item => item.dateTime)
+      seriesData.value = data.map(item => parseInt(item.cnt, 10))
+
+      // 更新 option
+      option.xAxis.data = xAxisData.value
+      option.series[0].data = seriesData.value
+
+      // 使用 myChart 手动更新图表
+      if (myChart) {
+        myChart.setOption(option)
+      }
+
+    } else {
+      console.error(res.data.message)
+    }
+  }).catch(error => {
+    console.error('接口请求错误:', error)
+  })
+}
+
+
+
+onMounted(async () => {
+  // 等待 getDailyActive 完成
+  await getDailyActive()
+  // 现在 getDailyActive 已经完成，可以继续执行后面的代码
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
   }
 })
+
 </script>
