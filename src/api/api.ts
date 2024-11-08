@@ -105,3 +105,11 @@ export const submitAuditApi = (data: any) => {
     data
   })
 }
+
+export const getDailyActiveApi = (data: any) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/daily-active`,
+    data
+  })
+}
