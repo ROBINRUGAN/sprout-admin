@@ -1,4 +1,3 @@
-
 <template>
   <div ref="chartContainer" style="width: 100%; height: 300px"></div>
 </template>
@@ -68,10 +67,6 @@ const option = {
   },
   toolbox: {
     feature: {
-      dataZoom: {
-        yAxisIndex: 'none'
-      },
-      restore: {},
       saveAsImage: {}
     }
   },
@@ -85,11 +80,11 @@ const option = {
     boundaryGap: [0, '100%']
   },
   dataZoom: [
-    {
-      type: 'inside',
-      start: 0,
-      end: 100
-    }
+    // {
+    //   type: 'inside',
+    //   start: 0,
+    //   end: 100
+    // }
   ],
   series: [
     {
@@ -129,48 +124,41 @@ const option = {
           { offset: 1, color: 'rgba(255, 255, 255, 0)' } // 底部颜色（淡蓝色，透明度0%）
         ])
       },
-      data:  []
+      data: []
     }
-  ],  
-  toolbox: {
-    feature: {
-      saveAsImage: {} // 下载按钮
-    }
-  },
-   dataZoom: [] // 设置为空数组，禁用图表的放大缩小功能
+  ]
 }
 window.addEventListener('resize', function () {
-    myChart.resize();
-});
+  myChart.resize()
+})
 
 const xAxisData = ref([])
 const seriesData = ref([])
 const getDailyActive = () => {
-  getDailyActiveApi().then((res) => {
-    if (res.data.code === '0') {
-      // 更新图表数据
-      const data = res.data.data || []
-      xAxisData.value = data.map(item => item.dateTime)
-      seriesData.value = data.map(item => parseInt(item.cnt, 10))
+  getDailyActiveApi()
+    .then((res) => {
+      if (res.data.code === '0') {
+        // 更新图表数据
+        const data = res.data.data || []
+        xAxisData.value = data.map((item) => item.dateTime)
+        seriesData.value = data.map((item) => parseInt(item.cnt, 10))
 
-      // 更新 option
-      option.xAxis.data = xAxisData.value
-      option.series[0].data = seriesData.value
+        // 更新 option
+        option.xAxis.data = xAxisData.value
+        option.series[0].data = seriesData.value
 
-      // 使用 myChart 手动更新图表
-      if (myChart) {
-        myChart.setOption(option)
+        // 使用 myChart 手动更新图表
+        if (myChart) {
+          myChart.setOption(option)
+        }
+      } else {
+        console.error(res.data.message)
       }
-
-    } else {
-      console.error(res.data.message)
-    }
-  }).catch(error => {
-    console.error('接口请求错误:', error)
-  })
+    })
+    .catch((error) => {
+      console.error('接口请求错误:', error)
+    })
 }
-
-
 
 onMounted(async () => {
   // 等待 getDailyActive 完成
@@ -181,5 +169,4 @@ onMounted(async () => {
     myChart.setOption(option)
   }
 })
-
 </script>
