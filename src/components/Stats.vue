@@ -131,7 +131,13 @@ const option = {
       },
       data:  []
     }
-  ]
+  ],  
+  toolbox: {
+    feature: {
+      saveAsImage: {} // 下载按钮
+    }
+  },
+   dataZoom: [] // 设置为空数组，禁用图表的放大缩小功能
 }
 window.addEventListener('resize', function () {
     myChart.resize();
