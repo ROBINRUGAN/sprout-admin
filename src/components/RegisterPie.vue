@@ -4,8 +4,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref, onUnmounted, nextTick } from 'vue'
+import { onMounted, ref, onUnmounted, nextTick, watch } from 'vue'
 import * as echarts from 'echarts'
+import { getStudentRegisterApi } from '@/api/api'
+
+const unregisteredCount = ref(0)
+const registeredCount = ref(0)
 
 const chartContainer = ref(null)
 let myChart = null
@@ -55,8 +59,8 @@ const option = {
       radius: '50%',
       center: ['50%', '50%'],
       data: [
-        { value: 3335, name: '已注册' },
-        { value: 1235, name: '未注册' }
+        { value: 0, name: '已注册' },
+        { value: 0, name: '未注册' }
       ],
       emphasis: {
         itemStyle: {
@@ -83,19 +87,43 @@ onMounted(async () => {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
 
-    // 使用 setTimeout 延迟触发 resize
+    // 延迟触发 resize
     setTimeout(() => {
       myChart.resize()
-    }, 100) // 延迟100毫秒，确保布局完成
+    }, 100)
 
-    // 使用 requestAnimationFrame 在渲染完成后再调整图表
     requestAnimationFrame(() => {
       myChart.resize()
     })
 
     window.addEventListener('resize', resizeChart)
   }
+
+  // 获取学生注册数据并更新图表
+  getStudentRegisterApi().then((res) => {
+    registeredCount.value = res.data.data.registeredCount
+    unregisteredCount.value = res.data.data.unregisteredCount
+
+    // 更新图表的数据
+    updateChart()
+  })
 })
+
+// 监听已注册和未注册的数量变化并更新图表
+function updateChart() {
+  if (myChart) {
+    myChart.setOption({
+      series: [
+        {
+          data: [
+            { value: registeredCount.value, name: '已注册' },
+            { value: unregisteredCount.value, name: '未注册' }
+          ]
+        }
+      ]
+    })
+  }
+}
 
 onUnmounted(() => {
   window.removeEventListener('resize', resizeChart)
