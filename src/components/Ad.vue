@@ -1,27 +1,20 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, reactive } from 'vue'
 import * as echarts from 'echarts'
+import { getAdClickApi, getAdListApi } from '@/api/api'
+import { ElNotification } from 'element-plus'
 
 const adContainer = ref(null)
 let myChart = null
 
 const state = reactive({
   selectedAdType: '',
-  adTypes: [
-    { value: 'open', label: '开屏页' },
-    { value: 'home1', label: '风景图' },
-    { value: 'home2', label: '欢迎新同学' }
-  ],
-  dataMap: {
-    open: [131, 202, 400, 329, 541, 122, 188],
-    home1: [300, 450, 520, 410, 600, 200, 330],
-    home2: [50, 30, 200, 300, 450, 100, 120]
-  }
+  adTypes: [] // 将广告类型初始化为空数组
 })
 
 // 图表配置
 const option = reactive({
-  backgroundColor: 'rgba(224, 247, 255,1)', // 设置图表的背景颜色为淡蓝色
+  backgroundColor: 'rgba(224, 247, 255,1)',
   grid: { left: '5%', right: '5%', top: '5%', bottom: '5%', containLabel: true },
   tooltip: {
     trigger: 'axis',
@@ -34,27 +27,15 @@ const option = reactive({
       let result = '<h1>' + params[0].name + '</h1>'
       result +=
         '<div style="background: #fff; padding: 10px; border-radius: 5px; margin-top: 5px; width:200px; display: flex; justify-content: space-between">'
-      result += '<p>'
-      result += params[0].seriesName
-      result += '</p>'
-      result += '<p>'
-      result += params[0].value + '<br/>'
-      result += '</p>'
+      result += '<p>' + params[0].seriesName + '</p>'
+      result += '<p>' + params[0].value + '</p>'
       result += '</div>'
       return result
     }
   },
   xAxis: {
     type: 'category',
-    data: [
-      '2024-03-09',
-      '2024-03-10',
-      '2024-03-11',
-      '2024-03-12',
-      '2024-03-13',
-      '2024-03-14',
-      '2024-03-15'
-    ],
+    data: [],
     boundaryGap: true
   },
   yAxis: { type: 'value' },
@@ -74,30 +55,59 @@ const option = reactive({
   ]
 })
 
-window.addEventListener('resize', function () {
-  myChart.resize()
-})
-
+// 页面挂载时初始化图表并获取广告类型列表
 onMounted(() => {
   if (adContainer.value) {
     myChart = echarts.init(adContainer.value)
     myChart.setOption(option)
   }
-  state.selectedAdType = 'open'
+
+  // 调用获取广告类型列表接口
+  getAdListApi().then((res) => {
+    if (res.data.code === '0') {
+      state.adTypes = res.data.data.map((item) => ({
+        value: item.id,
+        label: item.wordsContent
+      }))
+      // 设置默认选中的广告类型为第一个
+      if (state.adTypes.length > 0) {
+        state.selectedAdType = state.adTypes[0].value
+      }
+    } else {
+      ElNotification.error(res.data.message || '获取广告类型失败！')
+    }
+  })
 })
 
+// 监听选中的广告类型变化，获取对应广告的点击次数数据并更新图表
 watch(
   () => state.selectedAdType,
   (newType) => {
     if (newType) {
-      const data = state.dataMap[newType]
-      option.series[0].data = data
-      myChart.setOption(option, true)
+      // 调用获取广告点击次数接口
+      getAdClickApi(newType).then((res) => {
+        if (res.data.code === '0') {
+          // 更新图表数据
+          const dates = res.data.data.map((item) => item.date)
+          const clickCounts = res.data.data.map((item) => item.clickCount)
+
+          option.xAxis.data = dates
+          option.series[0].data = clickCounts
+          myChart.setOption(option, true)
+        } else {
+          ElNotification.error(res.data.message || '获取广告点击数据失败！')
+        }
+      })
     }
   }
 )
-</script>
 
+window.addEventListener('resize', () => {
+  if (myChart) {
+    myChart.resize()
+  }
+})
+</script>
 <template>
   <div class="adData">
     <div

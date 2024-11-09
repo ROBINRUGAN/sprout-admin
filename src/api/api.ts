@@ -157,3 +157,17 @@ export const getTaskCompletionApi = (id: string) => {
     url: `/api/new-sprout/admin/v1/stats/task-completion?studentId=${id}`
   })
 }
+
+export const getAdListApi = () => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/ad-list`
+  })
+}
+
+export const getAdClickApi = (id: string) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/ad-click?adId=${id}`
+  })
+}
