@@ -133,10 +133,10 @@ function setFocus(index: number) {
 // 页面加载完成后触发 resize 事件来确保布局正常渲染
 onMounted(async () => {
   await nextTick()
-  // // 加入短暂延迟后再触发 resize，确保布局稳定
+  // 加入短暂延迟后再触发 resize，确保布局稳定
   // setTimeout(() => {
   //   window.dispatchEvent(new Event('resize'))
-  // }, 50)
+  // }, 1200)
 
   await getTaskCountApi().then((res) => {
     count.value = res.data.data
@@ -161,6 +161,7 @@ onMounted(async () => {
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
   width: 100%;
 }
 
@@ -254,6 +255,7 @@ onMounted(async () => {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  min-width: max-content;
 }
 
 .iconWrapper {
