@@ -1,6 +1,5 @@
 <template>
-  <h1 style="justify-content: center; display: flex; margin-top: 20px">学生注册统计</h1>
-  <div ref="chartContainer" style="width: 100%; height: 340px"></div>
+  <div ref="chartContainer" style="width: 250px; height: 250px"></div>
 </template>
 
 <script setup>
@@ -24,23 +23,23 @@ const option = {
     textStyle: {
       color: '#000'
     },
-    trigger: 'item',
-    position: function (point, params, dom, rect, size) {
-      var x = point[0] * 1.01
-      var y = point[1] * 1.01
-      var boxWidth = size.contentSize[0]
-      var boxHeight = size.contentSize[1]
-      var graphWidth = size.viewSize[0]
+    trigger: 'item'
+    // position: function (point, params, dom, rect, size) {
+    //   var x = point[0] * 1.01
+    //   var y = point[1] * 1.01
+    //   var boxWidth = size.contentSize[0]
+    //   var boxHeight = size.contentSize[1]
+    //   var graphWidth = size.viewSize[0]
 
-      x = x < graphWidth + boxWidth ? x : x + boxWidth
-      x = x < graphWidth - boxWidth ? x : x - boxWidth
-      y = y < boxHeight ? y : y - boxHeight
-      return [x, y]
-    }
+    //   x = x < graphWidth + boxWidth ? x : x + boxWidth
+    //   x = x < graphWidth - boxWidth ? x : x - boxWidth
+    //   y = y < boxHeight ? y : y - boxHeight
+    //   return [x, y]
+    // }
   },
   legend: {
     left: 'center',
-    bottom: 10,
+    bottom: 0,
     data: ['已注册', '未注册']
   },
   toolbox: {
@@ -56,8 +55,7 @@ const option = {
     {
       name: '学生注册情况',
       type: 'pie',
-      radius: '50%',
-      center: ['50%', '50%'],
+      // radius: ['10%', '50%'],
       data: [
         { value: 0, name: '已注册' },
         { value: 0, name: '未注册' }
@@ -68,6 +66,9 @@ const option = {
           shadowOffsetX: 0,
           shadowColor: 'rgba(0, 0, 0, 0.5)'
         }
+      },
+      label: {
+        show: false // 隐藏标签
       }
     }
   ]
@@ -86,27 +87,26 @@ onMounted(async () => {
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
+    // 获取学生注册数据并更新图表
+    getStudentRegisterApi().then((res) => {
+      registeredCount.value = res.data.data.registeredCount
+      unregisteredCount.value = res.data.data.unregisteredCount
 
-    // 延迟触发 resize
-    setTimeout(() => {
-      myChart.resize()
-    }, 100)
-
-    requestAnimationFrame(() => {
-      myChart.resize()
+      // 更新图表的数据
+      updateChart()
     })
 
-    window.addEventListener('resize', resizeChart)
+    // // 延迟触发 resize
+    // setTimeout(() => {
+    //   myChart.resize()
+    // }, 100)
+
+    // requestAnimationFrame(() => {
+    //   myChart.resize()
+    // })
+
+    // window.addEventListener('resize', resizeChart)
   }
-
-  // 获取学生注册数据并更新图表
-  getStudentRegisterApi().then((res) => {
-    registeredCount.value = res.data.data.registeredCount
-    unregisteredCount.value = res.data.data.unregisteredCount
-
-    // 更新图表的数据
-    updateChart()
-  })
 })
 
 // 监听已注册和未注册的数量变化并更新图表

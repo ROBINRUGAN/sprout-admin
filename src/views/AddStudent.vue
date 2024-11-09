@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ElMessage, ElUpload } from 'element-plus'
+import { ElNotification, ElUpload } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
-import {AddStuApi} from '@/api/api'
+import { AddStuApi } from '@/api/api'
 const fileList = ref([]) // 存储用户选择的文件
 
 // 处理文件变更的事件
@@ -13,7 +13,7 @@ const handleFileChange = (file, files) => {
 // 确认导入的处理函数
 const submitUpload = async () => {
   if (fileList.value.length === 0) {
-    ElMessage.error('请先选择一个文件!')
+    ElNotification.error('请先选择一个文件!')
     return
   }
 
@@ -23,10 +23,9 @@ const submitUpload = async () => {
   // 这里是你的上传逻辑，替换成你的API调用
   const res = await AddStuApi(formData)
   console.log(res)
-    if(res.data.code === '0')
-    {
-        ElMessage.success('导入成功')
-    }
+  if (res.data.code === '0') {
+    ElNotification.success('导入成功')
+  }
 }
 </script>
 

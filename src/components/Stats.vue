@@ -162,10 +162,10 @@ const getDailyActive = () => {
 
 onMounted(async () => {
   // 等待 getDailyActive 完成
-  await getDailyActive()
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
+    getDailyActive()
   }
 })
 </script>
