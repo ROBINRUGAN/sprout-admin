@@ -132,16 +132,16 @@ const getDetail = (data: any, index: number) => {
 //展示子任务详情
 const getDetailInfo = (id: number) => {
   showDetail.value = true
-  console.log(detailItems.value)
+  // console.log(items.value)
   form.value = detailItems.value[id]
   if (form.value.requiresAudit === 1) {
     form.value.Audit = true
   } else {
     form.value.Audit = false
   }
-  form.value.water = parseInt(items.value[id].taskRewards.split(',')[0])
-  form.value.chan = parseInt(items.value[id].taskRewards.split(',')[1])
-  form.value.tree = parseInt(items.value[id].taskRewards.split(',')[2])
+  form.value.water = parseInt(detailItems.value[id].taskRewards.split(',')[0])
+  form.value.chan = parseInt(detailItems.value[id].taskRewards.split(',')[1])
+  form.value.tree = parseInt(detailItems.value[id].taskRewards.split(',')[2])
 }
 </script>
 
