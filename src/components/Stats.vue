@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" style="width: 100%; height: 300px"></div>
+  <div ref="chartContainer" class="mewch"></div>
 </template>
 
 <script setup>
@@ -169,3 +169,16 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.mewch {
+  width: 100%;
+  height: 300px;
+}
+
+@media screen and (max-width: 1024px) {
+  .mewch {
+    width: 100%;
+  }
+}
+</style>

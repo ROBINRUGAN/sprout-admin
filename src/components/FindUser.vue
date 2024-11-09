@@ -1,21 +1,38 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElDivider, ElNotification } from 'element-plus'
-import { getUserInfoApi } from '@/api/api'
+import { getTaskCompletionApi, getUserInfoApi } from '@/api/api'
 
-const taskData = ref([
-  { name: '未雨绸缪', id: '327389', status: '已完成', parentTask: '入学准备' },
-  { name: '寻找宿舍', id: '327389', status: '已完成', parentTask: '入学准备' },
-  { name: '新生注册', id: '327389', status: '已完成', parentTask: '入学准备' },
-  { name: '领取新生物品', id: '327389', status: '已完成', parentTask: '新生指引' },
-  { name: '学分认定规则检测', id: '327389', status: '已完成', parentTask: '学业规划' }
-])
-
+const taskData = ref([]) // 初始化为空数组
 const studentAccount = ref('')
-
 const mewch = ref(false)
 
 const showMewch = async () => {
+  if (!studentAccount.value) {
+    ElNotification.error('请输入学号！')
+    return
+  }
+
+  // 获取任务完成情况
+  await getTaskCompletionApi(studentAccount.value).then((res) => {
+    console.log(res)
+    if (res.data.code !== '0') {
+      ElNotification.error(res.data.message || '未查询到结果！')
+      return
+    } else {
+      // 格式化任务数据，将完成状态转换为对应的中文状态
+      const data = res.data.data.map((task) => ({
+        taskName: task.taskName,
+        completionStatus: getStatusText(task.completionStatus),
+        parentTaskName: task.parentTaskName
+      }))
+      taskData.value = data
+      mewch.value = true
+      ElNotification.success('查询成功')
+    }
+  })
+
+  // 获取用户信息
   await getUserInfoApi(studentAccount.value).then((res) => {
     console.log(res)
     if (res.data.code !== '0') {
@@ -52,21 +69,36 @@ const showMewch = async () => {
   })
 }
 
+// 状态转换函数
+function getStatusText(status) {
+  switch (status) {
+    case 0:
+      return '未完成'
+    case 1:
+      return '待审核'
+    case 2:
+      return '已完成'
+    case 3:
+      return '失败'
+    default:
+      return '未知状态'
+  }
+}
+
 const userData = ref({
-  id: '1842829088522289153',
-  username: 'FZU5037753585',
-  realName: '翁鹏',
-  studentId: '222200331',
+  id: '',
+  username: '',
+  realName: '',
+  studentId: '',
   grade: 2022,
-  major: '软件工程',
-  faculty: '计算机与大数据学院',
-  region: '福建省莆田市',
-  gender: '男',
-  avatar:
-    'https://ts1.cn.mm.bing.net/th?id=OIP-C.k6ekHYPyBdw5UcL1St3MjgAAAA&w=183&h=183&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
-  idType: '身份证',
-  idCard: '350302200310281633',
-  phone: '18005471144',
+  major: '',
+  faculty: '',
+  region: '',
+  gender: '',
+  avatar: 'https://mewww.w2fzu.com//upmew/cat.gif',
+  idType: '',
+  idCard: '',
+  phone: '',
   points: 1,
   isRegister: 1,
   registerLongitude: 119.31511219999999,
@@ -96,7 +128,11 @@ const userData = ref({
       <button class="search" @click="showMewch">查询</button>
     </div>
 
-    <el-empty description="description" v-if="!mewch" />
+    <el-empty
+      description="快去搜索吧～"
+      image="https://mewww.w2fzu.com//upmew/cat.gif"
+      v-if="!mewch"
+    />
     <div v-if="mewch" class="info-container">
       <!-- 用户信息卡片，双列布局在宽度 > 1024px，单列布局在宽度 <= 1024px -->
       <div class="infos card">
@@ -142,9 +178,9 @@ const userData = ref({
       <div class="details card">
         <h1 class="section-title">任务详情</h1>
         <el-table :data="taskData" stripe size="small" class="large-table">
-          <el-table-column prop="name" label="活动名称"></el-table-column>
-          <el-table-column prop="status" label="完成状态"></el-table-column>
-          <el-table-column prop="parentTask" label="父任务名称"></el-table-column>
+          <el-table-column prop="taskName" label="活动名称"></el-table-column>
+          <el-table-column prop="completionStatus" label="完成状态"></el-table-column>
+          <el-table-column prop="parentTaskName" label="父任务名称"></el-table-column>
         </el-table>
       </div>
     </div>
@@ -153,8 +189,6 @@ const userData = ref({
 
 <style scoped>
 .find {
-  max-width: 800px;
-  margin: 20px auto;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
