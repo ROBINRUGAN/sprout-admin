@@ -7,10 +7,10 @@ import { ElNotification } from 'element-plus'
 const searchForm = reactive({
   current: 1,
   size: 10,
-  //查询父任务 还是 单项任务 0-单项任务 1-父任务
   queryParentTask: 1,
   keyword: ''
 })
+
 const showSon = ref(false)
 const showDetail = ref(false)
 interface brief {
@@ -26,9 +26,7 @@ interface brief {
   taskPoints: 0
   taskRewards: ''
   taskRectangle: ''
-  //纬度
   taskLatitude: ''
-  //经度
   taskLongitude: ''
   taskRadius: ''
   taskDifficulty: 0
@@ -62,9 +60,7 @@ const form = ref({
   taskPoints: 0,
   taskRewards: '',
   taskRectangle: '',
-  //纬度
   taskLatitude: '',
-  //经度
   taskLongitude: '',
   taskRadius: '',
   taskDifficulty: 0,
@@ -85,7 +81,6 @@ const form = ref({
 })
 const search = () => {
   getPastApi(searchForm).then((res) => {
-    // console.log(res.data.data.records)
     if (res.data.code == '0') {
       ElNotification.success('查询成功')
       items.value = res.data.data.records
@@ -100,13 +95,11 @@ onMounted(() => {
   search()
 })
 
-//展示子任务列表
 const getDetail = (data: any, index: number) => {
   getPastChildApi({
     id: data.id,
     querySubTask: 1
   }).then((res) => {
-    // console.log(res.data)
     if (res.data.code == '0') {
       ElNotification.success('查询成功')
       detailItems.value = res.data.data.subTaskList
@@ -129,10 +122,8 @@ const getDetail = (data: any, index: number) => {
   })
 }
 
-//展示子任务详情
 const getDetailInfo = (id: number) => {
   showDetail.value = true
-  // console.log(items.value)
   form.value = detailItems.value[id]
   if (form.value.requiresAudit === 1) {
     form.value.Audit = true
@@ -146,33 +137,29 @@ const getDetailInfo = (id: number) => {
 </script>
 
 <template>
-  <div :gutter="0" class="wrapper">
-    <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
-      活动一览
-    </h1>
-    <el-form :model="form" label-width="auto" style="margin-top: 20px" @submit.prevent="search">
-      <el-row :gutter="20">
-        <!-- 活动名称 -->
-        <el-col :span="8">
+  <div class="wrapper">
+    <h1 style="font-size: 24px; margin: 15px 0">活动一览</h1>
+    <el-form :model="form" label-width="auto" @submit.prevent="search">
+      <div class="form-group">
+        <div class="form-item">
           <el-form-item label="活动名称">
             <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
           </el-form-item>
-        </el-col>
-        <!-- 活动类型 -->
-        <el-col :span="12">
+        </div>
+        <div class="form-item">
           <el-form-item label="活动类型">
             <el-radio-group v-model="searchForm.queryParentTask">
               <el-radio :value="1" label="父任务"></el-radio>
               <el-radio :value="0" label="单项任务"></el-radio>
             </el-radio-group>
           </el-form-item>
-        </el-col>
-        <el-col :span="4">
+        </div>
+        <div class="form-item">
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </el-form>
     <el-divider />
     <div class="scroll-container">
@@ -202,33 +189,26 @@ const getDetailInfo = (id: number) => {
       </div>
     </div>
 
-    <el-form :model="form" label-width="auto" disabled v-if="showDetail" style="margin-top: 20px">
-      <el-row :gutter="0">
-        <el-col :span="12" style="padding: 0 40px">
-          <el-form-item label="父活动ID" v-if="form.faorson === 0">
-            <el-input v-model="form.parentId" placeholder="请输入..." />
-          </el-form-item>
-          <el-form-item label="活动类型">
-            <el-radio-group v-model="form.isMain">
-              <el-radio :value="1" label="主线任务" />
-              <el-radio :value="0" label="支线任务" />
-            </el-radio-group>
+    <el-form :model="form" label-width="auto">
+      <div class="form-detail" v-if="showDetail">
+        <div class="form-column">
+          <el-form-item label="活动封面">
+            <el-image style="height: 100px" :src="form.taskImages" fit="cover" />
           </el-form-item>
           <el-form-item label="任务对象年级">
-            <el-input v-model="form.requiresGrade" />
+            <el-input v-model="form.requiresGrade" disabled />
           </el-form-item>
           <el-form-item label="任务对象所在学院">
-            <el-input v-model="form.requiresFaculty" placeholder="请选择..."> </el-input>
+            <el-input v-model="form.requiresFaculty" disabled />
           </el-form-item>
           <el-form-item label="任务对象专业">
-            <el-input v-model="form.requiresMajor" placeholder="请选择..."> </el-input>
+            <el-input v-model="form.requiresMajor" disabled />
           </el-form-item>
           <el-form-item label="活动名称">
-            <el-input v-model="form.taskName" placeholder="请输入..." />
+            <el-input v-model="form.taskName" disabled />
           </el-form-item>
           <el-form-item label="活动方式">
-            <el-select v-model="form.taskRequiresType" placeholder="请选择...">
-              <!-- 0-其他 1-答题 2-网页浏览 3-摄像头打卡 4-定位打卡 5-图片打卡 -->
+            <el-select v-model="form.taskRequiresType" disabled>
               <el-option label="其他" :value="0" />
               <el-option label="答题" :value="1" />
               <el-option label="浏览网页" :value="2" />
@@ -237,83 +217,59 @@ const getDetailInfo = (id: number) => {
               <el-option label="图片打卡" :value="5" />
             </el-select>
           </el-form-item>
-          <el-form-item
-            label="地点半径(m)"
-            v-if="form.taskRequiresType === 3 || form.taskRequiresType === 4"
-          >
-            <el-input v-model="form.taskRadius" placeholder="请输入..." />
-          </el-form-item>
-
           <el-form-item label="活动时段">
-            <el-col :span="11">
+            <div class="datetime-range">
               <el-date-picker
                 v-model="form.startTime"
                 type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss"
-                placeholder="Pick a date"
+                disabled
                 style="width: 100%"
               />
-            </el-col>
-            <el-col :span="2" style="display: flex; justify-content: center">
               <span>—</span>
-            </el-col>
-            <el-col :span="11">
               <el-date-picker
                 v-model="form.endTime"
-                placeholder="Pick a time"
-                style="width: 100%"
-                value-format="YYYY-MM-DD HH:mm:ss"
                 type="datetime"
+                value-format="YYYY-MM-DD HH:mm:ss"
+                disabled
+                style="width: 100%"
               />
-            </el-col>
+            </div>
           </el-form-item>
-
           <el-form-item label="活动描述">
-            <el-input v-model="form.taskDescription" type="textarea" :rows="6" />
+            <el-input v-model="form.taskDescription" type="textarea" :rows="6" disabled />
           </el-form-item>
-        </el-col>
-        <el-col :span="12" style="padding: 0 40px">
-          <el-form-item label="活动封面">
-            <el-image style="height: 100px" :src="form.taskImages" fit="cover" />
-          </el-form-item>
+        </div>
+        <div class="form-column">
           <el-form-item label="活动奖励">
-            <div
-              style="
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                border: 1px solid rgba(187, 187, 187, 1);
-                border-radius: 5px;
-                padding: 10px;
-              "
-            >
+            <div class="reward-container">
               <div>
-                <span style="margin-right: 20px">小水滴</span>
-                <el-input-number v-model="form.water" :min="1" :max="10" />
+                <span>小水滴</span>
+                <el-input-number v-model="form.water" :min="1" :max="10" disabled />
               </div>
               <div>
-                <span style="margin-right: 20px">小铲子</span>
-                <el-input-number v-model="form.chan" :min="1" :max="10" />
+                <span>小铲子</span>
+                <el-input-number v-model="form.chan" :min="1" :max="10" disabled />
               </div>
               <div>
-                <span style="margin-right: 20px">小树苗</span>
-                <el-input-number v-model="form.tree" :min="1" :max="10" />
+                <span>小树苗</span>
+                <el-input-number v-model="form.tree" :min="1" :max="10" disabled />
               </div>
               <div>
-                <span style="margin-right: 20px">积&nbsp;&nbsp;&nbsp;分</span>
-                <el-input-number v-model="form.taskPoints" :min="1" :max="10" />
+                <span>积分</span>
+                <el-input-number v-model="form.taskPoints" :min="1" :max="10" disabled />
               </div>
             </div>
           </el-form-item>
           <el-form-item label="任务类型">
-            <el-select v-model="form.taskType" placeholder="请选择...">
+            <el-select v-model="form.taskType" disabled>
               <el-option label="开学前" :value="0" />
               <el-option label="注册时" :value="1" />
               <el-option label="开学后" :value="2" />
             </el-select>
           </el-form-item>
           <el-form-item label="图片打卡">
-            <el-select v-model="form.requiresPhoto" placeholder="请选择...">
+            <el-select v-model="form.requiresPhoto" disabled>
               <el-option label="不需要" :value="0" />
               <el-option label="物品" :value="1" />
               <el-option label="人像" :value="2" />
@@ -321,82 +277,32 @@ const getDetailInfo = (id: number) => {
               <el-option label="其他" :value="4" />
             </el-select>
           </el-form-item>
-          <el-form-item label="物品识别类型" v-if="form.requiresPhoto === 1">
-            <el-select v-model="form.requiresItem">
-              <!-- 身份证 录取通知书 银行卡 证件照 手机 衣物 文具 -->
-              <el-option label="背包" :value="24" />
-              <el-option label="雨伞" :value="25" />
-              <el-option label="杯子" :value="41" />
-              <el-option label="笔记本电脑" :value="63" />
-              <el-option label="书" :value="73" />
-              <el-option label="吹风机" :value="78" />
-              <el-option label="牙刷" :value="79" />
-              <el-option label="身份证" :value="1" />
-              <el-option label="录取通知书" :value="2" />
-              <el-option label="银行卡" :value="3" />
-              <el-option label="证件照" :value="4" />
-              <el-option label="手机" :value="5" />
-              <el-option label="衣物" :value="6" />
-              <el-option label="文具" :value="7" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="动作识别类型" v-if="form.requiresPhoto === 3">
-            <el-select v-model="form.requiresAttitude">
-              <el-option label="水平摆放" :value="1" />
-              <el-option label="立正站直" :value="2" />
-              <el-option label="加油动作" :value="3" />
-              <el-option label="V动作" :value="4" />
-              <el-option label="手摆成三角形" :value="5" />
-              <el-option label="大字状" :value="6" />
-              <el-option label="扎马步" :value="7" />
-              <el-option label="右手举手" :value="8" />
-              <el-option label="左手举手" :value="9" />
-              <el-option label="双手比x" :value="10" />
-            </el-select>
-          </el-form-item>
           <el-form-item label="是否人工审核">
-            <el-switch v-model="form.Audit" active-text="是" inactive-text="否" />
+            <el-switch v-model="form.Audit" active-text="是" inactive-text="否" disabled />
           </el-form-item>
           <el-form-item label="优先级">
-            <el-slider
-              v-model="form.taskPriority"
-              :step="1"
-              :min="1"
-              :max="5"
-              show-stops
-              show-input
-            />
+            <el-slider v-model="form.taskPriority" :step="1" :min="1" :max="5" disabled />
           </el-form-item>
           <el-form-item label="难易程度">
-            <el-slider
-              v-model="form.taskDifficulty"
-              :step="1"
-              :min="1"
-              :max="5"
-              show-stops
-              show-input
-            />
+            <el-slider v-model="form.taskDifficulty" :step="1" :min="1" :max="5" disabled />
           </el-form-item>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </el-form>
   </div>
 </template>
 
 <style scoped>
-.el-button--primary {
-  width: 100px;
+.wrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
-.el-divider--horizontal {
-  margin: 0;
-}
-
 .scroll-container {
   overflow-x: auto;
   white-space: nowrap;
   padding: 16px 0;
 }
-
 .card {
   display: inline-block;
   width: 450px;
@@ -406,23 +312,19 @@ const getDetailInfo = (id: number) => {
   overflow: hidden;
   vertical-align: top;
 }
-
 .card-image {
   width: 450px;
   height: 250px;
   object-fit: cover;
   display: block;
 }
-
 .card-content {
   padding: 16px;
 }
-
 .card-title {
   font-size: 1.2em;
   margin-bottom: 8px;
 }
-
 .card-description {
   font-size: 0.9em;
   color: #666;
@@ -436,9 +338,40 @@ const getDetailInfo = (id: number) => {
   color: #666;
   display: flex;
 }
-.wrapper {
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
+.form-group {
+  /* display: flex;
+  gap: 10px;
+  flex-wrap: wrap; */
+}
+.form-item {
+  flex: 1;
+}
+.form-detail {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.form-column {
+  /* flex: 1; */
+}
+.reward-container {
+  border: 1px solid rgba(187, 187, 187, 1);
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.datetime-range {
+  display: flex;
+  align-items: center;
+}
+.datetime-range span {
+  margin: 0 10px;
+}
+@media (max-width: 1024px) {
+  .form-detail {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
