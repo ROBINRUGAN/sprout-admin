@@ -15,7 +15,7 @@ const auditForm = reactive({
   ids: [0],
   //审核状态 1-审核通过 2-审核不通过
   auditsStatus: 0,
-  completionScore: [0],
+  completionScore: [100],
   auditSuggestion: ['无']
 })
 
@@ -121,7 +121,7 @@ interface task {
   taskId: 0
   parentTaskId: 0
   photo: ''
-  location: ''
+  location: '-1'
   submitTime: ''
   submitNote: ''
   auditsStatus: null
@@ -141,7 +141,7 @@ const taskInfo = ref<task>({
   taskId: 0,
   parentTaskId: 0,
   photo: '',
-  location: '',
+  location: '-1',
   submitTime: '',
   submitNote: '',
   auditsStatus: null,
@@ -165,17 +165,19 @@ onMounted(() => {
   search()
 })
 const getDetail = (data: any, index: number) => {
+  showTask.value = false
   getPastChildApi({
     id: data.id,
     querySubTask: 1
   }).then((res) => {
     console.log(data)
     if (res.data.code == '0') {
-      ElNotification.success('查询成功')
+      ElNotification.success('查询子任务成功')
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
       if (data.parentId == '0') {
         showDetail.value = true
+        getDetailInfo(data.id)
       }
     } else {
       ElNotification.error(res.data.message)
@@ -184,6 +186,7 @@ const getDetail = (data: any, index: number) => {
 }
 
 const getDetailInfo = async (data: any) => {
+  showTask.value = false
   const res = await getTaskSubmitApi({
     current: '1',
     size: '114514',
@@ -198,7 +201,7 @@ const getDetailInfo = async (data: any) => {
       }
     })
     console.log(taskItems.value)
-    ElNotification.success('查询成功')
+    ElNotification.success('查询参与者成功')
   } else {
     ElNotification.error(res.data.message)
   }
@@ -208,9 +211,10 @@ const getTaskInfo = (id: number, item: any) => {
   taskInfo.value = taskItems.value[id]
   showTask.value = true
   auditForm.ids[0] = item.id
+  auditForm.auditSuggestion[0] = item.auditsSuggestion
+  // auditForm.completionScore[0] = item.completionScore
 }
 </script>
-
 <template>
   <div class="wrapper">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
@@ -292,43 +296,80 @@ const getTaskInfo = (id: number, item: any) => {
           <span>任务详细信息</span>
         </div>
       </template>
-      <el-descriptions :column="1">
-        <el-descriptions-item label="头像">
-          <el-avatar :src="taskInfo.avatar"></el-avatar>
-        </el-descriptions-item>
-        <el-descriptions-item label="定位信息">{{ taskInfo.location }}</el-descriptions-item>
-        <el-descriptions-item label="图片">
-          <el-image style="height: 100px" :src="taskInfo.photo" fit="cover" />
-        </el-descriptions-item>
-        <el-descriptions-item label="真实姓名">{{ taskInfo.realName }}</el-descriptions-item>
-        <el-descriptions-item label="学号">{{ taskInfo.studentId }}</el-descriptions-item>
-        <el-descriptions-item label="提交备注">{{ taskInfo.submitNote }}</el-descriptions-item>
-        <el-descriptions-item label="任务提交时间">{{ taskInfo.submitTime }}</el-descriptions-item>
-        <el-descriptions-item label="审核状态">{{
-          taskInfo.auditsStatus === 0 ? '不通过' : '通过'
-        }}</el-descriptions-item>
-        <el-descriptions-item label="审核意见">{{
-          taskInfo.auditsSuggestion
-        }}</el-descriptions-item>
-      </el-descriptions>
-      <el-button type="primary" @click="openAuditDialog">进行审核</el-button>
+      <div class="task-info-container">
+        <!-- 左侧头像和审核部分 -->
+        <div class="left-section">
+          <img :src="taskInfo.avatar" class="large-avatar" />
+          <el-button type="primary" @click="openAuditDialog" class="audit-button"
+            >进行审核</el-button
+          >
+          <div style="display: flex; margin-top: 20px">
+            <p v-if="taskInfo.auditsSuggestion">
+              <strong>审核意见：</strong>{{ taskInfo.auditsSuggestion }}
+            </p>
+
+            <p v-if="taskInfo.auditsStatus !== null" style="margin-left: 20px">
+              <strong>审核状态：</strong>{{ taskInfo.auditsStatus === 0 ? '不通过' : '通过' }}
+            </p>
+          </div>
+        </div>
+        <!-- 右侧详细信息 -->
+        <div class="right-section">
+          <el-descriptions :column="1" class="details-info">
+            <el-descriptions-item label="用户ID" v-if="taskInfo.userId">{{
+              taskInfo.userId
+            }}</el-descriptions-item>
+            <el-descriptions-item label="用户名" v-if="taskInfo.username">{{
+              taskInfo.username
+            }}</el-descriptions-item>
+            <el-descriptions-item label="真实姓名" v-if="taskInfo.realName">{{
+              taskInfo.realName
+            }}</el-descriptions-item>
+            <el-descriptions-item label="学号" v-if="taskInfo.studentId">{{
+              taskInfo.studentId
+            }}</el-descriptions-item>
+            <el-descriptions-item label="任务ID" v-if="taskInfo.taskId">{{
+              taskInfo.taskId
+            }}</el-descriptions-item>
+            <el-descriptions-item label="父任务ID" v-if="taskInfo.parentTaskId">{{
+              taskInfo.parentTaskId
+            }}</el-descriptions-item>
+            <el-descriptions-item label="定位信息" v-if="taskInfo.location != '-1'">{{
+              taskInfo.location
+            }}</el-descriptions-item>
+            <el-descriptions-item label="提交备注" v-if="taskInfo.submitNote">{{
+              taskInfo.submitNote
+            }}</el-descriptions-item>
+            <el-descriptions-item label="任务提交时间" v-if="taskInfo.submitTime">
+              {{ new Date(taskInfo.submitTime).toLocaleString() }}
+            </el-descriptions-item>
+            <!-- <el-descriptions-item label="审核管理员ID" v-if="taskInfo.auditsAdminId">{{
+              taskInfo.auditsAdminId
+            }}</el-descriptions-item> -->
+            <el-descriptions-item label="提交图片" v-if="taskInfo.photo">
+              <el-image :src="taskInfo.photo" fit="cover" style="width: 100px; height: 100px" />
+            </el-descriptions-item>
+          </el-descriptions>
+        </div>
+      </div>
     </el-card>
+
+    <!-- 审核对话框 -->
+    <el-dialog title="审核任务" v-model="dialogVisible">
+      <el-form>
+        <el-form-item label="审核意见">
+          <el-input type="textarea" v-model="auditForm.auditSuggestion[0]" rows="3"></el-input>
+        </el-form-item>
+        <el-form-item label="完成评分">
+          <el-input v-model="auditForm.completionScore[0]"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button type="danger" @click="handleAudit(2)">不通过</el-button>
+        <el-button type="success" @click="handleAudit(1)">通过</el-button>
+      </template>
+    </el-dialog>
   </div>
-  <!-- 审核对话框 -->
-  <el-dialog title="审核任务" v-model="dialogVisible">
-    <el-form>
-      <el-form-item label="审核意见">
-        <el-input type="textarea" v-model="auditForm.auditSuggestion[0]" rows="3"></el-input>
-      </el-form-item>
-      <el-form-item label="完成评分">
-        <el-input type="textarea" v-model="auditForm.completionScore[0]"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <el-button type="danger" @click="handleAudit(2)">不通过</el-button>
-      <el-button type="success" @click="handleAudit(1)">通过</el-button>
-    </template>
-  </el-dialog>
 </template>
 
 <style scoped>
@@ -336,12 +377,6 @@ const getTaskInfo = (id: number, item: any) => {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
-}
-.el-button--primary {
-  width: 100px;
-}
-.el-divider--horizontal {
-  margin: 0;
 }
 
 .scroll-container {
@@ -387,5 +422,52 @@ const getTaskInfo = (id: number, item: any) => {
   padding: 0;
   color: #666;
   display: flex;
+}
+
+.task-info-container {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.large-avatar {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.audit-button {
+  margin-top: 10px;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.details-info .el-descriptions__label {
+  font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+  .task-info-container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }
 </style>
