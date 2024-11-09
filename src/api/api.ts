@@ -143,3 +143,10 @@ export const getStudentRegisterApi = () => {
     url: `/api/new-sprout/admin/v1/stats/student-register`
   })
 }
+
+export const getUserInfoApi = (id: string) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/user/info?userId=${id}`
+  })
+}
