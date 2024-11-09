@@ -104,7 +104,8 @@
 
     <!-- 学生注册统计 -->
     <div class="image">
-      <RegisterPie />
+      <h1 style="justify-content: center; display: flex">学生注册统计</h1>
+      <RegisterPie style="margin: auto 0" />
     </div>
   </div>
 </template>
@@ -132,12 +133,12 @@ function setFocus(index: number) {
 // 页面加载完成后触发 resize 事件来确保布局正常渲染
 onMounted(async () => {
   await nextTick()
-  // 加入短暂延迟后再触发 resize，确保布局稳定
-  setTimeout(() => {
-    window.dispatchEvent(new Event('resize'))
-  }, 50)
+  // // 加入短暂延迟后再触发 resize，确保布局稳定
+  // setTimeout(() => {
+  //   window.dispatchEvent(new Event('resize'))
+  // }, 50)
 
-  getTaskCountApi().then((res) => {
+  await getTaskCountApi().then((res) => {
     count.value = res.data.data
   })
 })
@@ -221,7 +222,6 @@ onMounted(async () => {
   border-radius: 4px;
   overflow: auto;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  width: 100%;
 }
 
 .bottompart {
@@ -237,13 +237,16 @@ onMounted(async () => {
 .image {
   grid-column: 2;
   grid-row: 3;
-  background-color: rgb(255, 255, 255);
   height: 400px;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
-  box-sizing: border-box;
 }
 
 .toolWrapper {

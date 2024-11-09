@@ -84,15 +84,13 @@ window.addEventListener('resize', function () {
 })
 
 const getFacultyCount = () => {
-  
-  getFacultyCountApi().then((res) => {
-      
+  getFacultyCountApi()
+    .then((res) => {
       if (res.data.code === '0') {
-       
         // 提取数据
         const data = res.data.data || []
-        const legendData = data.map(item => item.facultyName)
-        const seriesData = data.map(item => ({ value: item.count, name: item.facultyName }))
+        const legendData = data.map((item) => item.facultyName)
+        const seriesData = data.map((item) => ({ value: item.count, name: item.facultyName }))
 
         // 更新图表的 option
         option.legend.data = legendData
@@ -112,11 +110,10 @@ const getFacultyCount = () => {
 }
 
 onMounted(async () => {
-   
-  await getFacultyCount()
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
+    getFacultyCount()
   }
 })
 </script>
