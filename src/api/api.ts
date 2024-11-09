@@ -114,6 +114,22 @@ export const getDailyActiveApi = (data: any) => {
   })
 }
 
+export const getFacultyCountApi = (data: any) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/faculty-count`,
+    data
+  })
+}
+
+export const getHotTaskApi = (data: any) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/hot-task`,
+    data
+  })
+}
+
 export const getTaskCountApi = () => {
   return service.request({
     method: 'get',

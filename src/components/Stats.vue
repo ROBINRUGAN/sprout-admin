@@ -163,7 +163,6 @@ const getDailyActive = () => {
 onMounted(async () => {
   // 等待 getDailyActive 完成
   await getDailyActive()
-  // 现在 getDailyActive 已经完成，可以继续执行后面的代码
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
