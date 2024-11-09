@@ -150,3 +150,10 @@ export const getUserInfoApi = (id: string) => {
     url: `/api/new-sprout/admin/v1/user/info?userId=${id}`
   })
 }
+
+export const getTaskCompletionApi = (id: string) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/task-completion?studentId=${id}`
+  })
+}

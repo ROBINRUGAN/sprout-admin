@@ -1,21 +1,38 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ElDivider, ElNotification } from 'element-plus'
-import { getUserInfoApi } from '@/api/api'
+import { getTaskCompletionApi, getUserInfoApi } from '@/api/api'
 
-const taskData = ref([
-  { name: '未雨绸缪', id: '327389', status: '已完成', parentTask: '入学准备' },
-  { name: '寻找宿舍', id: '327389', status: '已完成', parentTask: '入学准备' },
-  { name: '新生注册', id: '327389', status: '已完成', parentTask: '入学准备' },
-  { name: '领取新生物品', id: '327389', status: '已完成', parentTask: '新生指引' },
-  { name: '学分认定规则检测', id: '327389', status: '已完成', parentTask: '学业规划' }
-])
-
+const taskData = ref([]) // 初始化为空数组
 const studentAccount = ref('')
-
 const mewch = ref(false)
 
 const showMewch = async () => {
+  if (!studentAccount.value) {
+    ElNotification.error('请输入学号！')
+    return
+  }
+
+  // 获取任务完成情况
+  await getTaskCompletionApi(studentAccount.value).then((res) => {
+    console.log(res)
+    if (res.data.code !== '0') {
+      ElNotification.error(res.data.message || '未查询到结果！')
+      return
+    } else {
+      // 格式化任务数据，将完成状态转换为对应的中文状态
+      const data = res.data.data.map((task) => ({
+        taskName: task.taskName,
+        completionStatus: getStatusText(task.completionStatus),
+        parentTaskName: task.parentTaskName
+      }))
+      taskData.value = data
+      mewch.value = true
+      ElNotification.success('查询成功')
+    }
+  })
+
+  // 获取用户信息
   await getUserInfoApi(studentAccount.value).then((res) => {
     console.log(res)
     if (res.data.code !== '0') {
@@ -52,6 +69,22 @@ const showMewch = async () => {
   })
 }
 
+// 状态转换函数
+function getStatusText(status) {
+  switch (status) {
+    case 0:
+      return '未完成'
+    case 1:
+      return '待审核'
+    case 2:
+      return '已完成'
+    case 3:
+      return '失败'
+    default:
+      return '未知状态'
+  }
+}
+
 const userData = ref({
   id: '',
   username: '',
@@ -62,7 +95,7 @@ const userData = ref({
   faculty: '',
   region: '',
   gender: '',
-  avatar: '',
+  avatar: 'https://mewww.w2fzu.com//upmew/cat.gif',
   idType: '',
   idCard: '',
   phone: '',
@@ -145,9 +178,9 @@ const userData = ref({
       <div class="details card">
         <h1 class="section-title">任务详情</h1>
         <el-table :data="taskData" stripe size="small" class="large-table">
-          <el-table-column prop="name" label="活动名称"></el-table-column>
-          <el-table-column prop="status" label="完成状态"></el-table-column>
-          <el-table-column prop="parentTask" label="父任务名称"></el-table-column>
+          <el-table-column prop="taskName" label="活动名称"></el-table-column>
+          <el-table-column prop="completionStatus" label="完成状态"></el-table-column>
+          <el-table-column prop="parentTaskName" label="父任务名称"></el-table-column>
         </el-table>
       </div>
     </div>
