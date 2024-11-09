@@ -53,20 +53,19 @@ const showMewch = async () => {
 }
 
 const userData = ref({
-  id: '1842829088522289153',
-  username: 'FZU5037753585',
-  realName: '翁鹏',
-  studentId: '222200331',
+  id: '',
+  username: '',
+  realName: '',
+  studentId: '',
   grade: 2022,
-  major: '软件工程',
-  faculty: '计算机与大数据学院',
-  region: '福建省莆田市',
-  gender: '男',
-  avatar:
-    'https://ts1.cn.mm.bing.net/th?id=OIP-C.k6ekHYPyBdw5UcL1St3MjgAAAA&w=183&h=183&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2',
-  idType: '身份证',
-  idCard: '350302200310281633',
-  phone: '18005471144',
+  major: '',
+  faculty: '',
+  region: '',
+  gender: '',
+  avatar: '',
+  idType: '',
+  idCard: '',
+  phone: '',
   points: 1,
   isRegister: 1,
   registerLongitude: 119.31511219999999,
@@ -96,7 +95,11 @@ const userData = ref({
       <button class="search" @click="showMewch">查询</button>
     </div>
 
-    <el-empty description="description" v-if="!mewch" />
+    <el-empty
+      description="快去搜索吧～"
+      image="https://mewww.w2fzu.com//upmew/cat.gif"
+      v-if="!mewch"
+    />
     <div v-if="mewch" class="info-container">
       <!-- 用户信息卡片，双列布局在宽度 > 1024px，单列布局在宽度 <= 1024px -->
       <div class="infos card">
@@ -153,8 +156,6 @@ const userData = ref({
 
 <style scoped>
 .find {
-  max-width: 800px;
-  margin: 20px auto;
   padding: 20px;
   background-color: #ffffff;
   border-radius: 8px;
