@@ -2,7 +2,7 @@
 import { reactive, ref, computed } from 'vue'
 import { getPastApi, getPastChildApi, getTaskSubmitApi, submitAuditApi } from '@/api/api'
 import { onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 import { ElAvatar, ElCard, ElDescriptions, ElDescriptionsItem, ElDialog } from 'element-plus'
 
 const dialogVisible = ref(false)
@@ -26,12 +26,12 @@ const handleAudit = async (type: number) => {
   console.log(auditForm)
   const res = await submitAuditApi(auditForm)
   if (res.data.code === '0') {
-    ElMessage.success('审核操作成功')
+    ElNotification.success('审核操作成功')
     dialogVisible.value = false
     taskInfo.value.auditsSuggestion = auditForm.auditSuggestion[0]
     taskInfo.value.auditsStatus = auditForm.auditsStatus
   } else {
-    ElMessage.error('审核操作失败：' + res.data.message)
+    ElNotification.error('审核操作失败：' + res.data.message)
   }
 }
 
@@ -151,13 +151,13 @@ const taskInfo = ref<task>({
 const search = () => {
   getPastApi(searchForm).then((res) => {
     if (res.data.code == '0') {
-      ElMessage.success('查询成功')
+      ElNotification.success('查询成功')
       items.value = res.data.data.records
       showDetail.value = false
       showSon.value = false
       showTask.value = false
     } else {
-      ElMessage.error(res.data.message)
+      ElNotification.error(res.data.message)
     }
   })
 }
@@ -171,14 +171,14 @@ const getDetail = (data: any, index: number) => {
   }).then((res) => {
     console.log(data)
     if (res.data.code == '0') {
-      ElMessage.success('查询成功')
+      ElNotification.success('查询成功')
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
       if (data.parentId == '0') {
         showDetail.value = true
       }
     } else {
-      ElMessage.error(res.data.message)
+      ElNotification.error(res.data.message)
     }
   })
 }
@@ -198,9 +198,9 @@ const getDetailInfo = async (data: any) => {
       }
     })
     console.log(taskItems.value)
-    ElMessage.success('查询成功')
+    ElNotification.success('查询成功')
   } else {
-    ElMessage.error(res.data.message)
+    ElNotification.error(res.data.message)
   }
 }
 

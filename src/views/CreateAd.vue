@@ -128,7 +128,7 @@
 import { ref, onBeforeMount, reactive, computed } from 'vue'
 import UploadFile from '@/components/UploadFile.vue' // 确保路径正确
 import { getFacultyApi, putAdApi } from '@/api/api' // 确保API路径正确
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 const form = reactive({
   adType: null,
   wordsContent: '',
@@ -162,9 +162,9 @@ const submitForm = async () => {
   const res = await putAdApi(form)
   console.log(res.data)
   if (res.data.code == '0') {
-    ElMessage.success('发布成功')
+    ElNotification.success('发布成功')
   } else {
-    ElMessage.error(res.data.message)
+    ElNotification.error(res.data.message)
   }
 }
 
