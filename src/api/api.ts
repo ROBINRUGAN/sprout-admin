@@ -113,3 +113,11 @@ export const getDailyActiveApi = (data: any) => {
     data
   })
 }
+
+export const getFacultyCountApi = (data: any) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/faculty-count`,
+    data
+  })
+}

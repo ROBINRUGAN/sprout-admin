@@ -157,7 +157,7 @@ const getDailyActive = () => {
       option.xAxis.data = xAxisData.value
       option.series[0].data = seriesData.value
 
-      // 使用 myChart 手动更新图表
+      // 更新图表
       if (myChart) {
         myChart.setOption(option)
       }
@@ -175,7 +175,6 @@ const getDailyActive = () => {
 onMounted(async () => {
   // 等待 getDailyActive 完成
   await getDailyActive()
-  // 现在 getDailyActive 已经完成，可以继续执行后面的代码
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
