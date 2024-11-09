@@ -121,3 +121,11 @@ export const getFacultyCountApi = (data: any) => {
     data
   })
 }
+
+export const getHotTaskApi = (data: any) => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/hot-task`,
+    data
+  })
+}
