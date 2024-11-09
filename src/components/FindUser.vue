@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { ElDivider, ElMessage, ElNotification } from 'element-plus'
+import { ElDivider, ElNotification } from 'element-plus'
 import { getUserInfoApi } from '@/api/api'
 
 const taskData = ref([
@@ -19,7 +19,7 @@ const showMewch = async () => {
   await getUserInfoApi(studentAccount.value).then((res) => {
     console.log(res)
     if (res.data.code !== '0') {
-      ElMessage.error(res.data.message || '未查询到结果！')
+      ElNotification.error(res.data.message || '未查询到结果！')
       return
     } else {
       const data = res.data.data

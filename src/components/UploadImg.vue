@@ -24,7 +24,7 @@ import { ref } from 'vue'
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 import { GetURLApi } from '@/api/api'
 const fileList = ref<UploadUserFile[]>([])
 const urlList = ref<string[]>([])
@@ -36,12 +36,12 @@ const beforeUpload = (file: { type: string; size: number }) => {
   const allowedTypes = ['image/jpeg', 'image/png']
   const isAllowedType = allowedTypes.includes(file.type)
   if (!isAllowedType) {
-    ElMessage.error('只允许上传jpg, png, jpeg 格式的文件')
+    ElNotification.error('只允许上传jpg, png, jpeg 格式的文件')
     return false
   }
   const isLt500M = file.size / 1024 / 1024 < 50
   if (!isLt500M) {
-    ElMessage.error('文件大小不能超过 50MB')
+    ElNotification.error('文件大小不能超过 50MB')
     return false
   }
   return true

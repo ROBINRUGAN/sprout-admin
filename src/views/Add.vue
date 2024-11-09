@@ -2,7 +2,7 @@
 import { reactive, ref, onBeforeMount } from 'vue'
 import UploadImg from '@/components/UploadImg.vue'
 import MapContainer from '@/components/MapContainer.vue'
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 import { getFacultyApi, getMajorApi, CreateFatherApi, CreateSonApi } from '@/api/api'
 interface Colleges {
   facultyName: string
@@ -58,7 +58,7 @@ const onSubmit = async () => {
   form.taskRewards = form.water + ',' + form.chan + ',' + form.tree
   if (form.taskRequiresType === 3 || form.taskRequiresType === 4) {
     if (form.taskLatitude === '' || form.taskLongitude === '' || form.taskRadius === '') {
-      ElMessage.error('请填写完整的地点信息')
+      ElNotification.error('请填写完整的地点信息')
       return
     }
     form.taskRectangle = form.taskLongitude + ',' + form.taskLatitude + ',' + form.taskRadius
@@ -70,9 +70,9 @@ const onSubmit = async () => {
   else if (form.faorson == 0) res = await CreateSonApi(form)
   if (res) {
     if (res.data.code == '0') {
-      ElMessage.success('发布成功')
+      ElNotification.success('发布成功')
     } else {
-      ElMessage.error(res.data.message)
+      ElNotification.error(res.data.message)
     }
   }
 }

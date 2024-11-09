@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { adDetailApi } from '@/api/api' // 确保API路径正确
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 
 const isShow = ref(false)
 const searchForm = reactive({
@@ -59,11 +59,11 @@ const fetchAdList = async () => {
   // console.log(searchForm)
   const res = await adDetailApi(searchForm)
   if (res.data.code == '0') {
-    ElMessage.success('查询成功')
+    ElNotification.success('查询成功')
     isShow.value = false
     items.value = res.data.data.records
   } else {
-    ElMessage.error(res.data.message)
+    ElNotification.error(res.data.message)
   }
 }
 </script>

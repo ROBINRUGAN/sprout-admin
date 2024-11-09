@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { getPastApi, getPastChildApi } from '@/api/api'
 import { onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 
 const searchForm = reactive({
   current: 1,
@@ -87,12 +87,12 @@ const search = () => {
   getPastApi(searchForm).then((res) => {
     // console.log(res.data.data.records)
     if (res.data.code == '0') {
-      ElMessage.success('查询成功')
+      ElNotification.success('查询成功')
       items.value = res.data.data.records
       showDetail.value = false
       showSon.value = false
     } else {
-      ElMessage.error(res.data.message)
+      ElNotification.error(res.data.message)
     }
   })
 }
@@ -108,7 +108,7 @@ const getDetail = (data: any, index: number) => {
   }).then((res) => {
     // console.log(res.data)
     if (res.data.code == '0') {
-      ElMessage.success('查询成功')
+      ElNotification.success('查询成功')
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
       if (data.parentId == '0') {
@@ -124,7 +124,7 @@ const getDetail = (data: any, index: number) => {
         form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
       }
     } else {
-      ElMessage.error(res.data.message)
+      ElNotification.error(res.data.message)
     }
   })
 }
