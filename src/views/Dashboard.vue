@@ -132,10 +132,11 @@ function setFocus(index: number) {
 
 // 页面加载完成后触发 resize 事件来确保布局正常渲染
 onMounted(async () => {
-  await nextTick()
-  // 加入短暂延迟后再触发 resize，确保布局稳定
+  // // 加入短暂延迟后再触发 resize，确保布局稳定
   // setTimeout(() => {
-  //   window.dispatchEvent(new Event('resize'))
+  // await nextTick()
+
+  // window.dispatchEvent(new Event('resize'))
   // }, 1200)
 
   await getTaskCountApi().then((res) => {
@@ -291,7 +292,6 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* Mobile layout: Each module takes full width */
 @media (max-width: 1024px) {
   .dashboard {
     display: flex;
@@ -305,8 +305,8 @@ onMounted(async () => {
   .bottompart,
   .image {
     width: 100%;
-    grid-column: unset;
-    grid-row: unset;
+    /* grid-column: unset;
+    grid-row: unset; */
   }
 }
 </style>
