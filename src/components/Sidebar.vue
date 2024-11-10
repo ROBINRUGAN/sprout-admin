@@ -1,4 +1,5 @@
 <template>
+  <!-- <button @click="isCollapsed = !isCollapsed">nihao</button> -->
   <el-menu
     router
     :default-active="activeIndex"
@@ -44,37 +45,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
-import _ from 'lodash' // lodash 用于 debounce 函数
 
 const route = useRoute()
-const isCollapsed = ref(true)
+const isCollapsed = ref(false)
 
 const activeIndex = computed(() => {
   return route.path.startsWith('/home/dashboard') ? '/home/dashboard' : route.path
 })
 
 // 定义一个函数，用于检查屏幕尺寸并设置折叠状态
-const checkScreenSize = _.debounce(() => {
-  isCollapsed.value = window.innerWidth < 1200
-}, 0)
+const checkScreenSize = () => {
+  isCollapsed.value = window.innerWidth < 768
+}
+
+checkScreenSize()
 
 // 挂载和卸载事件监听器
 onMounted(() => {
   checkScreenSize()
   window.addEventListener('resize', checkScreenSize)
 })
-
-onUnmounted(() => {
-  window.removeEventListener('resize', checkScreenSize)
-})
 </script>
 
 <style lang="scss" scoped>
-.el-menu-vertical-demo {
-  transition: all ease;
-}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;

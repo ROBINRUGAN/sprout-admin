@@ -1,5 +1,9 @@
 <template>
-  <div class="whereWrapper" ref="whereContainer" style="width: 100%; height: 400px"></div>
+  <div
+    class="whereWrapper"
+    ref="whereContainer"
+    style="width: 99%; margin: 0 auto; height: 400px"
+  ></div>
 </template>
 
 <script setup>

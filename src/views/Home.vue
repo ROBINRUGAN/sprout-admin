@@ -27,10 +27,12 @@ import Aside from '@/components/Sidebar.vue'
   z-index: 200;
 }
 .aside {
+  // position: absolute;
   width: fit-content;
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(78, 89, 105, 0.2);
   z-index: 100;
+  min-height: calc(100vh - 64px);
 }
 .main {
   background-color: rgba(255, 255, 255, 1);

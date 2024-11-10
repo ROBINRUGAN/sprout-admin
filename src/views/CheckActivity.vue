@@ -221,28 +221,28 @@ const getTaskInfo = (id: number, item: any) => {
       学生提交审核
     </h1>
     <el-form :model="form" label-width="auto" style="margin-top: 20px" @submit.prevent="search">
-      <el-row :gutter="20">
+      <div class="form-group">
         <!-- 活动名称 -->
-        <el-col :span="8">
+        <div class="form-item">
           <el-form-item label="活动名称">
             <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
           </el-form-item>
-        </el-col>
+        </div>
         <!-- 活动类型 -->
-        <el-col :span="12">
+        <div class="form-item">
           <el-form-item label="活动类型">
             <el-radio-group v-model="searchForm.queryParentTask">
               <el-radio :value="1" label="父任务"></el-radio>
               <el-radio :value="0" label="单项任务"></el-radio>
             </el-radio-group>
           </el-form-item>
-        </el-col>
-        <el-col :span="4">
+        </div>
+        <div class="form-item">
           <el-form-item>
             <el-button type="primary" @click="search">查询</el-button>
           </el-form-item>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </el-form>
 
     <el-divider />
@@ -463,7 +463,19 @@ const getTaskInfo = (id: number, item: any) => {
   font-weight: bold;
 }
 
+.form-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.form-item {
+  flex: 1;
+}
+
 @media (max-width: 1024px) {
+  .form-group {
+    flex-direction: column;
+  }
   .task-info-container {
     flex-direction: column;
     justify-content: center;

@@ -118,7 +118,9 @@ window.addEventListener('resize', () => {
         margin-bottom: 30px;
       "
     >
-      <div style="display: flex; justify-content: space-between; width: 125px; align-items: center">
+      <div
+        style="display: flex; justify-content: space-between; min-width: 125px; align-items: center"
+      >
         <h1>广告统计</h1>
         <p style="font-size: 12px">(近七日)</p>
       </div>
@@ -133,7 +135,7 @@ window.addEventListener('resize', () => {
       </el-select>
     </div>
 
-    <div ref="adContainer" style="width: 100%; height: 300px"></div>
+    <div ref="adContainer" style="width: 99%; margin: 0 auto; height: 300px"></div>
   </div>
 </template>
 
@@ -141,7 +143,6 @@ window.addEventListener('resize', () => {
 .adData {
   height: 400px;
   background-color: rgb(224, 247, 255);
-
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);

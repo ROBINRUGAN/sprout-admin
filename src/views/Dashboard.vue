@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <!-- 日活数据 -->
-    <div class="userData">
+    <div class="userData animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <h1>👏 欢迎回来</h1>
       <div class="activity-summary">
         <img src="../assets/home/dashboard-logo.png" alt="" class="activity-icon" />
@@ -21,7 +21,7 @@
     </div>
 
     <!-- 统计管理 -->
-    <div class="tool">
+    <div class="tool animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <h1>统计管理</h1>
       <div class="iconBtns">
         <div class="toolWrapper">
@@ -88,7 +88,7 @@
     </div>
 
     <!-- 信息模块 -->
-    <div class="info">
+    <div class="info animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <InfoItem type="info"> 欢迎每一位新苗er～ </InfoItem>
       <InfoItem type="activity"> 活动“新苗任务一——浏览网页”开始啦 </InfoItem>
       <InfoItem type="activity"> 活动“新苗任务二——查看项目”开始啦 </InfoItem>
@@ -98,12 +98,12 @@
     </div>
 
     <!-- Bottompart模块 -->
-    <div class="bottompart">
+    <div class="bottompart animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <RouterView />
     </div>
 
     <!-- 学生注册统计 -->
-    <div class="image">
+    <div class="image animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <h1 style="justify-content: center; display: flex">学生注册统计</h1>
       <RegisterPie style="margin: auto 0" />
     </div>
@@ -118,8 +118,8 @@ import RegisterPie from '@/components/RegisterPie.vue'
 import { ElIcon } from 'element-plus'
 import { useToolSelectStore } from '@/stores/toolSelectStore'
 import { getTaskCountApi } from '@/api/api'
-const count = ref(0)
 
+const count = ref(0)
 const toolSelect = useToolSelectStore()
 
 function isFocused(index: number) {
@@ -130,14 +130,13 @@ function setFocus(index: number) {
   toolSelect.focused = index
 }
 
-// 页面加载完成后触发 resize 事件来确保布局正常渲染
-onMounted(async () => {
-  await nextTick()
-  // 加入短暂延迟后再触发 resize，确保布局稳定
-  // setTimeout(() => {
-  //   window.dispatchEvent(new Event('resize'))
-  // }, 1200)
+// 生成随机的动画延迟时间
+function getRandomDelay() {
+  return (Math.random() * 0.5).toFixed(2) // 0 到 0.5 秒之间的随机延迟
+}
 
+// 页面加载完成后获取数据
+onMounted(async () => {
   await getTaskCountApi().then((res) => {
     count.value = res.data.data
   })
@@ -145,13 +144,60 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+/* 抖动动画 */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  20%,
+  60% {
+    transform: translateX(-10px) rotate(-2deg);
+  }
+  40%,
+  80% {
+    transform: translateX(10px) rotate(2deg);
+  }
+}
+
+/* 小弹跳和压扁效果动画 */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-50px) scaleY(1); /* 向上弹跳并稍微压扁 */
+  }
+}
+
+.animate-shake {
+  animation:
+    shake 1.5s ease-in-out,
+    bounce 0.5s ease-in-out;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* 鼠标悬停时的放大和荧光效果 */
+.animate-shake:hover {
+  transform: scale(1.01); /* 轻微放大 */
+  box-shadow:
+    0 2px 12px 0 rgba(0, 196, 108, 0.5),
+    /* 淡绿色光晕 */ 0 2px 12px 0 rgba(0, 185, 255, 0.5); /* 浅蓝色光晕 */
+}
+
+/* 其他组件样式 */
+
 .dashboard {
+  /* overflow: auto; */
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto auto;
   gap: 20px;
   width: 100%;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
 }
 
 .userData {
@@ -291,7 +337,6 @@ onMounted(async () => {
   width: 100%;
 }
 
-/* Mobile layout: Each module takes full width */
 @media (max-width: 1024px) {
   .dashboard {
     display: flex;
@@ -305,8 +350,6 @@ onMounted(async () => {
   .bottompart,
   .image {
     width: 100%;
-    grid-column: unset;
-    grid-row: unset;
   }
 }
 </style>

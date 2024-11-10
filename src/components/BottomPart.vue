@@ -1,9 +1,8 @@
 <script setup>
-import { onMounted,ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ElTable, ElTableColumn, ElIcon } from 'element-plus'
 import Pie from '@/components/Pie.vue'
 import { getHotTaskApi } from '@/api/api'
-
 
 const tableData = ref([
   // { rank: '1', activityName: '新生注册', completionVolume: '999+人',  parentTask: '1' },
@@ -16,60 +15,56 @@ const tableData = ref([
 ])
 // 获取热门任务数据并更新 tableData
 const getHotTasks = () => {
-  getHotTaskApi().then((res) => {
-    if (res.data.code === '0') {
-      // 映射 API 返回数据到 tableData
-      tableData.value = res.data.data.map(item => ({
-        rank: item.rank,
-        activityName: item.taskName,
-        completionVolume: item.count + '人',
-        parentTask: item.parentTaskName
-      }))
-    } else {
-      console.error(res.message || '数据获取失败')
-    }
-  }).catch(error => {
-    console.error('接口请求错误:', error)
-  })
+  getHotTaskApi()
+    .then((res) => {
+      if (res.data.code === '0') {
+        // 映射 API 返回数据到 tableData
+        tableData.value = res.data.data.map((item) => ({
+          rank: item.rank,
+          activityName: item.taskName,
+          completionVolume: item.count + '人',
+          parentTask: item.parentTaskName
+        }))
+      } else {
+        console.error(res.message || '数据获取失败')
+      }
+    })
+    .catch((error) => {
+      console.error('接口请求错误:', error)
+    })
 }
 
 onMounted(() => {
   getHotTasks()
 })
-
 </script>
 
 <template>
   <div class="bottompart">
-    <div class="hot-col">
-      <div class="hot">
-        <h1>热门活动</h1>
-        <br />
-        <el-table
-          :data="tableData"
-          style="width: 100%; height: 270px"
-          :header-cell-style="{ backgroundColor: '#f5f5f5', color: '#000' }"
-        >
-          <el-table-column prop="rank" label="排名" width="60px"></el-table-column>
-          <el-table-column prop="activityName" label="活动名称" width="220px"></el-table-column>
-          <el-table-column prop="completionVolume" label="完成量" width="90px"></el-table-column>
-          <el-table-column label="所属父任务">
-            <template #default="scope">
-              <div>
-                {{ scope.row.parentTask }}
-             
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
+    <div class="hot">
+      <h1>热门活动</h1>
+      <br />
+      <el-table
+        :data="tableData"
+        style="width: 100%; height: 270px"
+        :header-cell-style="{ backgroundColor: '#f5f5f5', color: '#000' }"
+      >
+        <el-table-column prop="rank" label="排名"></el-table-column>
+        <el-table-column prop="activityName" label="活动名称"></el-table-column>
+        <el-table-column prop="completionVolume" label="完成量"></el-table-column>
+        <el-table-column label="所属父任务">
+          <template #default="scope">
+            <div>
+              {{ scope.row.parentTask }}
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </div>
 
-    <div class="summary-col">
-      <div class="summary">
-        <h1>学生分类统计</h1>
-        <Pie />
-      </div>
+    <div class="summary">
+      <h1>学生分类统计</h1>
+      <Pie />
     </div>
   </div>
 </template>
@@ -77,16 +72,15 @@ onMounted(() => {
 <style scoped>
 .bottompart {
   display: flex;
-  gap: 20px;
-  width: 100%;
+  justify-content: space-between;
+  /* gap: 20px; */
+  /* width: 100%; */
   flex-wrap: wrap;
 }
 
-.hot-col,
+/* .hot-col,
 .summary-col {
-  flex: 1;
-  min-width: 280px; /* 设置一个最小宽度，以便在屏幕较小时自动换行 */
-}
+} */
 
 .hot {
   height: 400px;
@@ -94,6 +88,9 @@ onMounted(() => {
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  /* flex: 1; */
+  width: 48.5%;
+  /* min-width: 250px; 设置一个最小宽度，以便在屏幕较小时自动换行 */
 }
 
 .summary {
@@ -106,17 +103,35 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* flex: 1; */
+  width: 48.5%;
+  /* min-width: 250px; 设置一个最小宽度，以便在屏幕较小时自动换行 */
 }
 
-/* Mobile layout */
 @media (max-width: 1024px) {
+  .hot,
+  .summary {
+    width: 99%;
+  }
+  .hot {
+    margin-bottom: 20px;
+  }
   .bottompart {
     flex-direction: column;
   }
-
-  .hot-col,
-  .summary-col {
-    width: 100%;
-  }
 }
+
+/* @media (min-width: 1200px) {
+  .bottompart {
+    flex-direction: row;
+  }
+
+  .hot,
+  .summary {
+    width: 48.5%;
+  }
+  .hot {
+    margin-bottom: 0;
+  }
+} */
 </style>
