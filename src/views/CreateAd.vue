@@ -1,11 +1,11 @@
 <template>
-  <div :gutter="0" class="wrapper">
+  <div class="wrapper">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       广告发布
     </h1>
     <el-form ref="adForm" :model="form" label-width="120px">
-      <el-row>
-        <el-col :span="12">
+      <div class="grid-container">
+        <div class="grid-item">
           <!-- 广告类型 -->
           <el-form-item label="广告类型">
             <el-select v-model="form.adType" placeholder="请选择">
@@ -55,8 +55,8 @@
               <el-option label="首页轮播图" value="3"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
+        </div>
+        <div class="grid-item">
           <!-- 学院选择 -->
           <el-form-item label="目标学院">
             <el-select v-model="form.targetFacultyRange" placeholder="请选择...">
@@ -118,8 +118,8 @@
           <el-form-item>
             <el-button type="primary" @click="submitForm">提交</el-button>
           </el-form-item>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </el-form>
   </div>
 </template>
@@ -129,6 +129,7 @@ import { ref, onBeforeMount, reactive, computed } from 'vue'
 import UploadFile from '@/components/UploadFile.vue' // 确保路径正确
 import { getFacultyApi, putAdApi } from '@/api/api' // 确保API路径正确
 import { ElNotification } from 'element-plus'
+
 const form = reactive({
   adType: null,
   wordsContent: '',
@@ -145,22 +146,18 @@ const form = reactive({
   cost: '',
   keywordsCount: 1
 })
-// 分割关键字字符串为数组，并过滤掉空字符串
+
 const keywordArray = computed(() => {
   return form.keywords.split(',').filter(Boolean)
 })
 
-// 计算关键字数量
 const keywordCount = computed(() => {
   return keywordArray.value.length
 })
 
 const submitForm = async () => {
-  // 提交表单
   form.keywordsCount = keywordCount.value
-  // console.log(form)
   const res = await putAdApi(form)
-  console.log(res.data)
   if (res.data.code == '0') {
     ElNotification.success('发布成功')
   } else {
@@ -172,7 +169,6 @@ const colleges = ref([])
 
 const setURL = (urls) => {
   form.imgContent = urls.join('<')
-  console.log(urls)
 }
 
 const fetchColleges = async () => {
@@ -184,11 +180,29 @@ onBeforeMount(() => {
   fetchColleges()
 })
 </script>
+
 <style scoped>
 .wrapper {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
   height: 85vh;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-item {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
