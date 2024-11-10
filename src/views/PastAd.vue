@@ -51,12 +51,10 @@ const items = ref<brief[]>([])
 
 const getDetail = (id: number) => {
   isShow.value = true
-  // console.log(items.value[id])
   form.value = items.value[id]
 }
 
 const fetchAdList = async () => {
-  // console.log(searchForm)
   const res = await adDetailApi(searchForm)
   if (res.data.code == '0') {
     ElNotification.success('查询成功')
@@ -67,54 +65,54 @@ const fetchAdList = async () => {
   }
 }
 </script>
+
 <template>
-  <div :gutter="0" class="wrapper">
+  <div class="wrapper">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       广告一览
     </h1>
     <!-- 查询部分 -->
-    <el-form :model="searchForm" label-width="120px">
-      <el-row>
-        <el-col :span="6">
-          <el-form-item label="广告类型">
-            <el-select v-model="searchForm.adType" placeholder="请选择">
-              <el-option label="文本" :value="1"></el-option>
-              <el-option label="图片" :value="2"></el-option>
-              <el-option label="视频" :value="3"></el-option>
-              <el-option label="文本+图片" :value="4"></el-option>
-              <el-option label="文本+视频" :value="5"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="广告时间范围">
-            <el-col :span="11">
-              <el-date-picker
-                v-model="searchForm.startTime"
-                type="datetime"
-                value-format="YYYY-MM-DDTHH:mm:ss"
-                placeholder="开始时间"
-                style="width: 100%"
-              />
-            </el-col>
-            <el-col :span="2" style="text-align: center">—</el-col>
-            <el-col :span="11">
-              <el-date-picker
-                v-model="searchForm.endTime"
-                type="datetime"
-                value-format="YYYY-MM-DDTHH:mm:ss"
-                placeholder="结束时间"
-                style="width: 100%"
-              />
-            </el-col>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item>
-            <el-button type="primary" @click="fetchAdList">查询</el-button>
-          </el-form-item>
-        </el-col>
-      </el-row>
+    <el-form :model="searchForm">
+      <div style="display: flex; gap: 20px; flex-wrap: wrap">
+        <el-form-item label="广告类型" style="flex: 1; min-width: 200px">
+          <el-select v-model="searchForm.adType" placeholder="请选择">
+            <el-option label="文本" :value="1"></el-option>
+            <el-option label="图片" :value="2"></el-option>
+            <el-option label="视频" :value="3"></el-option>
+            <el-option label="文本+图片" :value="4"></el-option>
+            <el-option label="文本+视频" :value="5"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="广告时间范围" style="flex: auto">
+          <div id="time_range" style="display: flex; width: 100%; justify-content: center">
+            <el-date-picker
+              v-model="searchForm.startTime"
+              type="datetime"
+              value-format="YYYY-MM-DDTHH:mm:ss"
+              placeholder="开始时间"
+              style="width: 100%; min-width: 190px"
+            />
+
+            <span class="separator">—</span>
+
+            <el-date-picker
+              v-model="searchForm.endTime"
+              type="datetime"
+              value-format="YYYY-MM-DDTHH:mm:ss"
+              placeholder="结束时间"
+              style="width: 100%; min-width: 190px"
+            />
+          </div>
+        </el-form-item>
+
+        <el-button
+          style="flex: 0.2; padding: 0 20px; min-width: max-content; margin: 0 auto"
+          type="primary"
+          @click="fetchAdList"
+          >查询</el-button
+        >
+      </div>
     </el-form>
     <el-divider />
     <div class="scroll-container">
@@ -135,9 +133,8 @@ const fetchAdList = async () => {
       v-if="isShow"
       style="margin-top: 20px"
     >
-      <el-row>
-        <el-col :span="12">
-          <!-- 广告类型 -->
+      <div class="form-grid">
+        <div class="left-column">
           <el-form-item label="广告类型">
             <el-select v-model="form.adType" placeholder="请选择">
               <el-option label="文本" :value="1"></el-option>
@@ -148,27 +145,22 @@ const fetchAdList = async () => {
             </el-select>
           </el-form-item>
 
-          <!-- 文本内容 -->
           <el-form-item label="文本内容">
             <el-input v-model="form.wordsContent" type="textarea"></el-input>
           </el-form-item>
 
-          <!-- 图片/视频内容 -->
           <el-form-item label="图片/视频内容">
             <el-image style="height: 100px" :src="form.imgContent" fit="cover" />
           </el-form-item>
 
-          <!-- 跳转链接 -->
           <el-form-item label="跳转链接">
             <el-input v-model="form.linkUrl" placeholder="请输入跳转链接或-1代表无跳转"></el-input>
           </el-form-item>
 
-          <!-- 关键字 -->
           <el-form-item label="关键字">
             <el-input v-model="form.keywords" placeholder="请输入关键字，用逗号分隔"></el-input>
           </el-form-item>
 
-          <!-- 推送方式 -->
           <el-form-item label="推送方式">
             <el-select v-model="form.pushMethod" placeholder="请选择">
               <el-option label="app内展示" :value="1"></el-option>
@@ -176,8 +168,9 @@ const fetchAdList = async () => {
               <el-option label="全部" :value="3"></el-option>
             </el-select>
           </el-form-item>
+        </div>
 
-          <!-- 推送位置 -->
+        <div class="right-column">
           <el-form-item label="推送位置">
             <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
               <el-option label="消息推送" value="0"></el-option>
@@ -186,14 +179,11 @@ const fetchAdList = async () => {
               <el-option label="首页轮播图" value="3"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <!-- 学院选择 -->
+
           <el-form-item label="目标学院">
-            <el-input v-model="form.targetFacultyRange" placeholder="请选择..."> </el-input>
+            <el-input v-model="form.targetFacultyRange" placeholder="请选择..."></el-input>
           </el-form-item>
 
-          <!-- 目标性别 -->
           <el-form-item label="目标性别">
             <el-select v-model="form.targetGenderRange" placeholder="请选择">
               <el-option label="女" value="0"></el-option>
@@ -202,7 +192,6 @@ const fetchAdList = async () => {
             </el-select>
           </el-form-item>
 
-          <!-- 目标年级范围 -->
           <el-form-item label="目标年级范围">
             <el-input
               v-model="form.targetGradeRange"
@@ -210,40 +199,42 @@ const fetchAdList = async () => {
             ></el-input>
           </el-form-item>
 
-          <!-- 广告开始时间和结束时间 -->
           <el-form-item label="广告时间范围">
-            <el-col :span="11">
+            <div class="date-picker-group">
               <el-date-picker
                 v-model="form.startTime"
                 type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss"
                 placeholder="开始时间"
-                style="width: 100%"
+                style="width: 45%"
               />
-            </el-col>
-            <el-col :span="2" style="text-align: center">—</el-col>
-            <el-col :span="11">
+              <span class="separator">—</span>
               <el-date-picker
                 v-model="form.endTime"
                 type="datetime"
                 value-format="YYYY-MM-DD HH:mm:ss"
                 placeholder="结束时间"
-                style="width: 100%"
+                style="width: 45%"
               />
-            </el-col>
+            </div>
           </el-form-item>
 
-          <!-- 广告费用 -->
           <el-form-item label="广告费用">
             <el-input v-model="form.cost" type="number" placeholder="请输入广告费用"></el-input>
           </el-form-item>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </el-form>
   </div>
 </template>
 
 <style scoped>
+.wrapper {
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
 .scroll-container {
   overflow-x: auto;
   white-space: nowrap;
@@ -252,7 +243,7 @@ const fetchAdList = async () => {
 
 .card {
   display: inline-block;
-  width: 550px; /* 这里的宽度可以根据您的设计来调整 */
+  width: 550px;
   margin-right: 16px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -279,27 +270,44 @@ const fetchAdList = async () => {
 .card-id {
   justify-content: right;
   font-size: 0.5em;
-  margin-top: 10px;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  padding: 0;
+  margin: 10px;
   color: #666;
   display: flex;
 }
 
-.card-description {
-  font-size: 0.9em;
-  color: #666;
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
-.wrapper {
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  padding: 20px;
+
+.left-column,
+.right-column {
+  display: flex;
+  flex-direction: column;
 }
-.el-button--primary {
-  width: 100px;
+
+.date-picker-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
 }
-.el-divider--horizontal {
-  margin: 0;
+
+.separator {
+  padding: 0 8px;
+  text-align: center;
+}
+
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  #time_range {
+    flex-wrap: wrap;
+  }
 }
 </style>

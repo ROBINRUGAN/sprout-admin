@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import * as echarts from 'echarts'
 import { getDailyActiveApi } from '@/api/api'
 
@@ -162,6 +162,7 @@ const getDailyActive = () => {
 
 onMounted(async () => {
   // 等待 getDailyActive 完成
+  // await nextTick()
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
     myChart.setOption(option)
@@ -174,11 +175,5 @@ onMounted(async () => {
 .mewch {
   width: 100%;
   height: 300px;
-}
-
-@media screen and (max-width: 1024px) {
-  .mewch {
-    width: 100%;
-  }
 }
 </style>

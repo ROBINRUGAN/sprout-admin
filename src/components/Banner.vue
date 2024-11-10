@@ -27,7 +27,7 @@
             <el-dropdown-menu>
               <el-dropdown-item>个人中心</el-dropdown-item>
 
-              <el-dropdown-item @click="authStore.Logout">登出</el-dropdown-item>
+              <el-dropdown-item @click="authStore.Logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>

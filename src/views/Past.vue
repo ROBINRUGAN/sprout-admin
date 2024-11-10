@@ -339,9 +339,9 @@ const getDetailInfo = (id: number) => {
   display: flex;
 }
 .form-group {
-  /* display: flex;
+  display: flex;
   gap: 10px;
-  flex-wrap: wrap; */
+  flex-wrap: wrap;
 }
 .form-item {
   flex: 1;
@@ -370,6 +370,9 @@ const getDetailInfo = (id: number) => {
   margin: 0 10px;
 }
 @media (max-width: 1024px) {
+  .form-group {
+    flex-direction: column;
+  }
   .form-detail {
     grid-template-columns: 1fr;
   }
