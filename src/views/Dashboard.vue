@@ -90,10 +90,10 @@
     <!-- 信息模块 -->
     <div class="info">
       <InfoItem type="info"> 欢迎每一位新苗er～ </InfoItem>
-      <InfoItem type="activity"> 活动“每日锻炼”开始啦 </InfoItem>
-      <InfoItem type="activity"> 活动“校规检测”开始啦 </InfoItem>
-      <InfoItem type="activity"> 活动“了解校史”开始啦 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：寻找宿舍 </InfoItem>
+      <InfoItem type="activity"> 活动“新苗任务一——浏览网页”开始啦 </InfoItem>
+      <InfoItem type="activity"> 活动“新苗任务二——查看项目”开始啦 </InfoItem>
+      <InfoItem type="activity"> 活动“新苗单项任务测试”开始啦 </InfoItem>
+      <InfoItem type="msg"> 你有新的审核：新苗活动集锦 </InfoItem>
       <InfoItem type="info"> 快去发布广告吧～ </InfoItem>
     </div>
 
