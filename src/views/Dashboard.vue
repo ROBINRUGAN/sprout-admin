@@ -160,20 +160,20 @@ onMounted(async () => {
   }
 }
 
-/* 小弹跳动画 */
+/* 小弹跳和压扁效果动画 */
 @keyframes bounce {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0) scaleY(1);
   }
   50% {
-    transform: translateY(-5px);
+    transform: translateY(-50px) scaleY(1); /* 向上弹跳并稍微压扁 */
   }
 }
 
 .animate-shake {
   animation:
-    shake 1s ease-in-out,
+    shake 1.5s ease-in-out,
     bounce 0.5s ease-in-out;
   transition:
     transform 0.3s ease,
