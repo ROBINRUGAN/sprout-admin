@@ -169,6 +169,7 @@ const colleges = ref([])
 
 const setURL = (urls) => {
   form.imgContent = urls.join('<')
+  console.log(form.imgContent)
 }
 
 const fetchColleges = async () => {
