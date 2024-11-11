@@ -93,7 +93,11 @@
       <InfoItem type="activity"> 活动“新苗任务一——浏览网页”开始啦 </InfoItem>
       <InfoItem type="activity"> 活动“新苗任务二——查看项目”开始啦 </InfoItem>
       <InfoItem type="activity"> 活动“新苗单项任务测试”开始啦 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗活动集锦 </InfoItem>
+      <InfoItem type="msg"> 你有新的审核：新苗任务三——定位打卡 </InfoItem>
+      <InfoItem type="msg"> 你有新的审核：新苗任务四 </InfoItem>
+      <InfoItem type="msg"> 你有新的审核：新苗任务五 </InfoItem>
+      <InfoItem type="msg"> 你有新的审核：新苗任务六 </InfoItem>
+      <InfoItem type="msg"> 你有新的审核：新苗任务七 </InfoItem>
       <InfoItem type="info"> 快去发布广告吧～ </InfoItem>
     </div>
 
@@ -258,15 +262,18 @@ onMounted(async () => {
   width: 100%;
 }
 
+/* 信息模块 */
 .info {
   grid-column: 2;
   grid-row: 2;
   background-color: rgba(255, 255, 255, 1);
   padding: 20px;
   border-radius: 4px;
-  overflow: auto;
+  overflow-y: auto; /* 添加垂直滚动条 */
+  height: 350px; /* 固定高度 */
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
+
 
 .bottompart {
   grid-column: 1;
