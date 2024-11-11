@@ -184,15 +184,12 @@ onMounted(async () => {
     box-shadow 0.3s ease;
 }
 
-/* 鼠标悬停时的放大和荧光效果 */
 .animate-shake:hover {
-  transform: scale(1.01); /* 轻微放大 */
+  transform: scale(1.01);
   box-shadow:
     0 2px 12px 0 rgba(0, 196, 108, 0.5),
-    /* 淡绿色光晕 */ 0 2px 12px 0 rgba(0, 185, 255, 0.5); /* 浅蓝色光晕 */
+    0 2px 12px 0 rgba(0, 185, 255, 0.5);
 }
-
-/* 其他组件样式 */
 
 .dashboard {
   /* overflow: auto; */
