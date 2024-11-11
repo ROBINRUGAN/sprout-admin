@@ -269,11 +269,10 @@ onMounted(async () => {
   background-color: rgba(255, 255, 255, 1);
   padding: 20px;
   border-radius: 4px;
-  overflow-y: auto; /* 添加垂直滚动条 */
-  height: 350px; /* 固定高度 */
+  overflow-y: auto;
+  max-height: 350px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-
 
 .bottompart {
   grid-column: 1;
