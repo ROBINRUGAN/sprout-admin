@@ -236,15 +236,15 @@ const getTaskInfo = (id: number, item: any) => {
     </h1>
     <el-form :model="form" label-width="auto" style="margin-top: 20px" @submit.prevent="search">
       <div class="form-group">
-        <!-- 活动名称 -->
+        <!-- 任务名称 -->
         <div class="form-item">
-          <el-form-item label="活动名称">
-            <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
+          <el-form-item label="任务名称">
+            <el-input v-model="searchForm.keyword" placeholder="任务名称"></el-input>
           </el-form-item>
         </div>
-        <!-- 活动类型 -->
+        <!-- 任务类型 -->
         <div class="form-item">
-          <el-form-item label="活动类型">
+          <el-form-item label="任务类型">
             <el-radio-group v-model="searchForm.queryParentTask">
               <el-radio :value="1" label="父任务"></el-radio>
               <el-radio :value="0" label="单项任务"></el-radio>
@@ -265,7 +265,7 @@ const getTaskInfo = (id: number, item: any) => {
       <div class="card" v-for="(item, index) in items" :key="index" @click="getDetail(item, index)">
         <img :src="item.taskImages" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.taskName }}</div>
           <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
         </div>
@@ -281,7 +281,7 @@ const getTaskInfo = (id: number, item: any) => {
       >
         <img :src="item.taskImages" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.taskName }}</div>
           <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
         </div>
@@ -297,7 +297,7 @@ const getTaskInfo = (id: number, item: any) => {
       >
         <img :src="item.avatar" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.realName }}</div>
           <div class="card-description">{{ item.auditsSuggestion }}</div>
         </div>

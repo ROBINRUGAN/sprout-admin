@@ -15,7 +15,7 @@ const props = defineProps({
 
 const tag = computed(() => {
   if (props.type === 'activity') {
-    return '活动'
+    return '任务'
   } else if (props.type === 'info') {
     return '公告'
   } else if (props.type === 'msg') {

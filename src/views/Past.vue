@@ -149,16 +149,16 @@ const getDetailInfo = (id: number) => {
 
 <template>
   <div class="wrapper" v-loading="loading">
-    <h1 style="font-size: 24px; margin: 15px 0">活动一览</h1>
+    <h1 style="font-size: 24px; margin: 15px 0">任务一览</h1>
     <el-form :model="form" label-width="auto" @submit.prevent="search">
       <div class="form-group">
         <div class="form-item">
-          <el-form-item label="活动名称">
-            <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
+          <el-form-item label="任务名称">
+            <el-input v-model="searchForm.keyword" placeholder="任务名称"></el-input>
           </el-form-item>
         </div>
         <div class="form-item">
-          <el-form-item label="活动类型">
+          <el-form-item label="任务类型">
             <el-radio-group v-model="searchForm.queryParentTask">
               <el-radio :value="1" label="父任务"></el-radio>
               <el-radio :value="0" label="单项任务"></el-radio>
@@ -177,7 +177,7 @@ const getDetailInfo = (id: number) => {
       <div class="card" v-for="(item, index) in items" :key="index" @click="getDetail(item, index)">
         <img :src="item.taskImages" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.taskName }}</div>
           <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
         </div>
@@ -193,7 +193,7 @@ const getDetailInfo = (id: number) => {
       >
         <img :src="item.taskImages" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.taskName }}</div>
           <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
         </div>
@@ -208,7 +208,7 @@ const getDetailInfo = (id: number) => {
     >
       <div class="form-detail">
         <div class="form-column">
-          <el-form-item label="活动封面">
+          <el-form-item label="任务封面">
             <el-image
               style="
                 height: 180px;
@@ -229,10 +229,10 @@ const getDetailInfo = (id: number) => {
           <el-form-item label="任务对象专业">
             <el-input v-model="form.requiresMajor" disabled />
           </el-form-item>
-          <el-form-item label="活动名称">
+          <el-form-item label="任务名称">
             <el-input v-model="form.taskName" disabled />
           </el-form-item>
-          <el-form-item label="活动方式">
+          <el-form-item label="任务方式">
             <el-select v-model="form.taskRequiresType" disabled>
               <el-option label="其他" :value="0" />
               <el-option label="答题" :value="1" />
@@ -242,7 +242,7 @@ const getDetailInfo = (id: number) => {
               <el-option label="图片打卡" :value="5" />
             </el-select>
           </el-form-item>
-          <el-form-item label="活动时段">
+          <el-form-item label="任务时段">
             <div class="datetime-range">
               <el-date-picker
                 v-model="form.startTime"
@@ -261,12 +261,12 @@ const getDetailInfo = (id: number) => {
               />
             </div>
           </el-form-item>
-          <el-form-item label="活动描述">
+          <el-form-item label="任务描述">
             <el-input v-model="form.taskDescription" type="textarea" :rows="6" disabled />
           </el-form-item>
         </div>
         <div class="form-column">
-          <el-form-item label="活动奖励">
+          <el-form-item label="任务奖励">
             <div class="reward-container">
               <div>
                 <span>小水滴</span>

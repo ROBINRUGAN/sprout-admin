@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { reactive, ref, onBeforeMount } from 'vue'
+import { reactive, ref, onBeforeMount, watch } from 'vue'
 import UploadImg from '@/components/UploadImg.vue'
 import MapContainer from '@/components/MapContainer.vue'
 import { ElNotification } from 'element-plus'
-import { getFacultyApi, getMajorApi, CreateFatherApi, CreateSonApi } from '@/api/api'
+import { getFacultyApi, getMajorApi, CreateFatherApi, CreateSonApi, getPastApi } from '@/api/api'
 interface Colleges {
   facultyName: string
   id: number
@@ -12,16 +12,22 @@ interface Majors {
   majorName: string
   id: number
 }
-
+interface brief {
+  taskName: ''
+  id: ''
+}
+const items = ref<brief[]>([])
 const loading = ref(false)
 const mapVisible = ref(false)
 const colleges = ref<Colleges[]>([])
 const majors = ref<Majors[]>([])
 const form = reactive({
   faorson: 1,
-  parentId: -1,
+  parentId: 0,
   isMain: 0,
   taskName: '',
+  taskDescription1: '',
+  taskDescription2: '',
   taskDescription: '',
   taskType: '',
   taskImages: '',
@@ -41,7 +47,7 @@ const form = reactive({
   requiresPhoto: 0,
   requiresAttitude: '',
   requiresItem: '',
-  taskRequiresType: 0,
+  taskRequiresType: null,
   requiresAudit: 0,
   startTime: '',
   endTime: '',
@@ -59,6 +65,7 @@ const onSubmit = async () => {
   loading.value = true
   form.requiresAudit = form.requiresAudit ? 1 : 0
   form.taskRewards = form.water + ',' + form.chan + ',' + form.tree
+  form.taskDescription = form.taskDescription1 + '\n' + form.taskDescription2
   if (form.taskRequiresType === 3 || form.taskRequiresType === 4) {
     if (form.taskLatitude === '' || form.taskLongitude === '' || form.taskRadius === '') {
       ElNotification.error('请填写完整的地点信息')
@@ -102,36 +109,68 @@ const fetchMajors = async () => {
     // console.log(majors.value)
   }
 }
-onBeforeMount(() => {
+
+watch(
+  () => form.faorson,
+  () => {
+    if (form.faorson === 1) {
+      form.parentId = -1
+    } else {
+      form.parentId = null
+    }
+  }
+)
+
+onBeforeMount(async () => {
   fetchColleges()
+  await getPastApi({
+    current: 1,
+    size: 10,
+    queryParentTask: 1,
+    keyword: ''
+  }).then((res) => {
+    if (res.data.code == '0') {
+      ElNotification.success('搜索任务成功')
+      items.value = res.data.data.records
+    } else {
+      ElNotification.error(res.data.message)
+    }
+  })
 })
 </script>
 <template>
   <div class="wrapper" v-loading="loading">
     <div class="left">
       <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
-        活动信息录入
+        任务信息录入
       </h1>
 
       <el-form :model="form" label-width="auto">
         <div class="form-grid">
           <div class="form-item">
-            <el-form-item label="活动等级">
+            <el-form-item label="任务等级">
               <el-radio-group v-model="form.faorson">
                 <el-radio :value="1" label="父" />
                 <el-radio :value="0" label="子" />
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="活动属性" v-if="form.faorson === 1">
+            <el-form-item label="任务属性" v-if="form.faorson === 1">
               <el-radio-group v-model="form.parentId">
-                <el-radio :value="-1" label="含多项子活动" />
+                <el-radio :value="-1" label="含多项子任务" />
                 <el-radio :value="0" label="单项" />
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="父活动ID" v-if="form.faorson === 0">
-              <el-input v-model="form.parentId" placeholder="请输入..." />
+            <el-form-item label="父任务" v-if="form.faorson === 0">
+              <el-select v-model="form.parentId" placeholder="请输入...">
+                <el-option
+                  v-for="item in items"
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.taskName"
+                />
+              </el-select>
             </el-form-item>
-            <el-form-item label="活动类型">
+            <el-form-item label="任务类型">
               <el-radio-group v-model="form.isMain">
                 <el-radio :value="1" label="主线任务" />
                 <el-radio :value="0" label="支线任务" />
@@ -164,10 +203,10 @@ onBeforeMount(() => {
                 />
               </el-select>
             </el-form-item>
-            <el-form-item label="活动名称">
+            <el-form-item label="任务名称">
               <el-input v-model="form.taskName" placeholder="请输入..." />
             </el-form-item>
-            <el-form-item label="活动方式">
+            <el-form-item label="任务方式" v-if="form.faorson === 0 || form.parentId === 0">
               <el-select v-model="form.taskRequiresType" placeholder="请选择...">
                 <el-option label="其他" :value="0" />
                 <el-option label="答题" :value="1" />
@@ -178,22 +217,28 @@ onBeforeMount(() => {
               </el-select>
             </el-form-item>
             <el-form-item
-              label="活动地点"
-              v-if="form.taskRequiresType === 3 || form.taskRequiresType === 4"
+              label="任务地点"
+              v-if="
+                (form.faorson === 0 || form.parentId === 0) &&
+                (form.taskRequiresType === 3 || form.taskRequiresType === 4)
+              "
             >
-              <el-button plain @click="mapVisible = true">打开地图定位</el-button>
-              <el-dialog v-model="mapVisible" title="请在下面点击选取活动中心点" width="800">
+              <el-button @click="mapVisible = true">打开地图定位</el-button>
+              <el-dialog v-model="mapVisible" title="请在下面点击选取任务中心点" width="800">
                 <MapContainer style="margin: auto" @getLng="getLng" @getLat="getLat" />
               </el-dialog>
             </el-form-item>
             <el-form-item
               label="地点半径(m)"
-              v-if="form.taskRequiresType === 3 || form.taskRequiresType === 4"
+              v-if="
+                (form.faorson === 0 || form.parentId === 0) &&
+                (form.taskRequiresType === 3 || form.taskRequiresType === 4)
+              "
             >
               <el-input v-model="form.taskRadius" placeholder="请输入..." />
             </el-form-item>
 
-            <el-form-item label="活动时段">
+            <el-form-item label="任务时段">
               <div class="time-picker">
                 <el-date-picker
                   v-model="form.startTime"
@@ -213,16 +258,19 @@ onBeforeMount(() => {
               </div>
             </el-form-item>
 
-            <el-form-item label="活动描述">
-              <el-input v-model="form.taskDescription" type="textarea" :rows="6" />
+            <el-form-item label="任务简介">
+              <el-input v-model="form.taskDescription1" />
+            </el-form-item>
+            <el-form-item label="任务描述">
+              <el-input v-model="form.taskDescription2" type="textarea" :rows="4" />
             </el-form-item>
           </div>
 
           <div class="form-item">
-            <el-form-item label="活动封面">
+            <el-form-item label="任务封面">
               <UploadImg @urls="setURL"></UploadImg>
             </el-form-item>
-            <el-form-item label="活动奖励">
+            <el-form-item label="任务奖励">
               <div class="reward-inputs">
                 <div>
                   <span style="margin-right: 20px">小水滴</span>
@@ -249,7 +297,7 @@ onBeforeMount(() => {
                 <el-option label="开学后" :value="2" />
               </el-select>
             </el-form-item>
-            <el-form-item label="图片打卡">
+            <el-form-item label="图片打卡" v-if="form.faorson === 0 || form.parentId === 0">
               <el-select v-model="form.requiresPhoto" placeholder="请选择...">
                 <el-option label="不需要" :value="0" />
                 <el-option label="物品" :value="1" />
@@ -290,7 +338,7 @@ onBeforeMount(() => {
                 <el-option label="双手比x" :value="10" />
               </el-select>
             </el-form-item>
-            <el-form-item label="是否人工审核">
+            <el-form-item label="是否人工审核" v-if="form.faorson === 0 || form.parentId === 0">
               <el-switch v-model="form.requiresAudit" active-text="是" inactive-text="否" />
             </el-form-item>
             <el-form-item label="优先级">

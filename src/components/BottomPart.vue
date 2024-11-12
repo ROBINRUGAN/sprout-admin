@@ -42,7 +42,7 @@ onMounted(() => {
 <template>
   <div class="bottompart">
     <div class="hot">
-      <h1>热门活动</h1>
+      <h1>热门任务</h1>
       <br />
       <el-table
         :data="tableData"
@@ -50,7 +50,7 @@ onMounted(() => {
         :header-cell-style="{ backgroundColor: '#f5f5f5', color: '#000' }"
       >
         <el-table-column prop="rank" label="排名"></el-table-column>
-        <el-table-column prop="activityName" label="活动名称"></el-table-column>
+        <el-table-column prop="activityName" label="任务名称"></el-table-column>
         <el-table-column prop="completionVolume" label="完成量"></el-table-column>
         <el-table-column label="所属父任务">
           <template #default="scope">
