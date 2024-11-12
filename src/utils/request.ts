@@ -1,4 +1,7 @@
+import router from '@/router'
 import axios from 'axios'
+import { ElNotification } from 'element-plus'
+import { ref } from 'vue'
 
 // 创建axios实例
 export const service = axios.create({
@@ -6,6 +9,8 @@ export const service = axios.create({
   timeout: 20000, // 超时时间
   withCredentials: false // 是否允许带cookie
 })
+
+const hasExpired = ref(false)
 
 // 添加请求拦截器
 service.interceptors.request.use(
@@ -30,8 +35,13 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.data.code === 'A000100') {
-      alert('登录失效，请重新登录')
-      window.location.href = '/login'
+      if (!hasExpired.value) ElNotification.info('登录已过期，请重新登录')
+      hasExpired.value = true
+
+      setTimeout(() => {
+        hasExpired.value = false
+      }, 1000)
+      router.push({ path: '/login' })
     }
     return response
   },

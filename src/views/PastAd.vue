@@ -2,7 +2,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { adDetailApi } from '@/api/api' // 确保API路径正确
 import { ElNotification } from 'element-plus'
-
+import { useAuthStore } from '@/stores/authStore'
+const authStore = useAuthStore()
 const loading = ref(false)
 const isShow = ref(false)
 const searchForm = reactive({
@@ -53,6 +54,14 @@ const items = ref<brief[]>([])
 const getDetail = (id: number) => {
   isShow.value = true
   form.value = items.value[id]
+  console.log(form.value)
+  authStore.fetchColleges().then(() =>
+    authStore.fetchMajors(form.value.targetFacultyRange).then(() => {
+      form.value.targetFacultyRange = authStore.collegeName(form.value.targetFacultyRange)
+      form.value.targetGradeRange =
+        form.value.targetGradeRange == '-1' ? '全部' : form.value.targetGradeRange
+    })
+  )
 }
 
 const fetchAdList = async () => {
@@ -155,7 +164,16 @@ const fetchAdList = async () => {
           </el-form-item>
 
           <el-form-item label="图片/视频内容">
-            <el-image style="height: 100px" :src="form.imgContent" fit="cover" />
+            <el-image
+              style="
+                height: 200px;
+                width: 200px;
+                border-radius: 5px;
+                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+              "
+              :src="form.imgContent"
+              fit="cover"
+            />
           </el-form-item>
 
           <el-form-item label="跳转链接">
@@ -179,8 +197,8 @@ const fetchAdList = async () => {
           <el-form-item label="推送位置">
             <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
               <el-option label="消息推送" value="0"></el-option>
-              <el-option label="开屏" value="1"></el-option>
-              <el-option label="首页" value="2"></el-option>
+              <el-option label="开屏页" value="1"></el-option>
+              <el-option label="首页弹窗" value="2"></el-option>
               <el-option label="首页轮播图" value="3"></el-option>
             </el-select>
           </el-form-item>

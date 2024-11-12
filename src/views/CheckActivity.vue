@@ -342,12 +342,12 @@ const getTaskInfo = (id: number, item: any) => {
             <el-descriptions-item label="学号" v-if="taskInfo.studentId">{{
               taskInfo.studentId
             }}</el-descriptions-item>
-            <el-descriptions-item label="任务ID" v-if="taskInfo.taskId">{{
+            <!-- <el-descriptions-item label="任务ID" v-if="taskInfo.taskId">{{
               taskInfo.taskId
             }}</el-descriptions-item>
             <el-descriptions-item label="父任务ID" v-if="taskInfo.parentTaskId">{{
               taskInfo.parentTaskId
-            }}</el-descriptions-item>
+            }}</el-descriptions-item> -->
             <el-descriptions-item label="定位信息" v-if="taskInfo.location != '-1'">{{
               taskInfo.location
             }}</el-descriptions-item>

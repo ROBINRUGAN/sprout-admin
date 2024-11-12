@@ -50,8 +50,8 @@
           <el-form-item label="推送位置">
             <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
               <el-option label="消息推送" value="0"></el-option>
-              <el-option label="开屏" value="1"></el-option>
-              <el-option label="首页" value="2"></el-option>
+              <el-option label="开屏页" value="1"></el-option>
+              <el-option label="首页弹窗" value="2"></el-option>
               <el-option label="首页轮播图" value="3"></el-option>
             </el-select>
           </el-form-item>

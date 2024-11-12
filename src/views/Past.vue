@@ -3,6 +3,7 @@ import { reactive, ref } from 'vue'
 import { getPastApi, getPastChildApi } from '@/api/api'
 import { onMounted } from 'vue'
 import { ElNotification } from 'element-plus'
+import { useAuthStore } from '@/stores/authStore'
 
 const searchForm = reactive({
   current: 1,
@@ -10,6 +11,8 @@ const searchForm = reactive({
   queryParentTask: 1,
   keyword: ''
 })
+
+const authStore = useAuthStore()
 
 const loading = ref(true)
 
@@ -115,17 +118,21 @@ const getDetail = async (data: any, index: number) => {
       }, 1000)
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
+
       if (data.parentId == '0') {
         showDetail.value = true
         form.value = data
-        if (form.value.requiresAudit === 1) {
-          form.value.Audit = true
-        } else {
-          form.value.Audit = false
-        }
-        form.value.water = parseInt(form.value.taskRewards.split(',')[0])
-        form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
-        form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
+        authStore.fetchColleges().then(() =>
+          authStore.fetchMajors(form.value.requiresFaculty).then(() => {
+            form.value.requiresFaculty = authStore.collegeName(form.value.requiresFaculty)
+            form.value.requiresMajor = authStore.majorName(form.value.requiresMajor)
+
+            form.value.Audit = form.value.requiresAudit === 1 ? true : false
+            form.value.water = parseInt(form.value.taskRewards.split(',')[0])
+            form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
+            form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
+          })
+        )
       }
     } else {
       ElNotification.error(res.data.message)
@@ -133,14 +140,19 @@ const getDetail = async (data: any, index: number) => {
   })
 }
 
-const getDetailInfo = (id: number) => {
+const getDetailInfo = async (id: number) => {
   showDetail.value = true
   form.value = detailItems.value[id]
+  await authStore.fetchColleges()
+  await authStore.fetchMajors(form.value.requiresFaculty)
+
   if (form.value.requiresAudit === 1) {
     form.value.Audit = true
   } else {
     form.value.Audit = false
   }
+  form.value.requiresFaculty = authStore.collegeName(form.value.requiresFaculty)
+  form.value.requiresMajor = authStore.majorName(form.value.requiresMajor)
   form.value.water = parseInt(detailItems.value[id].taskRewards.split(',')[0])
   form.value.chan = parseInt(detailItems.value[id].taskRewards.split(',')[1])
   form.value.tree = parseInt(detailItems.value[id].taskRewards.split(',')[2])
@@ -265,24 +277,49 @@ const getDetailInfo = (id: number) => {
             <el-input v-model="form.taskDescription" type="textarea" :rows="6" disabled />
           </el-form-item>
         </div>
+
         <div class="form-column">
           <el-form-item label="任务奖励">
             <div class="reward-container">
               <div>
                 <span>小水滴</span>
-                <el-input-number v-model="form.water" :min="1" :max="10" disabled />
+                <el-input-number
+                  style="margin-left: 20px"
+                  v-model="form.water"
+                  :min="0"
+                  :max="10"
+                  disabled
+                />
               </div>
               <div>
                 <span>小铲子</span>
-                <el-input-number v-model="form.chan" :min="1" :max="10" disabled />
+                <el-input-number
+                  style="margin-left: 20px"
+                  v-model="form.chan"
+                  :min="0"
+                  :max="10"
+                  disabled
+                />
               </div>
               <div>
                 <span>小树苗</span>
-                <el-input-number v-model="form.tree" :min="1" :max="10" disabled />
+                <el-input-number
+                  style="margin-left: 20px"
+                  v-model="form.tree"
+                  :min="0"
+                  :max="10"
+                  disabled
+                />
               </div>
               <div>
-                <span>积分</span>
-                <el-input-number v-model="form.taskPoints" :min="1" :max="10" disabled />
+                <span>积&nbsp;&nbsp;&nbsp;分</span>
+                <el-input-number
+                  style="margin-left: 20px"
+                  v-model="form.taskPoints"
+                  :min="1"
+                  :max="10"
+                  disabled
+                />
               </div>
             </div>
           </el-form-item>
@@ -386,6 +423,7 @@ const getDetailInfo = (id: number) => {
   padding: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   gap: 10px;
 }
 .datetime-range {

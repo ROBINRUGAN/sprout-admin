@@ -53,11 +53,11 @@ onUnmounted(() => {
 </template>
 <style scoped>
 #container {
-  border-radius: 50px;
+  border-radius: 20px;
   padding: 0px;
   margin: 0px;
-  width: 750px;
+  width: 100%;
   height: 500px;
-  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
 }
 </style>

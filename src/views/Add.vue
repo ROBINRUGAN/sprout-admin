@@ -223,7 +223,12 @@ onBeforeMount(async () => {
               "
             >
               <el-button @click="mapVisible = true">打开地图定位</el-button>
-              <el-dialog v-model="mapVisible" title="请在下面点击选取任务中心点" width="800">
+              <el-dialog
+                v-model="mapVisible"
+                style="border-radius: 20px; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)"
+                title="请在下面点击选取任务中心点"
+                width="70vw"
+              >
                 <MapContainer style="margin: auto" @getLng="getLng" @getLat="getLat" />
               </el-dialog>
             </el-form-item>
@@ -273,19 +278,19 @@ onBeforeMount(async () => {
               <div class="reward-inputs">
                 <div>
                   <span style="margin-right: 20px">小水滴</span>
-                  <el-input-number v-model="form.water" :min="1" :max="10" />
+                  <el-input-number v-model="form.water" :min="0" :max="10" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">小铲子</span>
-                  <el-input-number v-model="form.chan" :min="1" :max="10" />
+                  <el-input-number v-model="form.chan" :min="0" :max="10" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">小树苗</span>
-                  <el-input-number v-model="form.tree" :min="1" :max="10" />
+                  <el-input-number v-model="form.tree" :min="0" :max="10" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">积&nbsp;&nbsp;&nbsp;分</span>
-                  <el-input-number v-model="form.taskPoints" :min="1" :max="10" />
+                  <el-input-number v-model="form.taskPoints" :min="0" :max="10" />
                 </div>
               </div>
             </el-form-item>
