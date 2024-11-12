@@ -3,6 +3,7 @@ import { reactive, ref } from 'vue'
 import { getPastApi, getPastChildApi } from '@/api/api'
 import { onMounted } from 'vue'
 import { ElNotification } from 'element-plus'
+import { useAuthStore } from '@/stores/authStore'
 
 const searchForm = reactive({
   current: 1,
@@ -10,6 +11,10 @@ const searchForm = reactive({
   queryParentTask: 1,
   keyword: ''
 })
+
+const authStore = useAuthStore()
+
+const loading = ref(true)
 
 const showSon = ref(false)
 const showDetail = ref(false)
@@ -79,13 +84,18 @@ const form = ref({
   chan: 0,
   water: 0
 })
-const search = () => {
-  getPastApi(searchForm).then((res) => {
+const search = async () => {
+  loading.value = true
+  await getPastApi(searchForm).then((res) => {
     if (res.data.code == '0') {
-      ElNotification.success('查询成功')
+      ElNotification.success('搜索任务成功')
       items.value = res.data.data.records
       showDetail.value = false
       showSon.value = false
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
+      // loading.value = false
     } else {
       ElNotification.error(res.data.message)
     }
@@ -95,26 +105,34 @@ onMounted(() => {
   search()
 })
 
-const getDetail = (data: any, index: number) => {
-  getPastChildApi({
+const getDetail = async (data: any, index: number) => {
+  loading.value = true
+  await getPastChildApi({
     id: data.id,
     querySubTask: 1
   }).then((res) => {
     if (res.data.code == '0') {
-      ElNotification.success('查询成功')
+      ElNotification.success('查询子任务成功')
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
+
       if (data.parentId == '0') {
         showDetail.value = true
         form.value = data
-        if (form.value.requiresAudit === 1) {
-          form.value.Audit = true
-        } else {
-          form.value.Audit = false
-        }
-        form.value.water = parseInt(form.value.taskRewards.split(',')[0])
-        form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
-        form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
+        authStore.fetchColleges().then(() =>
+          authStore.fetchMajors(form.value.requiresFaculty).then(() => {
+            form.value.requiresFaculty = authStore.collegeName(form.value.requiresFaculty)
+            form.value.requiresMajor = authStore.majorName(form.value.requiresMajor)
+
+            form.value.Audit = form.value.requiresAudit === 1 ? true : false
+            form.value.water = parseInt(form.value.taskRewards.split(',')[0])
+            form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
+            form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
+          })
+        )
       }
     } else {
       ElNotification.error(res.data.message)
@@ -122,14 +140,19 @@ const getDetail = (data: any, index: number) => {
   })
 }
 
-const getDetailInfo = (id: number) => {
+const getDetailInfo = async (id: number) => {
   showDetail.value = true
   form.value = detailItems.value[id]
+  await authStore.fetchColleges()
+  await authStore.fetchMajors(form.value.requiresFaculty)
+
   if (form.value.requiresAudit === 1) {
     form.value.Audit = true
   } else {
     form.value.Audit = false
   }
+  form.value.requiresFaculty = authStore.collegeName(form.value.requiresFaculty)
+  form.value.requiresMajor = authStore.majorName(form.value.requiresMajor)
   form.value.water = parseInt(detailItems.value[id].taskRewards.split(',')[0])
   form.value.chan = parseInt(detailItems.value[id].taskRewards.split(',')[1])
   form.value.tree = parseInt(detailItems.value[id].taskRewards.split(',')[2])
@@ -137,17 +160,17 @@ const getDetailInfo = (id: number) => {
 </script>
 
 <template>
-  <div class="wrapper">
-    <h1 style="font-size: 24px; margin: 15px 0">活动一览</h1>
+  <div class="wrapper" v-loading="loading">
+    <h1 style="font-size: 24px; margin: 15px 0">任务一览</h1>
     <el-form :model="form" label-width="auto" @submit.prevent="search">
       <div class="form-group">
         <div class="form-item">
-          <el-form-item label="活动名称">
-            <el-input v-model="searchForm.keyword" placeholder="活动名称"></el-input>
+          <el-form-item label="任务名称">
+            <el-input v-model="searchForm.keyword" placeholder="任务名称"></el-input>
           </el-form-item>
         </div>
         <div class="form-item">
-          <el-form-item label="活动类型">
+          <el-form-item label="任务类型">
             <el-radio-group v-model="searchForm.queryParentTask">
               <el-radio :value="1" label="父任务"></el-radio>
               <el-radio :value="0" label="单项任务"></el-radio>
@@ -166,7 +189,7 @@ const getDetailInfo = (id: number) => {
       <div class="card" v-for="(item, index) in items" :key="index" @click="getDetail(item, index)">
         <img :src="item.taskImages" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.taskName }}</div>
           <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
         </div>
@@ -182,32 +205,45 @@ const getDetailInfo = (id: number) => {
       >
         <img :src="item.taskImages" alt="" class="card-image" />
         <div class="card-content">
-          <div class="card-id">{{ '活动id: ' + item.id }}</div>
+          <div class="card-id">{{ '任务id: ' + item.id }}</div>
           <div class="card-title">{{ item.taskName }}</div>
           <div class="card-description">{{ item.taskDescription.split('\n')[0] }}</div>
         </div>
       </div>
     </div>
 
-    <el-form :model="form" label-width="auto">
-      <div class="form-detail" v-if="showDetail">
+    <el-form
+      :model="form"
+      style="margin-top: 20px; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding: 20px"
+      v-if="showDetail"
+    >
+      <div class="form-detail">
         <div class="form-column">
-          <el-form-item label="活动封面">
-            <el-image style="height: 100px" :src="form.taskImages" fit="cover" />
+          <el-form-item label="任务封面">
+            <el-image
+              style="
+                height: 180px;
+                width: 180px;
+                box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.5);
+                border-radius: 5px;
+              "
+              :src="form.taskImages"
+              fit="cover"
+            />
           </el-form-item>
-          <el-form-item label="任务对象年级">
+          <el-form-item label="年级">
             <el-input v-model="form.requiresGrade" disabled />
           </el-form-item>
-          <el-form-item label="任务对象所在学院">
+          <el-form-item label="学院">
             <el-input v-model="form.requiresFaculty" disabled />
           </el-form-item>
-          <el-form-item label="任务对象专业">
+          <el-form-item label="专业">
             <el-input v-model="form.requiresMajor" disabled />
           </el-form-item>
-          <el-form-item label="活动名称">
+          <el-form-item label="任务名称">
             <el-input v-model="form.taskName" disabled />
           </el-form-item>
-          <el-form-item label="活动方式">
+          <el-form-item label="任务方式">
             <el-select v-model="form.taskRequiresType" disabled>
               <el-option label="其他" :value="0" />
               <el-option label="答题" :value="1" />
@@ -217,7 +253,7 @@ const getDetailInfo = (id: number) => {
               <el-option label="图片打卡" :value="5" />
             </el-select>
           </el-form-item>
-          <el-form-item label="活动时段">
+          <el-form-item label="任务时段">
             <div class="datetime-range">
               <el-date-picker
                 v-model="form.startTime"
@@ -236,28 +272,53 @@ const getDetailInfo = (id: number) => {
               />
             </div>
           </el-form-item>
-          <el-form-item label="活动描述">
+          <el-form-item label="任务描述">
             <el-input v-model="form.taskDescription" type="textarea" :rows="6" disabled />
           </el-form-item>
         </div>
+
         <div class="form-column">
-          <el-form-item label="活动奖励">
+          <el-form-item label="任务奖励">
             <div class="reward-container">
               <div>
-                <span>小水滴</span>
-                <el-input-number v-model="form.water" :min="1" :max="10" disabled />
+                <span style="margin-right: 20px">小水滴</span>
+                <el-input-number
+                  style="width: 110px"
+                  v-model="form.water"
+                  :min="0"
+                  :max="10"
+                  disabled
+                />
               </div>
               <div>
-                <span>小铲子</span>
-                <el-input-number v-model="form.chan" :min="1" :max="10" disabled />
+                <span style="margin-right: 20px">小铲子</span>
+                <el-input-number
+                  style="width: 110px"
+                  v-model="form.chan"
+                  :min="0"
+                  :max="10"
+                  disabled
+                />
               </div>
               <div>
-                <span>小树苗</span>
-                <el-input-number v-model="form.tree" :min="1" :max="10" disabled />
+                <span style="margin-right: 20px">小树苗</span>
+                <el-input-number
+                  style="width: 110px"
+                  v-model="form.tree"
+                  :min="0"
+                  :max="10"
+                  disabled
+                />
               </div>
               <div>
-                <span>积分</span>
-                <el-input-number v-model="form.taskPoints" :min="1" :max="10" disabled />
+                <span style="margin-right: 20px">积&nbsp;&nbsp;&nbsp;分</span>
+                <el-input-number
+                  style="width: 110px"
+                  v-model="form.taskPoints"
+                  :min="1"
+                  :max="10"
+                  disabled
+                />
               </div>
             </div>
           </el-form-item>
@@ -294,6 +355,7 @@ const getDetailInfo = (id: number) => {
 
 <style scoped>
 .wrapper {
+  min-height: calc(100vh - 100px);
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -360,6 +422,7 @@ const getDetailInfo = (id: number) => {
   padding: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   gap: 10px;
 }
 .datetime-range {

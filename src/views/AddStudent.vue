@@ -5,6 +5,8 @@ import { UploadFilled } from '@element-plus/icons-vue'
 import { AddStuApi } from '@/api/api'
 const fileList = ref([]) // 存储用户选择的文件
 
+const loading = ref(false)
+
 // 处理文件变更的事件
 const handleFileChange = (file, files) => {
   fileList.value = files // 更新文件列表
@@ -12,7 +14,11 @@ const handleFileChange = (file, files) => {
 
 // 确认导入的处理函数
 const submitUpload = async () => {
+  loading.value = true
   if (fileList.value.length === 0) {
+    setTimeout(() => {
+      loading.value = false
+    }, 1000)
     ElNotification.error('请先选择一个文件!')
     return
   }
@@ -25,12 +31,15 @@ const submitUpload = async () => {
   console.log(res)
   if (res.data.code === '0') {
     ElNotification.success('导入成功')
+    setTimeout(() => {
+      loading.value = false
+    }, 1000)
   }
 }
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       学生Excel批量录入
     </h1>
@@ -68,6 +77,7 @@ const submitUpload = async () => {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
+  min-height: calc(100vh - 100px);
 }
 .upload-demo {
   border: 1px dashed #d9d9d9;

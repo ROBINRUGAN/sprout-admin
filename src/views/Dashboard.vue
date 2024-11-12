@@ -6,7 +6,7 @@
       <div class="activity-summary">
         <img src="../assets/home/dashboard-logo.png" alt="" class="activity-icon" />
         <div class="activity-info">
-          <p>总活动</p>
+          <p>总任务</p>
           <div class="activity-count">
             <p class="count">{{ count }}</p>
             <p>个</p>
@@ -90,9 +90,9 @@
     <!-- 信息模块 -->
     <div class="info animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <InfoItem type="info"> 欢迎每一位新苗er～ </InfoItem>
-      <InfoItem type="activity"> 活动“新苗任务一——浏览网页”开始啦 </InfoItem>
-      <InfoItem type="activity"> 活动“新苗任务二——查看项目”开始啦 </InfoItem>
-      <InfoItem type="activity"> 活动“新苗单项任务测试”开始啦 </InfoItem>
+      <InfoItem type="activity"> 任务“新苗任务一——浏览网页”开始啦 </InfoItem>
+      <InfoItem type="activity"> 任务“新苗任务二——查看项目”开始啦 </InfoItem>
+      <InfoItem type="activity"> 任务“新苗单项任务测试”开始啦 </InfoItem>
       <InfoItem type="msg"> 你有新的审核：新苗任务三——定位打卡 </InfoItem>
       <InfoItem type="msg"> 你有新的审核：新苗任务四 </InfoItem>
       <InfoItem type="msg"> 你有新的审核：新苗任务五 </InfoItem>
@@ -184,15 +184,12 @@ onMounted(async () => {
     box-shadow 0.3s ease;
 }
 
-/* 鼠标悬停时的放大和荧光效果 */
 .animate-shake:hover {
-  transform: scale(1.01); /* 轻微放大 */
+  transform: scale(1.01);
   box-shadow:
     0 2px 12px 0 rgba(0, 196, 108, 0.5),
-    /* 淡绿色光晕 */ 0 2px 12px 0 rgba(0, 185, 255, 0.5); /* 浅蓝色光晕 */
+    0 2px 12px 0 rgba(0, 185, 255, 0.5);
 }
-
-/* 其他组件样式 */
 
 .dashboard {
   /* overflow: auto; */
@@ -272,11 +269,10 @@ onMounted(async () => {
   background-color: rgba(255, 255, 255, 1);
   padding: 20px;
   border-radius: 4px;
-  overflow-y: auto; /* 添加垂直滚动条 */
-  height: 350px; /* 固定高度 */
+  overflow-y: auto;
+  max-height: 350px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-
 
 .bottompart {
   grid-column: 1;

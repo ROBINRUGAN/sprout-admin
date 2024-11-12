@@ -2,7 +2,9 @@
 import { ref, reactive, onMounted } from 'vue'
 import { adDetailApi } from '@/api/api' // 确保API路径正确
 import { ElNotification } from 'element-plus'
-
+import { useAuthStore } from '@/stores/authStore'
+const authStore = useAuthStore()
+const loading = ref(false)
 const isShow = ref(false)
 const searchForm = reactive({
   current: 1,
@@ -52,14 +54,26 @@ const items = ref<brief[]>([])
 const getDetail = (id: number) => {
   isShow.value = true
   form.value = items.value[id]
+  console.log(form.value)
+  authStore.fetchColleges().then(() =>
+    authStore.fetchMajors(form.value.targetFacultyRange).then(() => {
+      form.value.targetFacultyRange = authStore.collegeName(form.value.targetFacultyRange)
+      form.value.targetGradeRange =
+        form.value.targetGradeRange == '-1' ? '全部' : form.value.targetGradeRange
+    })
+  )
 }
 
 const fetchAdList = async () => {
+  loading.value = true
   const res = await adDetailApi(searchForm)
   if (res.data.code == '0') {
     ElNotification.success('查询成功')
     isShow.value = false
     items.value = res.data.data.records
+    setTimeout(() => {
+      loading.value = false
+    }, 1000)
   } else {
     ElNotification.error(res.data.message)
   }
@@ -67,7 +81,7 @@ const fetchAdList = async () => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       广告一览
     </h1>
@@ -84,14 +98,14 @@ const fetchAdList = async () => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="广告时间范围" style="flex: auto">
+        <el-form-item label="时间范围" style="flex-wrap: wrap">
           <div id="time_range" style="display: flex; width: 100%; justify-content: center">
             <el-date-picker
               v-model="searchForm.startTime"
               type="datetime"
               value-format="YYYY-MM-DDTHH:mm:ss"
               placeholder="开始时间"
-              style="width: 100%; min-width: 190px"
+              style="width: 100%; min-width: 170px"
             />
 
             <span class="separator">—</span>
@@ -101,7 +115,7 @@ const fetchAdList = async () => {
               type="datetime"
               value-format="YYYY-MM-DDTHH:mm:ss"
               placeholder="结束时间"
-              style="width: 100%; min-width: 190px"
+              style="width: 100%; min-width: 170px"
             />
           </div>
         </el-form-item>
@@ -125,14 +139,7 @@ const fetchAdList = async () => {
       </div>
     </div>
 
-    <el-form
-      ref="adForm"
-      :model="form"
-      label-width="120px"
-      disabled
-      v-if="isShow"
-      style="margin-top: 20px"
-    >
+    <el-form ref="adForm" :model="form" disabled v-if="isShow" style="margin-top: 20px">
       <div class="form-grid">
         <div class="left-column">
           <el-form-item label="广告类型">
@@ -150,7 +157,16 @@ const fetchAdList = async () => {
           </el-form-item>
 
           <el-form-item label="图片/视频内容">
-            <el-image style="height: 100px" :src="form.imgContent" fit="cover" />
+            <el-image
+              style="
+                height: 200px;
+                width: 200px;
+                border-radius: 5px;
+                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+              "
+              :src="form.imgContent"
+              fit="cover"
+            />
           </el-form-item>
 
           <el-form-item label="跳转链接">
@@ -174,8 +190,8 @@ const fetchAdList = async () => {
           <el-form-item label="推送位置">
             <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
               <el-option label="消息推送" value="0"></el-option>
-              <el-option label="开屏" value="1"></el-option>
-              <el-option label="首页" value="2"></el-option>
+              <el-option label="开屏页" value="1"></el-option>
+              <el-option label="首页弹窗" value="2"></el-option>
               <el-option label="首页轮播图" value="3"></el-option>
             </el-select>
           </el-form-item>
@@ -233,6 +249,7 @@ const fetchAdList = async () => {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
+  min-height: calc(100vh - 100px);
 }
 
 .scroll-container {

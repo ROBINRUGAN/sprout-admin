@@ -25,11 +25,11 @@ onMounted(() => {
         lng.value = e.lnglat.getLng()
         lat.value = e.lnglat.getLat()
         var marker = new AMap.Marker({
-            icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
-            position: [lng.value, lat.value],
-            anchor: 'bottom-center'
-          })
-        map.clearMap();
+          icon: 'https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png',
+          position: [lng.value, lat.value],
+          anchor: 'bottom-center'
+        })
+        map.clearMap()
         map.add(marker)
         console.log('您在[ ' + e.lnglat.getLng() + ',' + e.lnglat.getLat() + ' ]的位置点击了地图！')
         emit('getLng', e.lnglat.getLng().toString())
@@ -53,10 +53,11 @@ onUnmounted(() => {
 </template>
 <style scoped>
 #container {
-  border-radius: 50px;
+  border-radius: 20px;
   padding: 0px;
   margin: 0px;
-  width: 750px;
+  width: 100%;
   height: 500px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
 }
 </style>

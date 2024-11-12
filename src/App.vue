@@ -23,7 +23,7 @@ textarea {
   resize: none !important;
 }
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
   height: 8px;
 }
 
@@ -51,5 +51,18 @@ textarea {
 /* 隐藏滚动条底部和侧面的角部分 */
 ::-webkit-scrollbar-corner {
   background-color: transparent;
+}
+
+.el-loading-spinner .circular {
+  background: url('https://mewww.w2fzu.com/upmew/cat.gif');
+  background-size: cover;
+  animation: none !important;
+  transform: none;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.el-loading-spinner .path {
+  stroke: none !important;
 }
 </style>
