@@ -178,7 +178,7 @@ const userData = ref({
       <div class="details card">
         <h1 class="section-title">任务详情</h1>
         <el-table :data="taskData" stripe size="small" class="large-table">
-          <el-table-column prop="taskName" label="活动名称"></el-table-column>
+          <el-table-column prop="taskName" label="任务名称"></el-table-column>
           <el-table-column prop="completionStatus" label="完成状态"></el-table-column>
           <el-table-column prop="parentTaskName" label="父任务名称"></el-table-column>
         </el-table>
