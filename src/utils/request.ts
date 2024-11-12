@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 // 创建axios实例
 export const service = axios.create({
-  baseURL: `http://159.75.246.59:9000/`,
+  baseURL: `https://sprout.mewtopia.cn/`,
   timeout: 20000, // 超时时间
   withCredentials: false // 是否允许带cookie
 })

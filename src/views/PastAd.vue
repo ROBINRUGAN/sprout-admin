@@ -98,14 +98,14 @@ const fetchAdList = async () => {
           </el-select>
         </el-form-item>
 
-        <el-form-item label="广告时间范围" style="flex: auto">
+        <el-form-item label="时间范围" style="flex-wrap: wrap">
           <div id="time_range" style="display: flex; width: 100%; justify-content: center">
             <el-date-picker
               v-model="searchForm.startTime"
               type="datetime"
               value-format="YYYY-MM-DDTHH:mm:ss"
               placeholder="开始时间"
-              style="width: 100%; min-width: 190px"
+              style="width: 100%; min-width: 170px"
             />
 
             <span class="separator">—</span>
@@ -115,7 +115,7 @@ const fetchAdList = async () => {
               type="datetime"
               value-format="YYYY-MM-DDTHH:mm:ss"
               placeholder="结束时间"
-              style="width: 100%; min-width: 190px"
+              style="width: 100%; min-width: 170px"
             />
           </div>
         </el-form-item>
@@ -139,14 +139,7 @@ const fetchAdList = async () => {
       </div>
     </div>
 
-    <el-form
-      ref="adForm"
-      :model="form"
-      label-width="120px"
-      disabled
-      v-if="isShow"
-      style="margin-top: 20px"
-    >
+    <el-form ref="adForm" :model="form" disabled v-if="isShow" style="margin-top: 20px">
       <div class="form-grid">
         <div class="left-column">
           <el-form-item label="广告类型">
