@@ -52,4 +52,17 @@ textarea {
 ::-webkit-scrollbar-corner {
   background-color: transparent;
 }
+
+.el-loading-spinner .circular {
+  background: url('https://mewww.w2fzu.com/upmew/cat.gif');
+  background-size: cover;
+  animation: none !important;
+  transform: none;
+  width: 100px !important;
+  height: 100px !important;
+}
+
+.el-loading-spinner .path {
+  stroke: none !important;
+}
 </style>

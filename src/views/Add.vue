@@ -12,6 +12,8 @@ interface Majors {
   majorName: string
   id: number
 }
+
+const loading = ref(false)
 const mapVisible = ref(false)
 const colleges = ref<Colleges[]>([])
 const majors = ref<Majors[]>([])
@@ -54,6 +56,7 @@ const getLng = (lng: string) => {
   form.taskLongitude = lng
 }
 const onSubmit = async () => {
+  loading.value = true
   form.requiresAudit = form.requiresAudit ? 1 : 0
   form.taskRewards = form.water + ',' + form.chan + ',' + form.tree
   if (form.taskRequiresType === 3 || form.taskRequiresType === 4) {
@@ -74,6 +77,9 @@ const onSubmit = async () => {
     } else {
       ElNotification.error(res.data.message)
     }
+    setTimeout(() => {
+      loading.value = false
+    }, 1000)
   }
 }
 const setURL = (urls: string[]) => {
@@ -101,7 +107,7 @@ onBeforeMount(() => {
 })
 </script>
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <div class="left">
       <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
         活动信息录入

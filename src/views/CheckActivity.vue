@@ -11,6 +11,8 @@ const openAuditDialog = () => {
   dialogVisible.value = true
 }
 
+const loading = ref(false)
+
 const auditForm = reactive({
   ids: [0],
   //审核状态 1-审核通过 2-审核不通过
@@ -149,13 +151,17 @@ const taskInfo = ref<task>({
   auditsAdminId: 0
 })
 const search = () => {
+  loading.value = true
   getPastApi(searchForm).then((res) => {
     if (res.data.code == '0') {
-      ElNotification.success('查询成功')
+      ElNotification.success('搜索任务成功')
       items.value = res.data.data.records
       showDetail.value = false
       showSon.value = false
       showTask.value = false
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
     } else {
       ElNotification.error(res.data.message)
     }
@@ -166,6 +172,7 @@ onMounted(() => {
 })
 const getDetail = (data: any, index: number) => {
   showTask.value = false
+  loading.value = true
   getPastChildApi({
     id: data.id,
     querySubTask: 1
@@ -175,6 +182,9 @@ const getDetail = (data: any, index: number) => {
       ElNotification.success('查询子任务成功')
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
+      setTimeout(() => {
+        loading.value = false
+      }, 500)
       if (data.parentId == '0') {
         showDetail.value = true
         getDetailInfo(data.id)
@@ -187,6 +197,7 @@ const getDetail = (data: any, index: number) => {
 
 const getDetailInfo = async (data: any) => {
   showTask.value = false
+  loading.value = true
   const res = await getTaskSubmitApi({
     current: '1',
     size: '114514',
@@ -202,6 +213,9 @@ const getDetailInfo = async (data: any) => {
     })
     console.log(taskItems.value)
     ElNotification.success('查询参与者成功')
+    setTimeout(() => {
+      loading.value = false
+    }, 200)
   } else {
     ElNotification.error(res.data.message)
   }
@@ -216,7 +230,7 @@ const getTaskInfo = (id: number, item: any) => {
 }
 </script>
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       学生提交审核
     </h1>
