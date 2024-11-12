@@ -130,7 +130,6 @@ onBeforeMount(async () => {
     keyword: ''
   }).then((res) => {
     if (res.data.code == '0') {
-      ElNotification.success('搜索任务成功')
       items.value = res.data.data.records
     } else {
       ElNotification.error(res.data.message)
