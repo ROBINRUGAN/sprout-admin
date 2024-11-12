@@ -37,6 +37,7 @@ const loginData = ref({
               name="password"
               id="password"
               v-model="loginData.password"
+              @keydown.enter="authStore.Login(loginData)"
               placeholder="密码"
             />
             <button @click="authStore.Login(loginData)">登录</button>
