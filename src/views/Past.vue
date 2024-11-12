@@ -11,6 +11,8 @@ const searchForm = reactive({
   keyword: ''
 })
 
+const loading = ref(true)
+
 const showSon = ref(false)
 const showDetail = ref(false)
 interface brief {
@@ -79,13 +81,18 @@ const form = ref({
   chan: 0,
   water: 0
 })
-const search = () => {
-  getPastApi(searchForm).then((res) => {
+const search = async () => {
+  loading.value = true
+  await getPastApi(searchForm).then((res) => {
     if (res.data.code == '0') {
       ElNotification.success('查询成功')
       items.value = res.data.data.records
       showDetail.value = false
       showSon.value = false
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
+      // loading.value = false
     } else {
       ElNotification.error(res.data.message)
     }
@@ -95,13 +102,17 @@ onMounted(() => {
   search()
 })
 
-const getDetail = (data: any, index: number) => {
-  getPastChildApi({
+const getDetail = async (data: any, index: number) => {
+  loading.value = true
+  await getPastChildApi({
     id: data.id,
     querySubTask: 1
   }).then((res) => {
     if (res.data.code == '0') {
-      ElNotification.success('查询成功')
+      ElNotification.success('查询子任务成功')
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
       if (data.parentId == '0') {
@@ -137,7 +148,7 @@ const getDetailInfo = (id: number) => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <h1 style="font-size: 24px; margin: 15px 0">活动一览</h1>
     <el-form :model="form" label-width="auto" @submit.prevent="search">
       <div class="form-group">
@@ -189,7 +200,11 @@ const getDetailInfo = (id: number) => {
       </div>
     </div>
 
-    <el-form :model="form" label-width="auto">
+    <el-form
+      :model="form"
+      label-width="auto"
+      style="margin-top: 20px; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding: 20px"
+    >
       <div class="form-detail" v-if="showDetail">
         <div class="form-column">
           <el-form-item label="活动封面">
