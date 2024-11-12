@@ -204,8 +204,9 @@ const getDetailInfo = (id: number) => {
       :model="form"
       label-width="auto"
       style="margin-top: 20px; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding: 20px"
+      v-if="showDetail"
     >
-      <div class="form-detail" v-if="showDetail">
+      <div class="form-detail">
         <div class="form-column">
           <el-form-item label="活动封面">
             <el-image
@@ -318,6 +319,7 @@ const getDetailInfo = (id: number) => {
 
 <style scoped>
 .wrapper {
+  min-height: calc(100vh - 100px);
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;

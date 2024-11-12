@@ -3,6 +3,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { adDetailApi } from '@/api/api' // 确保API路径正确
 import { ElNotification } from 'element-plus'
 
+const loading = ref(false)
 const isShow = ref(false)
 const searchForm = reactive({
   current: 1,
@@ -55,11 +56,15 @@ const getDetail = (id: number) => {
 }
 
 const fetchAdList = async () => {
+  loading.value = true
   const res = await adDetailApi(searchForm)
   if (res.data.code == '0') {
     ElNotification.success('查询成功')
     isShow.value = false
     items.value = res.data.data.records
+    setTimeout(() => {
+      loading.value = false
+    }, 1000)
   } else {
     ElNotification.error(res.data.message)
   }
@@ -67,7 +72,7 @@ const fetchAdList = async () => {
 </script>
 
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       广告一览
     </h1>
@@ -233,6 +238,7 @@ const fetchAdList = async () => {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
+  min-height: calc(100vh - 100px);
 }
 
 .scroll-container {

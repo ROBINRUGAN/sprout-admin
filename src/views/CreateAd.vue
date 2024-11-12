@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-loading="loading">
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       广告发布
     </h1>
@@ -130,6 +130,7 @@ import UploadFile from '@/components/UploadFile.vue' // 确保路径正确
 import { getFacultyApi, putAdApi } from '@/api/api' // 确保API路径正确
 import { ElNotification } from 'element-plus'
 
+const loading = ref(false)
 const form = reactive({
   adType: null,
   wordsContent: '',
@@ -156,6 +157,7 @@ const keywordCount = computed(() => {
 })
 
 const submitForm = async () => {
+  loading.value = true
   form.keywordsCount = keywordCount.value
   const res = await putAdApi(form)
   if (res.data.code == '0') {
@@ -163,6 +165,9 @@ const submitForm = async () => {
   } else {
     ElNotification.error(res.data.message)
   }
+  setTimeout(() => {
+    loading.value = false
+  }, 1000)
 }
 
 const colleges = ref([])
@@ -187,7 +192,7 @@ onBeforeMount(() => {
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 20px;
-  /* height: 85vh; */
+  min-height: calc(100vh - 100px);
 }
 
 .grid-container {
