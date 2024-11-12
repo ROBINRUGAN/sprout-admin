@@ -1,4 +1,5 @@
 import router from '@/router'
+import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 import { ElNotification } from 'element-plus'
 import { ref } from 'vue'
@@ -16,13 +17,11 @@ const hasExpired = ref(false)
 service.interceptors.request.use(
   (config) => {
     config.headers['Access-Control-Allow-Origin'] = '*'
-    const authString = window.localStorage.getItem('auth')
-    let token = ''
-    if (authString) {
-      const auth = JSON.parse(authString)
-      token = auth.token
-      // console.log(token)
-    }
+
+    const authStore = useAuthStore()
+
+    const token = authStore.token
+
     if (token) {
       config.headers.token = token
     }
