@@ -85,7 +85,7 @@ const search = async () => {
   loading.value = true
   await getPastApi(searchForm).then((res) => {
     if (res.data.code == '0') {
-      ElNotification.success('查询成功')
+      ElNotification.success('搜索任务成功')
       items.value = res.data.data.records
       showDetail.value = false
       showSon.value = false
@@ -208,7 +208,16 @@ const getDetailInfo = (id: number) => {
       <div class="form-detail" v-if="showDetail">
         <div class="form-column">
           <el-form-item label="活动封面">
-            <el-image style="height: 100px" :src="form.taskImages" fit="cover" />
+            <el-image
+              style="
+                height: 180px;
+                width: 180px;
+                box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.5);
+                border-radius: 5px;
+              "
+              :src="form.taskImages"
+              fit="cover"
+            />
           </el-form-item>
           <el-form-item label="任务对象年级">
             <el-input v-model="form.requiresGrade" disabled />
