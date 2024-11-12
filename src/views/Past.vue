@@ -214,7 +214,6 @@ const getDetailInfo = async (id: number) => {
 
     <el-form
       :model="form"
-      label-width="auto"
       style="margin-top: 20px; box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); padding: 20px"
       v-if="showDetail"
     >
@@ -232,13 +231,13 @@ const getDetailInfo = async (id: number) => {
               fit="cover"
             />
           </el-form-item>
-          <el-form-item label="任务对象年级">
+          <el-form-item label="年级">
             <el-input v-model="form.requiresGrade" disabled />
           </el-form-item>
-          <el-form-item label="任务对象所在学院">
+          <el-form-item label="学院">
             <el-input v-model="form.requiresFaculty" disabled />
           </el-form-item>
-          <el-form-item label="任务对象专业">
+          <el-form-item label="专业">
             <el-input v-model="form.requiresMajor" disabled />
           </el-form-item>
           <el-form-item label="任务名称">
@@ -282,9 +281,9 @@ const getDetailInfo = async (id: number) => {
           <el-form-item label="任务奖励">
             <div class="reward-container">
               <div>
-                <span>小水滴</span>
+                <span style="margin-right: 20px">小水滴</span>
                 <el-input-number
-                  style="margin-left: 20px"
+                  style="width: 110px"
                   v-model="form.water"
                   :min="0"
                   :max="10"
@@ -292,9 +291,9 @@ const getDetailInfo = async (id: number) => {
                 />
               </div>
               <div>
-                <span>小铲子</span>
+                <span style="margin-right: 20px">小铲子</span>
                 <el-input-number
-                  style="margin-left: 20px"
+                  style="width: 110px"
                   v-model="form.chan"
                   :min="0"
                   :max="10"
@@ -302,9 +301,9 @@ const getDetailInfo = async (id: number) => {
                 />
               </div>
               <div>
-                <span>小树苗</span>
+                <span style="margin-right: 20px">小树苗</span>
                 <el-input-number
-                  style="margin-left: 20px"
+                  style="width: 110px"
                   v-model="form.tree"
                   :min="0"
                   :max="10"
@@ -312,9 +311,9 @@ const getDetailInfo = async (id: number) => {
                 />
               </div>
               <div>
-                <span>积&nbsp;&nbsp;&nbsp;分</span>
+                <span style="margin-right: 20px">积&nbsp;&nbsp;&nbsp;分</span>
                 <el-input-number
-                  style="margin-left: 20px"
+                  style="width: 110px"
                   v-model="form.taskPoints"
                   :min="1"
                   :max="10"
