@@ -1,22 +1,24 @@
 <template>
   <!-- Part 1 -->
   <div class="part1">
-    <img src="@/assets/login/logo.png" class="logo" />
-    <h1>新苗同学</h1>
-    <h2>你的大学生活助手</h2>
-    <el-carousel :height="carouselHeight" class="carousel" arrow="never">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <img :src="`./src/assets/official/carousel${item}.png`" class="carousel-img" />
-      </el-carousel-item>
-    </el-carousel>
-    <div class="entrance">
-      <div class="android">
-        <img src="@/assets/official/android.svg" />
-        <span>Download for Android</span>
-      </div>
-      <div class="manage">
-        <span>Enter Manage Center</span>
-        <img src="@/assets/official/manage.png" />
+    <div class="container">
+      <img src="@/assets/login/logo.png" class="logo" />
+      <h1>新苗同学</h1>
+      <h2>你的大学生活助手</h2>
+      <el-carousel :height="carouselHeight" class="carousel" arrow="never">
+        <el-carousel-item v-for="item in 4" :key="item">
+          <img :src="`./src/assets/official/carousel${item}.png`" class="carousel-img" />
+        </el-carousel-item>
+      </el-carousel>
+      <div class="entrance">
+        <div class="android">
+          <img src="@/assets/official/android.svg" />
+          <span>Download for Android</span>
+        </div>
+        <div class="manage">
+          <span>Enter Manage Center</span>
+          <img src="@/assets/official/manage.png" />
+        </div>
       </div>
     </div>
   </div>
@@ -37,7 +39,23 @@
   <div class="part3">
     <img src="@/assets/official/sprout.png" />
     <img class="group" src="@/assets/official/group_phone.png" />
-    <img class="group" src="@/assets/official/group_web.png" />
+    <div>
+      <div class="devices">
+        <div>
+          <img src="@/assets/official/client.png" />
+          <p>客户端</p>
+        </div>
+        <div>
+          <img src="@/assets/official/admin.png" />
+          <p>管理端</p>
+        </div>
+        <div>
+          <img src="@/assets/official/more.png" />
+          <p>敬请期待</p>
+        </div>
+      </div>
+      <img src="@/assets/official/group_web.png" style="width: 60%" />
+    </div>
   </div>
 
   <!-- Part 4 -->
@@ -62,14 +80,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 60px;
+  margin-bottom: 60px;
 }
+
 .part1 {
   padding-top: 80px;
   text-align: center;
-  background: linear-gradient(to right, #ccf783, #b4fdff),
-    linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
-  background-blend-mode: multiply;
+  background: linear-gradient(to right, #ccf783, #b4fdff);
+}
+.part1 > .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
 }
 .logo {
   position: absolute;
@@ -88,7 +113,7 @@
   // todo 修改指示器样式
 }
 .carousel-img {
-  width: 90%;
+  height: 100%;
 }
 .entrance {
   display: flex;
@@ -162,6 +187,33 @@
 
 .part3 .group {
   width: 80%;
+}
+.part3 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
+  justify-content: space-evenly;
+}
+.devices {
+  width: 330px;
+}
+.devices > div {
+  width: 250px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 25px;
+  box-shadow: 5px 5px 15px 0px rgba(0, 0, 0, 0.12);
+  margin-bottom: 20px;
+  padding: 12px 25px 12px 25px;
+  border-radius: 5px;
+}
+.devices > div:nth-child(2) {
+  margin-left: auto;
+}
+.devices img {
+  width: 40px;
 }
 
 .part4 > h1 {
