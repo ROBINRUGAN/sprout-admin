@@ -25,7 +25,7 @@
 
   <!-- Part 2 -->
   <div class="part2">
-    <h1>强大、有趣、稳定、便捷</h1>
+    <h1>强大、有趣、稳定、便捷。</h1>
     <div class="grid">
       <div v-for="(intro, index) in intros" :key="index" class="intro-item">
         <img :src="intro.img" alt="Intro Image" class="intro-img" />
@@ -37,7 +37,7 @@
 
   <!-- Part 3 -->
   <div class="part3">
-    <img src="@/assets/official/sprout.png" />
+    <img src="@/assets/official/sprout.png" style="width: 30%; min-width: 250px" />
     <img class="group" src="@/assets/official/group_phone.png" />
     <div>
       <div class="devices">
@@ -62,8 +62,8 @@
   <div class="part4">
     <h1>期待我们能做出更精彩的事情。</h1>
     <div class="stat">
-      <p><span class="number">18 +</span><span class="desc">用户</span></p>
-      <p><span class="number">88 +</span><span class="desc">五星好评</span></p>
+      <p><span class="number">18+</span><span class="desc">用户</span></p>
+      <p><span class="number">88+</span><span class="desc">五星好评</span></p>
     </div>
     <p class="contact">联系我们</p>
     <p>Sprout新苗团队</p>
@@ -81,6 +81,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 60px;
+  font-family: 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .part1 {
@@ -156,6 +157,13 @@
 .part2 {
   margin-top: 80px;
   margin-bottom: 80px;
+}
+.part2 p {
+  text-align: center;
+}
+.intro-content {
+  // 保留换行
+  white-space: pre-line;
 }
 .grid {
   margin-top: 80px;
