@@ -5,7 +5,7 @@
       <img src="@/assets/login/logo.png" class="logo" />
       <h1>新苗同学</h1>
       <h2>你的大学生活助手</h2>
-      <el-carousel :height="carouselHeight" class="carousel" arrow="never">
+      <el-carousel :height="carouselHeight" class="carousel" indicator-position="none">
         <el-carousel-item v-for="item in 4" :key="item">
           <img :src="`./src/assets/official/carousel${item}.png`" class="carousel-img" />
         </el-carousel-item>
