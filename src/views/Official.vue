@@ -11,11 +11,11 @@
         </el-carousel-item>
       </el-carousel>
       <div class="entrance">
-        <div class="android">
+        <div class="android" @click="downloadAndroid">
           <img src="@/assets/official/android.svg" />
           <span>Download for Android</span>
         </div>
-        <div class="manage">
+        <div class="manage" @click="$router.push('/login')">
           <span>Enter Manage Center</span>
           <img src="@/assets/official/manage.png" />
         </div>
@@ -111,7 +111,6 @@
 }
 .carousel {
   width: 70%;
-  // todo 修改指示器样式
 }
 .carousel-img {
   height: 100%;
@@ -276,6 +275,11 @@ onMounted(async () => {
   updateCarouselHeight()
   window.addEventListener('resize', updateCarouselHeight, false)
 })
+
+const downloadAndroid = () => {
+  window.location.href =
+    'https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/8458f780-d023-4e7c-a6a7-9632a25395ed.APK'
+}
 
 interface Intro {
   img: string
