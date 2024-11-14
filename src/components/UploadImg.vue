@@ -33,10 +33,10 @@ const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
 const beforeUpload = (file: { type: string; size: number }) => {
-  const allowedTypes = ['image/jpeg', 'image/png']
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif']
   const isAllowedType = allowedTypes.includes(file.type)
   if (!isAllowedType) {
-    ElNotification.error('只允许上传jpg, png, jpeg 格式的文件')
+    ElNotification.error('只允许上传jpg, png, jpeg, gif 格式的文件')
     return false
   }
   const isLt500M = file.size / 1024 / 1024 < 50
