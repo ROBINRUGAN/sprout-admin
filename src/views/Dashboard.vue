@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard" v-loading="loading">
     <!-- 日活数据 -->
     <div class="userData animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
       <h1>👏 欢迎回来</h1>
@@ -119,13 +119,13 @@ import { nextTick, onMounted, ref } from 'vue'
 import Stats from '@/components/Stats.vue'
 import InfoItem from '@/components/InfoItem.vue'
 import RegisterPie from '@/components/RegisterPie.vue'
-import { ElIcon } from 'element-plus'
+import { ElIcon, ElNotification } from 'element-plus'
 import { useToolSelectStore } from '@/stores/toolSelectStore'
 import { getTaskCountApi } from '@/api/api'
 
 const count = ref(0)
 const toolSelect = useToolSelectStore()
-
+const loading = ref(false)
 function isFocused(index: number) {
   return toolSelect.focused === index
 }
@@ -141,8 +141,15 @@ function getRandomDelay() {
 
 // 页面加载完成后获取数据
 onMounted(async () => {
+  loading.value = true
   await getTaskCountApi().then((res) => {
-    count.value = res.data.data
+    if (res.data.code !== '0') {
+      ElNotification.error('获取任务数量失败')
+      return
+    } else {
+      count.value = res.data.data
+    }
+    loading.value = false
   })
 })
 </script>

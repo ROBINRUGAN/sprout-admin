@@ -66,9 +66,12 @@ const onSubmit = async () => {
   form.requiresAudit = form.requiresAudit ? 1 : 0
   form.taskRewards = form.water + ',' + form.chan + ',' + form.tree
   form.taskDescription = form.taskDescription1 + '\n' + form.taskDescription2
-  if (form.taskRequiresType === 3 || form.taskRequiresType === 4) {
+  if (form.taskRequiresType === 4) {
     if (form.taskLatitude === '' || form.taskLongitude === '' || form.taskRadius === '') {
       ElNotification.error('请填写完整的地点信息')
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
       return
     }
     form.taskRectangle = form.taskLongitude + ',' + form.taskLatitude + ',' + form.taskRadius
@@ -306,7 +309,10 @@ onBeforeMount(async () => {
                 <el-option label="开学后" :value="2" />
               </el-select>
             </el-form-item>
-            <el-form-item label="图片打卡" v-if="form.faorson === 0 || form.parentId === 0">
+            <el-form-item
+              label="图片打卡"
+              v-if="(form.faorson === 0 || form.parentId === 0) && form.taskRequiresType == 5"
+            >
               <el-select v-model="form.requiresPhoto" placeholder="请选择...">
                 <el-option label="不需要" :value="0" />
                 <el-option label="物品" :value="1" />

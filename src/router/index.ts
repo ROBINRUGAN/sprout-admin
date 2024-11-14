@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
+import Official from '@/views/Official.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -10,7 +11,7 @@ const router = createRouter({
     },
     {
       path: '/',
-      redirect: '/home'
+      component: Official
     },
     {
       path: '/home',
@@ -18,7 +19,7 @@ const router = createRouter({
       children: [
         {
           path: 'dashboard',
-          redirect:'/home/dashboard/main',
+          redirect: '/home/dashboard/main',
           component: () => import('../views/Dashboard.vue'),
           children: [
             {
@@ -32,8 +33,7 @@ const router = createRouter({
             {
               path: 'ad',
               component: () => import('../components/Ad.vue')
-            }
-            ,
+            },
             {
               path: 'where',
               component: () => import('../components/Where.vue')
@@ -65,7 +65,7 @@ const router = createRouter({
           component: () => import('../views/CheckActivity.vue')
         }
       ],
-      redirect:'home/dashboard'
+      redirect: 'home/dashboard'
     }
   ]
 })

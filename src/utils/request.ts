@@ -8,7 +8,9 @@ import { ref } from 'vue'
 export const service = axios.create({
   baseURL: `https://sprout.mewtopia.cn/`,
   timeout: 20000, // 超时时间
-  withCredentials: false // 是否允许带cookie
+  withCredentials: false, // 是否允许带cookie
+  maxContentLength: Infinity,
+  maxBodyLength: Infinity
 })
 
 const hasExpired = ref(false)
