@@ -7,6 +7,10 @@ const gifSrc = ref('https://mewww.w2fzu.com//upmew/o-gif-logo.gif')
 
 const gifDuration = 2400
 
+const gotoQQ = () => {
+  window.open('https://qm.qq.com/q/jONou1zKNM')
+}
+
 const updateCarouselHeight = () => {
   const width =
     window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
@@ -192,7 +196,7 @@ const intros = ref<Intro[]>([
       <p><span class="number">88+</span><span class="desc">用户</span></p>
       <p><span class="number">68+</span><span class="desc">五星好评</span></p>
     </div>
-    <p class="contact">联系我们</p>
+    <p class="contact" @click="gotoQQ()">联系我们</p>
     <p style="color: gray; font-weight: bold">Sprout新苗团队</p>
     <p class="footer">地址：福建省福州市福州大学旗山校区</p>
     <p class="footer">©Sprout新苗 版权所有</p>
@@ -264,6 +268,7 @@ const intros = ref<Intro[]>([
   justify-content: space-between;
   border-radius: 40px;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 .android {
   padding: 8px;
@@ -272,10 +277,17 @@ const intros = ref<Intro[]>([
   border-width: 2px;
   background-color: white;
 }
+.android:hover {
+  transform: scale(1.05);
+}
 .manage {
   padding: 10px;
   background: linear-gradient(to right, #fff81d, #75f9fd);
 }
+.manage:hover {
+  transform: scale(1.05);
+}
+
 .android span,
 .manage span {
   text-align: center; // 使文字居中
@@ -369,14 +381,31 @@ const intros = ref<Intro[]>([
   margin-bottom: 60px;
 }
 .part4 > .stat > p {
+  position: relative; /* 确保父元素为 relative */
   width: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  // margin: 0 20px;
   padding: 40px;
-  box-shadow: 0px 0px 20px rgba(69, 158, 255, 0.4);
+  transition: transform 0.3s ease;
+  border-radius: 5px;
+  background-color: white;
 }
+
+.part4 > .stat > p::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  z-index: -2;
+  background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
+  filter: blur(15px);
+}
+
 .number {
   font-size: 40px;
   color: #459eff;
@@ -389,7 +418,13 @@ const intros = ref<Intro[]>([
   font-size: small;
   cursor: pointer;
   margin-bottom: 80px;
+  transition: all 0.3s ease;
 }
+// 变浅色
+.contact:hover {
+  background-color: #5ab3f7;
+}
+
 .footer {
   color: gray;
   font-size: small;
@@ -481,10 +516,14 @@ const intros = ref<Intro[]>([
   .part4 > .stat > p {
     width: 120px;
     padding: 20px;
-    box-shadow: 0px 0px 15px rgba(69, 158, 255, 0.4);
+    margin: 0 10px;
   }
   .number {
     font-size: 30px;
+  }
+
+  .desc {
+    font-size: 12px;
   }
 
   .part2 > h1,
