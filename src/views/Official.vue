@@ -1,4 +1,119 @@
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+
+const carouselHeight = ref('0px')
+const isLoading = ref(true)
+const gifSrc = ref('https://mewww.w2fzu.com//upmew/o-gif-logo.gif')
+
+const gifDuration = 2400
+
+const updateCarouselHeight = () => {
+  const width =
+    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+  carouselHeight.value = width * 0.7 /* carousel宽度的比例 */ * 0.6 + 'px'
+}
+
+// 检查所有图片是否加载完成
+const checkImagesLoaded = () => {
+  const images = Array.from(document.images)
+  const loadedImages = images.filter((img) => img.complete && img.naturalWidth !== 0)
+  return images.length === loadedImages.length
+}
+
+const waitForImages = () => {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      if (checkImagesLoaded()) {
+        clearInterval(interval)
+        resolve(true)
+      }
+    }, 100) // 每隔100ms检查一次图片是否加载完成
+  })
+}
+
+onMounted(async () => {
+  // 记录 GIF 开始播放的时间
+  const gifStartTime = Date.now()
+
+  // 开始加载其他图片
+  await waitForImages()
+
+  // 计算 GIF 的播放时间
+  const elapsedTime = Date.now() - gifStartTime
+
+  // 计算剩余时间，使其为 gifDuration 的整倍数，且不小于 gifDuration
+  let remainingTime = gifDuration - (elapsedTime % gifDuration)
+  if (remainingTime < gifDuration) {
+    remainingTime += gifDuration
+  }
+
+  // 延时等待 GIF 播放完成
+  setTimeout(() => {
+    const loadingLayer = document.querySelector('.loading-layer')
+    if (loadingLayer) {
+      loadingLayer.classList.add('fade-out')
+    }
+
+    // 在动画结束后彻底隐藏遮罩
+    setTimeout(() => {
+      isLoading.value = false
+    }, 500) // CSS transition 时间
+  }, remainingTime)
+
+  updateCarouselHeight()
+  window.addEventListener('resize', updateCarouselHeight, false)
+})
+
+const downloadAndroid = () => {
+  window.location.href =
+    'https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/8458f780-d023-4e7c-a6a7-9632a25395ed.APK'
+}
+
+interface Intro {
+  img: string
+  title: string
+  content: string
+}
+
+const intros = ref<Intro[]>([
+  {
+    img: new URL('../assets/official/game.png', import.meta.url).href,
+    title: '游戏化任务',
+    content: '创新的游戏化设计\n提升用户体验'
+  },
+  {
+    img: new URL('../assets/official/AI.png', import.meta.url).href,
+    title: 'AI识别',
+    content: '支持人脸识别、姿态识别、物品识别等AI识别功能'
+  },
+  {
+    img: new URL('../assets/official/earn.png', import.meta.url).href,
+    title: '多元盈利',
+    content: '多元化盈利模式\n具有商业可持续性'
+  },
+  {
+    img: new URL('../assets/official/fullsvc.png', import.meta.url).href,
+    title: '全面服务',
+    content:
+      '支持查询学校信息、报修设备、在活动评论区交流、查询个人成绩排名、参考选课意见等全面校园服务'
+  },
+  {
+    img: new URL('../assets/official/vsbdata.png', import.meta.url).href,
+    title: '可视化数据',
+    content: '管理端提供日活、广告、学生注册地区、学生学院等信息的可视化查询功能'
+  },
+  {
+    img: new URL('../assets/official/managable.png', import.meta.url).href,
+    title: '支持管理',
+    content: '管理员可以通过管理员账号在PC端、手机端管理平台信息'
+  }
+])
+</script>
+
 <template>
+  <div v-if="isLoading" class="loading-layer">
+    <img :src="gifSrc" width="300px" alt="Loading" />
+  </div>
   <!-- Part 1 -->
   <div class="part1">
     <div class="container">
@@ -17,16 +132,16 @@
       </h2>
       <el-carousel :height="carouselHeight" class="carousel" indicator-position="none">
         <el-carousel-item>
-          <img src="../assets/official/carousel1.png" class="carousel-img" />
+          <img src="https://mewww.w2fzu.com//upmew/carousel1.png" class="carousel-img" />
         </el-carousel-item>
         <el-carousel-item>
-          <img src="../assets/official/carousel2.png" class="carousel-img" />
+          <img src="https://mewww.w2fzu.com//upmew/carousel2.png" class="carousel-img" />
         </el-carousel-item>
         <el-carousel-item>
-          <img src="../assets/official/carousel3.png" class="carousel-img" />
+          <img src="https://mewww.w2fzu.com//upmew/carousel3.png" class="carousel-img" />
         </el-carousel-item>
         <el-carousel-item>
-          <img src="../assets/official/carousel4.png" class="carousel-img" />
+          <img src="https://mewww.w2fzu.com//upmew/carousel4.png" class="carousel-img" />
         </el-carousel-item>
       </el-carousel>
       <div class="entrance">
@@ -66,7 +181,7 @@
   <!-- Part 3 -->
   <div class="part3">
     <!-- <img src="../assets/official/sprout.png" style="width: 30%; min-width: 250px" /> -->
-    <img class="group" src="../assets/official/group_phone.png" />
+    <img class="group" src="https://mewww.w2fzu.com//upmew/group_phone.png" />
     <div>
       <div class="devices">
         <div>
@@ -82,7 +197,7 @@
           <p>敬请期待</p>
         </div>
       </div>
-      <img src="../assets/official/group_web.png" style="width: 60%" />
+      <img src="https://mewww.w2fzu.com//upmew/group_web.png" style="width: 60%" />
     </div>
   </div>
 
@@ -290,65 +405,27 @@
   font-size: small;
   margin-top: 10px;
 }
-</style>
-<script lang="ts" setup>
-import { ref, onMounted } from 'vue'
 
-const carouselHeight = ref('0px')
-const updateCarouselHeight = () => {
-  // carousel 的默认高度是固定的，这边手动更新
-  const width =
-    window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
-  carouselHeight.value = width * 0.7 /* carousel宽度的比例 */ * 0.6 + 'px'
-}
+.loading-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
 
-onMounted(async () => {
-  updateCarouselHeight()
-  window.addEventListener('resize', updateCarouselHeight, false)
-})
-
-const downloadAndroid = () => {
-  window.location.href =
-    'https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/8458f780-d023-4e7c-a6a7-9632a25395ed.APK'
-}
-
-interface Intro {
-  img: string
-  title: string
-  content: string
-}
-
-const intros = ref<Intro[]>([
-  {
-    img: new URL('../assets/official/game.png', import.meta.url).href,
-    title: '游戏化任务',
-    content: '创新的游戏化设计\n提升用户体验'
-  },
-  {
-    img: new URL('../assets/official/AI.png', import.meta.url).href,
-    title: 'AI识别',
-    content: '支持人脸识别、姿态识别、物品识别等AI识别功能'
-  },
-  {
-    img: new URL('../assets/official/earn.png', import.meta.url).href,
-    title: '多元盈利',
-    content: '多元化盈利模式\n具有商业可持续性'
-  },
-  {
-    img: new URL('../assets/official/fullsvc.png', import.meta.url).href,
-    title: '全面服务',
-    content:
-      '支持查询学校信息、报修设备、在活动评论区交流、查询个人成绩排名、参考选课意见等全面校园服务'
-  },
-  {
-    img: new URL('../assets/official/vsbdata.png', import.meta.url).href,
-    title: '可视化数据',
-    content: '管理端提供日活、广告、学生注册地区、学生学院等信息的可视化查询功能'
-  },
-  {
-    img: new URL('../assets/official/managable.png', import.meta.url).href,
-    title: '支持管理',
-    content: '管理员可以通过管理员账号在PC端、手机端管理平台信息'
+  &.fade-out {
+    opacity: 0;
+    visibility: hidden;
   }
-])
-</script>
+}
+</style>
