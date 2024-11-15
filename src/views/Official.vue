@@ -118,7 +118,7 @@ const intros = ref<Intro[]>([
   <div class="part1">
     <div class="container">
       <img src="../assets/login/logo.png" class="logo" />
-      <img src="../assets/official/title.png" style="width: 660px" />
+      <img src="../assets/official/title.png" class="app_title" />
       <h2
         style="
           background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
@@ -197,7 +197,7 @@ const intros = ref<Intro[]>([
           <p>敬请期待</p>
         </div>
       </div>
-      <img src="https://mewww.w2fzu.com//upmew/group_web.png" style="width: 60%" />
+      <img src="https://mewww.w2fzu.com//upmew/group_web.png" class="group2" />
     </div>
   </div>
 
@@ -205,8 +205,8 @@ const intros = ref<Intro[]>([
   <div class="part4">
     <h1>期待我们能做出更精彩的事情。</h1>
     <div class="stat">
-      <p><span class="number">18+</span><span class="desc">用户</span></p>
-      <p><span class="number">88+</span><span class="desc">五星好评</span></p>
+      <p><span class="number">88+</span><span class="desc">用户</span></p>
+      <p><span class="number">68+</span><span class="desc">五星好评</span></p>
     </div>
     <p class="contact">联系我们</p>
     <p style="color: gray; font-weight: bold">Sprout新苗团队</p>
@@ -248,6 +248,9 @@ const intros = ref<Intro[]>([
   border: solid white 5px;
   border-radius: 100%;
 }
+.app_title {
+  width: 660px;
+}
 .part1 > h2 {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -284,6 +287,7 @@ const intros = ref<Intro[]>([
   border-style: solid;
   border-color: #102e6c;
   border-width: 2px;
+  background-color: white;
 }
 .manage {
   padding: 10px;
@@ -347,6 +351,9 @@ const intros = ref<Intro[]>([
   align-items: center;
   width: 80%;
   justify-content: space-evenly;
+}
+.group2 {
+  width: 60%;
 }
 .devices {
   width: 330px;
@@ -426,6 +433,73 @@ const intros = ref<Intro[]>([
   &.fade-out {
     opacity: 0;
     visibility: hidden;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .app_title {
+    width: 360px;
+  }
+
+  .entrance {
+    flex-direction: column;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+  }
+
+  .android,
+  .manage {
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    width: 95%;
+    padding: 10px;
+  }
+  .grid > .intro-item {
+    padding: 10px;
+  }
+
+  .part3 > div {
+    flex-direction: column;
+    margin: 10px;
+  }
+  .group2 {
+    width: 100%;
+  }
+  .devices {
+    width: 300px;
+  }
+  .devices > div {
+    width: 220px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 25px;
+    box-shadow: 5px 5px 15px 0px rgba(0, 0, 0, 0.12);
+    margin-bottom: 20px;
+    padding: 12px 25px 12px 25px;
+    border-radius: 5px;
+  }
+  .devices > div:nth-child(2) {
+    margin-left: auto;
+  }
+  .devices img {
+    width: 40px;
+  }
+
+  .part4 > .stat {
+    gap: 15px;
+  }
+  .part4 > .stat > p {
+    width: 120px;
+    padding: 20px;
+    box-shadow: 0px 0px 15px rgba(69, 158, 255, 0.4);
+  }
+  .number {
+    font-size: 30px;
   }
 }
 </style>
