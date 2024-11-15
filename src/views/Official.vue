@@ -10,6 +10,10 @@ const gifDuration = 2400
 const updateCarouselHeight = () => {
   const width =
     window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+  if (width < 768) {
+    carouselHeight.value = width * 0.6 + 'px'
+    return
+  }
   carouselHeight.value = width * 0.7 /* carousel宽度的比例 */ * 0.6 + 'px'
 }
 
@@ -94,13 +98,12 @@ const intros = ref<Intro[]>([
   {
     img: new URL('../assets/official/fullsvc.png', import.meta.url).href,
     title: '全面服务',
-    content:
-      '支持查询学校信息、报修设备、在活动评论区交流、查询个人成绩排名、参考选课意见等全面校园服务'
+    content: '支持查询学校信息、报修设备、在活动评论区交流等全面校园服务'
   },
   {
     img: new URL('../assets/official/vsbdata.png', import.meta.url).href,
     title: '可视化数据',
-    content: '管理端提供日活、广告、学生注册地区、学生学院等信息的可视化查询功能'
+    content: '管理端提供日活、广告、学生信息等可视化查询功能'
   },
   {
     img: new URL('../assets/official/managable.png', import.meta.url).href,
@@ -118,18 +121,8 @@ const intros = ref<Intro[]>([
   <div class="part1">
     <div class="container">
       <img src="../assets/login/logo.png" class="logo" />
-      <img src="../assets/official/title.png" style="width: 660px" />
-      <h2
-        style="
-          background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          font-size: 28px;
-          margin: 20px 0;
-        "
-      >
-        你的智能大学生活助手
-      </h2>
+      <img src="../assets/official/title.png" class="app_title" />
+      <h2 class="colored_text">你的智能大学生活助手</h2>
       <el-carousel :height="carouselHeight" class="carousel" indicator-position="none">
         <el-carousel-item>
           <img src="https://mewww.w2fzu.com//upmew/carousel1.png" class="carousel-img" />
@@ -159,16 +152,7 @@ const intros = ref<Intro[]>([
 
   <!-- Part 2 -->
   <div class="part2">
-    <h1
-      style="
-        background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 28px;
-      "
-    >
-      强大、有趣、稳定、便捷。
-    </h1>
+    <h1 class="colored_text">强大、有趣、稳定、便捷。</h1>
     <div class="grid">
       <div v-for="(intro, index) in intros" :key="index" class="intro-item">
         <img :src="intro.img" alt="Intro Image" class="intro-img" />
@@ -197,7 +181,7 @@ const intros = ref<Intro[]>([
           <p>敬请期待</p>
         </div>
       </div>
-      <img src="https://mewww.w2fzu.com//upmew/group_web.png" style="width: 60%" />
+      <img src="https://mewww.w2fzu.com//upmew/group_web.png" class="group2" />
     </div>
   </div>
 
@@ -205,8 +189,8 @@ const intros = ref<Intro[]>([
   <div class="part4">
     <h1>期待我们能做出更精彩的事情。</h1>
     <div class="stat">
-      <p><span class="number">18+</span><span class="desc">用户</span></p>
-      <p><span class="number">88+</span><span class="desc">五星好评</span></p>
+      <p><span class="number">88+</span><span class="desc">用户</span></p>
+      <p><span class="number">68+</span><span class="desc">五星好评</span></p>
     </div>
     <p class="contact">联系我们</p>
     <p style="color: gray; font-weight: bold">Sprout新苗团队</p>
@@ -248,9 +232,11 @@ const intros = ref<Intro[]>([
   border: solid white 5px;
   border-radius: 100%;
 }
-.part1 > h2 {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.app_title {
+  width: 300px;
+}
+.part1 h2 {
+  margin: 20px 0;
 }
 .carousel {
   width: 70%;
@@ -284,6 +270,7 @@ const intros = ref<Intro[]>([
   border-style: solid;
   border-color: #102e6c;
   border-width: 2px;
+  background-color: white;
 }
 .manage {
   padding: 10px;
@@ -347,6 +334,9 @@ const intros = ref<Intro[]>([
   align-items: center;
   width: 80%;
   justify-content: space-evenly;
+}
+.group2 {
+  width: 60%;
 }
 .devices {
   width: 330px;
@@ -426,6 +416,80 @@ const intros = ref<Intro[]>([
   &.fade-out {
     opacity: 0;
     visibility: hidden;
+  }
+}
+
+.colored_text {
+  background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 28px;
+}
+
+@media screen and (max-width: 768px) {
+  .app_title {
+    width: 200px;
+  }
+  .carousel {
+    width: 100%;
+  }
+  .entrance {
+    flex-direction: column;
+    box-shadow: none;
+    border: none;
+    background-color: transparent;
+  }
+
+  .android,
+  .manage {
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    width: 95%;
+    padding: 10px;
+  }
+  .grid > .intro-item {
+    padding: 10px;
+  }
+
+  .part3 > div {
+    flex-direction: column;
+    margin: 10px;
+  }
+  .group2 {
+    width: 100%;
+  }
+  .devices {
+    width: 300px;
+  }
+  .devices > div {
+    width: 220px;
+  }
+  .devices > div:nth-child(2) {
+    margin-left: auto;
+  }
+  .devices img {
+    width: 40px;
+  }
+
+  .part4 > .stat {
+    gap: 15px;
+  }
+  .part4 > .stat > p {
+    width: 120px;
+    padding: 20px;
+    box-shadow: 0px 0px 15px rgba(69, 158, 255, 0.4);
+  }
+  .number {
+    font-size: 30px;
+  }
+
+  .part2 > h1,
+  .part4 > h1 {
+    font-size: 22px;
   }
 }
 </style>
