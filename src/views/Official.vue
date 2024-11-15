@@ -10,6 +10,10 @@ const gifDuration = 2400
 const updateCarouselHeight = () => {
   const width =
     window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+  if (width < 768) {
+    carouselHeight.value = width * 0.6 + 'px'
+    return
+  }
   carouselHeight.value = width * 0.7 /* carousel宽度的比例 */ * 0.6 + 'px'
 }
 
@@ -94,13 +98,12 @@ const intros = ref<Intro[]>([
   {
     img: new URL('../assets/official/fullsvc.png', import.meta.url).href,
     title: '全面服务',
-    content:
-      '支持查询学校信息、报修设备、在活动评论区交流、查询个人成绩排名、参考选课意见等全面校园服务'
+    content: '支持查询学校信息、报修设备、在活动评论区交流等全面校园服务'
   },
   {
     img: new URL('../assets/official/vsbdata.png', import.meta.url).href,
     title: '可视化数据',
-    content: '管理端提供日活、广告、学生注册地区、学生学院等信息的可视化查询功能'
+    content: '管理端提供日活、广告、学生信息等可视化查询功能'
   },
   {
     img: new URL('../assets/official/managable.png', import.meta.url).href,
@@ -119,17 +122,7 @@ const intros = ref<Intro[]>([
     <div class="container">
       <img src="../assets/login/logo.png" class="logo" />
       <img src="../assets/official/title.png" class="app_title" />
-      <h2
-        style="
-          background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          font-size: 28px;
-          margin: 20px 0;
-        "
-      >
-        你的智能大学生活助手
-      </h2>
+      <h2 class="colored_text">你的智能大学生活助手</h2>
       <el-carousel :height="carouselHeight" class="carousel" indicator-position="none">
         <el-carousel-item>
           <img src="https://mewww.w2fzu.com//upmew/carousel1.png" class="carousel-img" />
@@ -159,16 +152,7 @@ const intros = ref<Intro[]>([
 
   <!-- Part 2 -->
   <div class="part2">
-    <h1
-      style="
-        background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 28px;
-      "
-    >
-      强大、有趣、稳定、便捷。
-    </h1>
+    <h1 class="colored_text">强大、有趣、稳定、便捷。</h1>
     <div class="grid">
       <div v-for="(intro, index) in intros" :key="index" class="intro-item">
         <img :src="intro.img" alt="Intro Image" class="intro-img" />
@@ -249,11 +233,10 @@ const intros = ref<Intro[]>([
   border-radius: 100%;
 }
 .app_title {
-  width: 660px;
+  width: 300px;
 }
-.part1 > h2 {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.part1 h2 {
+  margin: 20px 0;
 }
 .carousel {
   width: 70%;
@@ -436,11 +419,21 @@ const intros = ref<Intro[]>([
   }
 }
 
+.colored_text {
+  background: linear-gradient(to right, #0090f7, #ba62fc, #f2416b);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 28px;
+}
+
 @media screen and (max-width: 768px) {
   .app_title {
-    width: 360px;
+    width: 200px;
   }
-
+  .carousel {
+    width: 100%;
+  }
   .entrance {
     flex-direction: column;
     box-shadow: none;
@@ -474,14 +467,6 @@ const intros = ref<Intro[]>([
   }
   .devices > div {
     width: 220px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 25px;
-    box-shadow: 5px 5px 15px 0px rgba(0, 0, 0, 0.12);
-    margin-bottom: 20px;
-    padding: 12px 25px 12px 25px;
-    border-radius: 5px;
   }
   .devices > div:nth-child(2) {
     margin-left: auto;
@@ -500,6 +485,11 @@ const intros = ref<Intro[]>([
   }
   .number {
     font-size: 30px;
+  }
+
+  .part2 > h1,
+  .part4 > h1 {
+    font-size: 22px;
   }
 }
 </style>
