@@ -1,14 +1,69 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/authStore'
 const authStore = useAuthStore()
 const loginData = ref({
   username: '',
   password: ''
 })
+
+const gifDuration = 2400
+const isLoading = ref(true)
+const gifSrc = ref('https://mewww.w2fzu.com//upmew/o-gif-logo.gif')
+
+// 检查所有图片是否加载完成
+const checkImagesLoaded = () => {
+  const images = Array.from(document.images)
+  const loadedImages = images.filter((img) => img.complete && img.naturalWidth !== 0)
+  return images.length === loadedImages.length
+}
+
+const waitForImages = () => {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      if (checkImagesLoaded()) {
+        clearInterval(interval)
+        resolve(true)
+      }
+    }, 100) // 每隔100ms检查一次图片是否加载完成
+  })
+}
+
+onMounted(async () => {
+  // 记录 GIF 开始播放的时间
+  const gifStartTime = Date.now()
+
+  // 开始加载其他图片
+  await waitForImages()
+
+  // 计算 GIF 的播放时间
+  const elapsedTime = Date.now() - gifStartTime
+
+  // 计算剩余时间，使其为 gifDuration 的整倍数，且不小于 gifDuration
+  let remainingTime = gifDuration - (elapsedTime % gifDuration)
+  if (remainingTime < gifDuration) {
+    remainingTime += gifDuration
+  }
+
+  // 延时等待 GIF 播放完成
+  setTimeout(() => {
+    const loadingLayer = document.querySelector('.loading-layer')
+    if (loadingLayer) {
+      loadingLayer.classList.add('fade-out')
+    }
+
+    // 在动画结束后彻底隐藏遮罩
+    setTimeout(() => {
+      isLoading.value = false
+    }, 500) // CSS transition 时间
+  }, remainingTime)
+})
 </script>
 
 <template>
+  <div v-if="isLoading" class="loading-layer">
+    <img :src="gifSrc" width="300px" alt="Loading" />
+  </div>
   <div class="background">
     <el-row class="wrapper">
       <el-col :span="12" class="left">
@@ -49,6 +104,29 @@ const loginData = ref({
 </template>
 
 <style lang="scss" scoped>
+.loading-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition:
+    opacity 0.5s ease,
+    visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
+
+  &.fade-out {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 .form {
   display: flex;
   flex-direction: column;

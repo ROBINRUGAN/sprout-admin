@@ -54,7 +54,8 @@ textarea {
 }
 
 .el-loading-spinner .circular {
-  background: url('https://mewww.w2fzu.com/upmew/cat.gif');
+  /* background: url('https://mewww.w2fzu.com/upmew/cat.gif'); */
+  background: url('https://mewww.w2fzu.com//upmew/t-gif-logo.gif');
   background-size: cover;
   animation: none !important;
   transform: none;
