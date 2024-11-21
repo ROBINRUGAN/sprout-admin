@@ -171,3 +171,10 @@ export const getAdClickApi = (id: string) => {
     url: `/api/new-sprout/admin/v1/stats/ad-click?adId=${id}`
   })
 }
+
+export const getStudentRegisterMapApi = () => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/student-register-map`
+  })
+}
