@@ -13,11 +13,14 @@ const showMewch = async () => {
     return
   }
 
+  let hasError = false // 标志位，检测是否发生错误
+
   // 获取任务完成情况
   await getTaskCompletionApi(studentAccount.value).then((res) => {
     console.log(res)
     if (res.data.code !== '0') {
       ElNotification.error(res.data.message || '未查询到结果！')
+      hasError = true // 标记发生错误
       return
     } else {
       // 格式化任务数据，将完成状态转换为对应的中文状态
@@ -27,10 +30,10 @@ const showMewch = async () => {
         parentTaskName: task.parentTaskName
       }))
       taskData.value = data
-      mewch.value = true
-      ElNotification.success('查询成功')
     }
   })
+
+  if (hasError) return // 如果任务查询出错，停止后续查询
 
   // 获取用户信息
   await getUserInfoApi(studentAccount.value).then((res) => {
