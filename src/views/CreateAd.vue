@@ -7,7 +7,7 @@
       <div class="grid-container">
         <div class="grid-item">
           <!-- 广告类型 -->
-          <el-form-item label="广告类型">
+          <!-- <el-form-item label="广告类型">
             <el-select v-model="form.adType" placeholder="请选择">
               <el-option label="文本" :value="1"></el-option>
               <el-option label="图片" :value="2"></el-option>
@@ -15,12 +15,12 @@
               <el-option label="文本+图片" :value="4"></el-option>
               <el-option label="文本+视频" :value="5"></el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
 
           <!-- 文本内容 -->
-          <el-form-item label="文本内容">
+          <!-- <el-form-item label="文本内容">
             <el-input v-model="form.wordsContent" type="textarea"></el-input>
-          </el-form-item>
+          </el-form-item> -->
 
           <!-- 图片/视频内容 -->
           <el-form-item label="图片/视频内容">
@@ -132,7 +132,7 @@ import { ElNotification } from 'element-plus'
 
 const loading = ref(false)
 const form = reactive({
-  adType: null,
+  adType: 2,
   wordsContent: '',
   imgContent: '',
   linkUrl: '',

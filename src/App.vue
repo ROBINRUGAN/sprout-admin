@@ -59,8 +59,8 @@ textarea {
   background-size: cover;
   animation: none !important;
   transform: none;
-  width: 100px !important;
-  height: 100px !important;
+  width: 150px !important;
+  height: 150px !important;
 }
 
 .el-loading-spinner .path {
