@@ -323,7 +323,14 @@ const getTaskInfo = (id: number, item: any) => {
             </p>
 
             <p v-if="taskInfo.auditsStatus !== null" style="margin-left: 20px">
-              <strong>审核状态：</strong>{{ taskInfo.auditsStatus === 0 ? '不通过' : '通过' }}
+              <strong>审核状态：</strong
+              >{{
+                taskInfo.auditsStatus === 2
+                  ? '不通过'
+                  : taskInfo.auditsStatus === 1
+                    ? '通过'
+                    : '暂未审核'
+              }}
             </p>
           </div>
         </div>
@@ -365,9 +372,9 @@ const getTaskInfo = (id: number, item: any) => {
             <el-descriptions-item label="提交图片" v-if="taskInfo.photo">
               <!-- <el-descriptions-item label="提交图片" > -->
               <el-image
-                src="taskInfo.photo"
+                :src="taskInfo.photo"
                 fit="cover"
-                style="width: 100px; height: 100px"
+                style="width: 100px; height: 100px; border-radius: 10px"
                 :preview-src-list="[taskInfo.photo]"
               />
             </el-descriptions-item>
