@@ -9,7 +9,17 @@ const loading = ref(false)
 
 // 处理文件变更的事件
 const handleFileChange = (file, files) => {
+  const allowedFormats = ['.xlsx', '.xls']
+  const maxSize = 5 * 1024 * 1024 // 最大文件限制
+
+  if (!allowedFormats.some(format => file.name.endsWith(format))) {
+    ElNotification.error('文件格式不正确，仅支持 .xlsx 或 .xls 文件')
+    resetFileList()
+    return false
+  }
+  
   fileList.value = files // 更新文件列表
+  return true
 }
 
 // 确认导入的处理函数
@@ -27,14 +37,34 @@ const submitUpload = async () => {
   formData.append('file', fileList.value[0].raw) // 只处理第一个文件
   console.log('上传文件:', fileList.value[0].raw)
   // 这里是你的上传逻辑，替换成你的API调用
-  const res = await AddStuApi(formData)
-  console.log(res)
-  if (res.data.code === '0') {
-    ElNotification.success('导入成功')
+  try {
+    // 调用 API 上传文件
+    const res = await AddStuApi(formData)
+    console.log(res)
+
+    // 根据响应结果显示通知
+    if (res.data.code === '0') {
+      ElNotification.success('导入成功')
+      resetFileList()
+    } else {
+      ElNotification.error(`导入失败：${res.data.message || '未知错误'}`)
+      resetFileList()
+    }
+  } catch (error) {
+    // 捕获异常并显示通知
+    console.error('上传失败:', error)
+    ElNotification.error(`上传失败：${error.response?.data?.message || error.message || '服务器异常'}`)
+  } finally {
+    // 确保结束加载状态
     setTimeout(() => {
       loading.value = false
     }, 1000)
   }
+}
+
+// 清空文件列表
+const resetFileList = () => {
+  fileList.value = []
 }
 </script>
 
