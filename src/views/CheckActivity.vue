@@ -348,9 +348,11 @@ const getTaskInfo = (id: number, item: any) => {
             <el-descriptions-item label="父任务ID" v-if="taskInfo.parentTaskId">{{
               taskInfo.parentTaskId
             }}</el-descriptions-item> -->
-            <el-descriptions-item label="定位信息" v-if="taskInfo.location != '-1'">{{
-              taskInfo.location
-            }}</el-descriptions-item>
+            <el-descriptions-item
+              label="定位信息"
+              v-if="taskInfo.location != '-1' && taskInfo.location != null"
+              >{{ taskInfo.location }}</el-descriptions-item
+            >
             <el-descriptions-item label="提交备注" v-if="taskInfo.submitNote">{{
               taskInfo.submitNote
             }}</el-descriptions-item>
@@ -361,7 +363,13 @@ const getTaskInfo = (id: number, item: any) => {
               taskInfo.auditsAdminId
             }}</el-descriptions-item> -->
             <el-descriptions-item label="提交图片" v-if="taskInfo.photo">
-              <el-image :src="taskInfo.photo" fit="cover" style="width: 100px; height: 100px" />
+              <!-- <el-descriptions-item label="提交图片" > -->
+              <el-image
+                src="taskInfo.photo"
+                fit="cover"
+                style="width: 100px; height: 100px"
+                :preview-src-list="[taskInfo.photo]"
+              />
             </el-descriptions-item>
           </el-descriptions>
         </div>

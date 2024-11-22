@@ -234,10 +234,7 @@ onBeforeMount(async () => {
             </el-form-item>
             <el-form-item
               label="地点半径(m)"
-              v-if="
-                (form.faorson === 0 || form.parentId === 0) &&
-                (form.taskRequiresType === 3 || form.taskRequiresType === 4)
-              "
+              v-if="(form.faorson === 0 || form.parentId === 0) && form.taskRequiresType === 4"
             >
               <el-input v-model="form.taskRadius" placeholder="请输入..." />
             </el-form-item>
