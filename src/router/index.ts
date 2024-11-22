@@ -67,6 +67,10 @@ const router = createRouter({
         {
           path: 'checkActivity',
           component: () => import('../views/CheckActivity.vue')
+        },
+        {
+          path: 'goods',
+          component: () => import('../views/Goods.vue')
         }
       ],
       redirect: 'home/dashboard'
