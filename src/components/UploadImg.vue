@@ -8,7 +8,7 @@
     :on-remove="handleRemove"
     :on-success="handleSuccess"
     :on-change="handleChange"
-    :limit="2"
+    :limit="1"
     :auto-upload="true"
   >
     <el-icon><Plus /></el-icon>

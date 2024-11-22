@@ -210,20 +210,17 @@ onBeforeMount(async () => {
             </el-form-item>
             <el-form-item label="任务方式" v-if="form.faorson === 0 || form.parentId === 0">
               <el-select v-model="form.taskRequiresType" placeholder="请选择...">
-                <el-option label="其他" :value="0" />
-                <el-option label="答题" :value="1" />
+                <!-- <el-option label="其他" :value="0" /> -->
+                <el-option label="问卷答题" :value="1" />
                 <el-option label="浏览网页" :value="2" />
-                <el-option label="摄像头打卡" :value="3" />
+                <el-option label="摄像头扫码" :value="3" />
                 <el-option label="定位打卡" :value="4" />
                 <el-option label="图片打卡" :value="5" />
               </el-select>
             </el-form-item>
             <el-form-item
               label="任务地点"
-              v-if="
-                (form.faorson === 0 || form.parentId === 0) &&
-                (form.taskRequiresType === 3 || form.taskRequiresType === 4)
-              "
+              v-if="(form.faorson === 0 || form.parentId === 0) && form.taskRequiresType === 4"
             >
               <el-button @click="mapVisible = true">打开地图定位</el-button>
               <el-dialog
@@ -237,10 +234,7 @@ onBeforeMount(async () => {
             </el-form-item>
             <el-form-item
               label="地点半径(m)"
-              v-if="
-                (form.faorson === 0 || form.parentId === 0) &&
-                (form.taskRequiresType === 3 || form.taskRequiresType === 4)
-              "
+              v-if="(form.faorson === 0 || form.parentId === 0) && form.taskRequiresType === 4"
             >
               <el-input v-model="form.taskRadius" placeholder="请输入..." />
             </el-form-item>
@@ -268,7 +262,15 @@ onBeforeMount(async () => {
             <el-form-item label="任务简介">
               <el-input v-model="form.taskDescription1" />
             </el-form-item>
-            <el-form-item label="任务描述">
+            <el-form-item
+              :label="
+                form.taskRequiresType === 1
+                  ? '答题链接'
+                  : form.taskRequiresType === 2
+                    ? '网页链接'
+                    : '任务描述'
+              "
+            >
               <el-input v-model="form.taskDescription2" type="textarea" :rows="4" />
             </el-form-item>
           </div>
@@ -281,15 +283,15 @@ onBeforeMount(async () => {
               <div class="reward-inputs">
                 <div>
                   <span style="margin-right: 20px">小水滴</span>
-                  <el-input-number style="width: 130px" v-model="form.water" :min="0" :max="10" />
+                  <el-input-number style="width: 130px" v-model="form.water" :min="0" :max="1000" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">小铲子</span>
-                  <el-input-number style="width: 130px" v-model="form.chan" :min="0" :max="10" />
+                  <el-input-number style="width: 130px" v-model="form.chan" :min="0" :max="1000" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">小树苗</span>
-                  <el-input-number style="width: 130px" v-model="form.tree" :min="0" :max="10" />
+                  <el-input-number style="width: 130px" v-model="form.tree" :min="0" :max="1000" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">积&nbsp;&nbsp;&nbsp;分</span>
@@ -297,7 +299,7 @@ onBeforeMount(async () => {
                     style="width: 130px"
                     v-model="form.taskPoints"
                     :min="0"
-                    :max="10"
+                    :max="1000"
                   />
                 </div>
               </div>

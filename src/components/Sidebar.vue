@@ -41,6 +41,11 @@
       <el-icon><setting /></el-icon>
       <template #title>管理广告</template>
     </el-menu-item>
+
+    <el-menu-item index="/home/goods">
+      <el-icon><ShoppingTrolley /></el-icon>
+      <template #title>管理商品</template>
+    </el-menu-item>
   </el-menu>
 </template>
 

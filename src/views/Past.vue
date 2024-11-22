@@ -286,7 +286,7 @@ const getDetailInfo = async (id: number) => {
                   style="width: 110px"
                   v-model="form.water"
                   :min="0"
-                  :max="10"
+                  :max="1000"
                   disabled
                 />
               </div>
@@ -296,7 +296,7 @@ const getDetailInfo = async (id: number) => {
                   style="width: 110px"
                   v-model="form.chan"
                   :min="0"
-                  :max="10"
+                  :max="1000"
                   disabled
                 />
               </div>
@@ -306,7 +306,7 @@ const getDetailInfo = async (id: number) => {
                   style="width: 110px"
                   v-model="form.tree"
                   :min="0"
-                  :max="10"
+                  :max="1000"
                   disabled
                 />
               </div>
@@ -316,7 +316,7 @@ const getDetailInfo = async (id: number) => {
                   style="width: 110px"
                   v-model="form.taskPoints"
                   :min="1"
-                  :max="10"
+                  :max="1000"
                   disabled
                 />
               </div>

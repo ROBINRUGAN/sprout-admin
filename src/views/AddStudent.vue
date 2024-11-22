@@ -61,7 +61,9 @@ const submitUpload = async () => {
       :on-change="handleFileChange"
       accept=".xlsx, .xls"
     >
-      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+      <el-icon class="el-icon--upload">
+        <img src="https://mewww.w2fzu.com//upmew/cat.gif" alt="" width="100" />
+      </el-icon>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <template v-slot:tip>
         <div class="el-upload__tip">只能上传Excel文件</div>
