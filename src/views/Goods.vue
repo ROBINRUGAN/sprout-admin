@@ -4,7 +4,7 @@ import { getProductsApi, getProductApi, addProductApi } from '@/api/api'
 import { ElNotification, ElMessageBox } from 'element-plus'
 import UploadImg from '@/components/UploadImg.vue'
 
-const loading = ref(false)
+const loading = ref(true)
 const products = ref([])
 const selectedProduct = reactive({
   id: 0,
@@ -34,13 +34,15 @@ const fetchProducts = async () => {
     const response = await (await getProductsApi()).data
     if (response.success) {
       products.value = response.data
+      ElNotification.success({ title: '成功', message: '获取商品列表成功' })
+      setTimeout(() => {
+        loading.value = false
+      }, 1000)
     } else {
       ElNotification.error({ title: '错误', message: response.message || '获取商品列表失败' })
     }
   } catch (error) {
     ElNotification.error({ title: '错误', message: '网络错误，请稍后重试' })
-  } finally {
-    loading.value = false
   }
 }
 
@@ -103,7 +105,7 @@ onMounted(() => {
         <img :src="item.productImg" alt="" class="card-image" />
         <div class="card-content">
           <div class="card-title">{{ item.productName }}</div>
-          <div class="card-description">{{ item.productIntroduction }}</div>
+          <div class="ellipsis card-description">{{ item.productIntroduction }}</div>
           <div class="card-points">所需积分: {{ item.needPoints }}</div>
           <div class="card-stocks">库存: {{ item.stocks }}</div>
         </div>
@@ -205,6 +207,14 @@ onMounted(() => {
   max-height: 300px;
   display: flex;
   margin-bottom: 16px;
-  object-fit: contain; /* 确保图片按比例缩放且完整显示 */
+  object-fit: contain;
+}
+.ellipsis {
+  display: -webkit-box; /* 需要结合 -webkit-line-clamp 使用 */
+  -webkit-line-clamp: 1; /* 限制显示的行数 */
+  -webkit-box-orient: vertical; /* 必须结合 line-clamp */
+  overflow: hidden; /* 超出部分隐藏 */
+  text-overflow: ellipsis; /* 超出部分用省略号表示 */
+  white-space: normal; /* 防止单行时使用 nowrap */
 }
 </style>

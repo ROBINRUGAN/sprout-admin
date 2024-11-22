@@ -283,15 +283,15 @@ onBeforeMount(async () => {
               <div class="reward-inputs">
                 <div>
                   <span style="margin-right: 20px">小水滴</span>
-                  <el-input-number style="width: 130px" v-model="form.water" :min="0" :max="10" />
+                  <el-input-number style="width: 130px" v-model="form.water" :min="0" :max="1000" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">小铲子</span>
-                  <el-input-number style="width: 130px" v-model="form.chan" :min="0" :max="10" />
+                  <el-input-number style="width: 130px" v-model="form.chan" :min="0" :max="1000" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">小树苗</span>
-                  <el-input-number style="width: 130px" v-model="form.tree" :min="0" :max="10" />
+                  <el-input-number style="width: 130px" v-model="form.tree" :min="0" :max="1000" />
                 </div>
                 <div>
                   <span style="margin-right: 20px">积&nbsp;&nbsp;&nbsp;分</span>
@@ -299,7 +299,7 @@ onBeforeMount(async () => {
                     style="width: 130px"
                     v-model="form.taskPoints"
                     :min="0"
-                    :max="10"
+                    :max="1000"
                   />
                 </div>
               </div>
