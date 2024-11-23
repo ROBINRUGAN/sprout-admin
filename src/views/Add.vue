@@ -355,9 +355,9 @@ onBeforeMount(async () => {
                 <el-option label="双手比x" :value="10" />
               </el-select>
             </el-form-item>
-            <el-form-item label="是否人工审核" v-if="form.faorson === 0 || form.parentId === 0">
+            <!-- <el-form-item label="是否人工审核" v-if="form.faorson === 0 || form.parentId === 0">
               <el-switch v-model="form.requiresAudit" active-text="是" inactive-text="否" />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="优先级">
               <el-slider
                 v-model="form.taskPriority"
