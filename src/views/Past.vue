@@ -228,6 +228,7 @@ const getDetailInfo = async (id: number) => {
                 border-radius: 5px;
               "
               :src="form.taskImages"
+              :preview-src-list="[form.taskImages]"
               fit="cover"
             />
           </el-form-item>

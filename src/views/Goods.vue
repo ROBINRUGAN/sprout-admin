@@ -113,12 +113,25 @@ onMounted(() => {
     </div>
 
     <!-- 商品详情弹框 -->
-    <el-dialog v-model="showDialog" title="商品详情">
-      <img :src="selectedProduct.productImg" alt="" class="dialog-image" />
-      <p><strong>商品名称：</strong>{{ selectedProduct.productName }}</p>
-      <p><strong>商品介绍：</strong>{{ selectedProduct.productIntroduction }}</p>
-      <p><strong>所需积分：</strong>{{ selectedProduct.needPoints }}</p>
-      <p><strong>库存：</strong>{{ selectedProduct.stocks }}</p>
+    <el-dialog v-model="showDialog" title="商品详情" style="min-width: 400px; max-width: 500px">
+      <div style="width: 100%; justify-content: center; display: flex">
+        <el-image
+          :src="selectedProduct.productImg"
+          :preview-src-list="[selectedProduct.productImg]"
+          alt=""
+          style="height: 200px"
+          class="dialog-image"
+        />
+      </div>
+
+      <el-divider />
+
+      <p style="padding: 5px 0"><strong>商品名称：</strong>{{ selectedProduct.productName }}</p>
+      <p style="padding: 5px 0">
+        <strong>商品介绍：</strong>{{ selectedProduct.productIntroduction }}
+      </p>
+      <p style="padding: 5px 0"><strong>所需积分：</strong>{{ selectedProduct.needPoints }}</p>
+      <p style="padding: 5px 0"><strong>库存：</strong>{{ selectedProduct.stocks }}</p>
       <template v-slot:footer>
         <span>
           <el-button @click="showDialog = false">关闭</el-button>
@@ -202,13 +215,7 @@ onMounted(() => {
   font-size: 0.9em;
   margin-top: 4px;
 }
-.dialog-image {
-  width: 100%;
-  max-height: 300px;
-  display: flex;
-  margin-bottom: 16px;
-  object-fit: contain;
-}
+
 .ellipsis {
   display: -webkit-box; /* 需要结合 -webkit-line-clamp 使用 */
   -webkit-line-clamp: 1; /* 限制显示的行数 */
