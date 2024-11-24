@@ -7,6 +7,9 @@ const loginData = ref({
   password: ''
 })
 
+// 添加按钮状态
+const isSubmitting = ref(false)
+
 const gifDuration = 2400
 const isLoading = ref(true)
 const gifSrc = ref('https://mewww.w2fzu.com//upmew/o-gif-logo.gif')
@@ -16,6 +19,19 @@ const checkImagesLoaded = () => {
   const images = Array.from(document.images)
   const loadedImages = images.filter((img) => img.complete && img.naturalWidth !== 0)
   return images.length === loadedImages.length
+}
+
+// 登录方法
+const handleLogin = async () => {
+  if (isSubmitting.value) return // 防止重复提交
+  isSubmitting.value = true
+  try {
+    await authStore.Login(loginData.value) // 登录逻辑
+  } catch (error) {
+    console.error('登录失败:', error)
+  } finally {
+    isSubmitting.value = false // 恢复按钮状态
+  }
 }
 
 const waitForImages = () => {
@@ -92,10 +108,12 @@ onMounted(async () => {
               name="password"
               id="password"
               v-model="loginData.password"
-              @keydown.enter="authStore.Login(loginData)"
+              @keydown.enter="handleLogin"
               placeholder="密码"
             />
-            <button @click="authStore.Login(loginData)">登录</button>
+            <button :disabled="isSubmitting" @click="handleLogin">
+              {{ isSubmitting ? '登录中...' : '登录' }}
+            </button>
           </div>
         </div>
       </el-col>
@@ -160,6 +178,10 @@ button:hover {
 }
 button:active {
   background: #4f8980;
+}
+button:disabled {
+  background: gray;
+  cursor: not-allowed;
 }
 
 .logo {
