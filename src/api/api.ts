@@ -224,22 +224,35 @@ export const addProductApi = (data: any) => {
   })
 }
 
-/*
-请求数据格式
-{
-    "productName": "string",
-    "productImg": "string",
-    "productIntroduction": "string",
-    "needPoints": 0,
-    "stocks": 0
+export const getAnnouncementListApi = () => {
+  return service.request({
+    method: 'get',
+    url: `/api/new-sprout/admin/v1/stats/announcement-list`
+  })
 }
-
-
+/*
 返回结果格式
 {
-    "code": "",
-    "message": "",
-    "data": null,
-    "requestId": ""
+    "code": "0",
+    "message": null,
+    "data": [
+        {
+            “id”: 1,
+            "type": "audit",
+            "name": "新苗任务十——识别水壶",
+            "auditsStatus": 2, //0-待审核 1-审核通过 2-审核不通过
+            "submitterName": "徐煜晖"
+        },
+        {
+            "id": 2,
+            "type": "audit",
+            "name": "新苗任务十一——识别笔记本电脑",
+            "auditsStatus": 1,
+            "submitterName": "徐煜晖"
+        }
+    ],
+    "requestId": null,
+    "success": true
 }
+
 */
