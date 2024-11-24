@@ -66,6 +66,8 @@ export const useAuthStore = defineStore(
       token,
       username,
       id,
+      colleges,
+      majors,
       setToken,
       Login,
       Logout,

@@ -89,16 +89,18 @@
 
     <!-- 信息模块 -->
     <div class="info animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
-      <InfoItem type="info"> 欢迎每一位新苗er～ </InfoItem>
-      <InfoItem type="activity"> 任务“新苗任务一——浏览网页”开始啦 </InfoItem>
-      <InfoItem type="activity"> 任务“新苗任务二——查看项目”开始啦 </InfoItem>
-      <InfoItem type="activity"> 任务“新苗单项任务测试”开始啦 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务三——定位打卡 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务四 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务五 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务六 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务七 </InfoItem>
-      <InfoItem type="info"> 快去发布广告吧～ </InfoItem>
+      <h1 style="margin-bottom: 10px">自动审核结果</h1>
+      <InfoItem type="msg">
+        <div style="display: flex; justify-content: center; align-items: center">
+          <p>新苗管理员辛苦了～</p>
+          &nbsp;&nbsp;
+          <span style="font-size: 20px">🍔🍣🌮🍗🍦🥤🍩</span>
+        </div>
+      </InfoItem>
+
+      <InfoItem v-for="(item, index) in announcements" :key="index" :type="item.type">
+        <strong>{{ item.submitter }}</strong> 🫱 {{ item.name }}
+      </InfoItem>
     </div>
 
     <!-- Bottompart模块 -->
@@ -121,7 +123,7 @@ import InfoItem from '@/components/InfoItem.vue'
 import RegisterPie from '@/components/RegisterPie.vue'
 import { ElIcon, ElNotification } from 'element-plus'
 import { useToolSelectStore } from '@/stores/toolSelectStore'
-import { getTaskCountApi } from '@/api/api'
+import { getAnnouncementListApi, getTaskCountApi } from '@/api/api'
 
 const count = ref(0)
 const toolSelect = useToolSelectStore()
@@ -139,9 +141,55 @@ function getRandomDelay() {
   return (Math.random() * 0.5).toFixed(2) // 0 到 0.5 秒之间的随机延迟
 }
 
+// 定义数据状态
+const announcements = ref([])
+
+// 格式化接口返回的数据并排序
+const formatAnnouncements = (data) => {
+  return data
+    .map((item) => {
+      if (item.type === 'audit') {
+        const statusMap = {
+          0: { type: 'unaudited', label: '待审' },
+          1: { type: 'passed', label: '通过' },
+          2: { type: 'rejected', label: '拒绝' }
+        }
+        const status = statusMap[item.auditsStatus] || {}
+        return {
+          type: status.type,
+          submitter: item.submitterName,
+          name: item.name,
+          auditsStatus: item.auditsStatus // 添加状态字段用于排序
+        }
+      }
+      return null // 过滤掉无效数据
+    })
+    .filter(Boolean) // 去掉 null 数据
+    .sort((a: { type: string | number }, b: { type: string | number }) => {
+      // 自定义排序逻辑：拒绝 > 待审 > 通过
+      const priorityMap = { rejected: 0, unaudited: 1, passed: 2 }
+      return priorityMap[a.type] - priorityMap[b.type]
+    })
+}
+
+// 获取公告列表
+const fetchAnnouncements = async () => {
+  try {
+    const response = await getAnnouncementListApi()
+    if (response.data && response.data.success) {
+      announcements.value = formatAnnouncements(response.data.data)
+    } else {
+      console.error('获取公告列表失败:', response.data.message)
+    }
+  } catch (error) {
+    console.error('接口请求失败:', error)
+  }
+}
+
 // 页面加载完成后获取数据
 onMounted(async () => {
   loading.value = true
+  await fetchAnnouncements()
   await getTaskCountApi().then((res) => {
     if (res.data.code !== '0') {
       ElNotification.error('获取任务数量失败')

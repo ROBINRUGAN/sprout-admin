@@ -172,6 +172,7 @@ onMounted(() => {
 })
 const getDetail = (data: any, index: number) => {
   showTask.value = false
+  showDetail.value = false
   loading.value = true
   getPastChildApi({
     id: data.id,
@@ -313,7 +314,11 @@ const getTaskInfo = (id: number, item: any) => {
       <div class="task-info-container">
         <!-- 左侧头像和审核部分 -->
         <div class="left-section">
-          <img :src="taskInfo.avatar" class="large-avatar" />
+          <el-image
+            :src="taskInfo.avatar"
+            :preview-src-list="[taskInfo.avatar]"
+            class="large-avatar"
+          />
           <el-button type="primary" @click="openAuditDialog" class="audit-button"
             >进行审核</el-button
           >

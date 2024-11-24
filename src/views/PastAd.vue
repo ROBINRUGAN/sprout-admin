@@ -142,7 +142,7 @@ const fetchAdList = async () => {
     <el-form ref="adForm" :model="form" disabled v-if="isShow" style="margin-top: 20px">
       <div class="form-grid">
         <div class="left-column">
-          <el-form-item label="广告类型">
+          <!-- <el-form-item label="广告类型">
             <el-select v-model="form.adType" placeholder="请选择">
               <el-option label="文本" :value="1"></el-option>
               <el-option label="图片" :value="2"></el-option>
@@ -150,13 +150,13 @@ const fetchAdList = async () => {
               <el-option label="文本+图片" :value="4"></el-option>
               <el-option label="文本+视频" :value="5"></el-option>
             </el-select>
+          </el-form-item> -->
+
+          <el-form-item label="广告标题">
+            <el-input v-model="form.wordsContent"></el-input>
           </el-form-item>
 
-          <el-form-item label="文本内容">
-            <el-input v-model="form.wordsContent" type="textarea"></el-input>
-          </el-form-item>
-
-          <el-form-item label="图片/视频内容">
+          <el-form-item label="广告图片" v-if="form.adType == 2 || form.adType == 4">
             <el-image
               style="
                 height: 200px;
@@ -165,6 +165,7 @@ const fetchAdList = async () => {
                 box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
               "
               :src="form.imgContent"
+              :preview-src-list="[form.imgContent]"
               fit="cover"
             />
           </el-form-item>
@@ -184,9 +185,7 @@ const fetchAdList = async () => {
               <el-option label="全部" :value="3"></el-option>
             </el-select>
           </el-form-item>
-        </div>
 
-        <div class="right-column">
           <el-form-item label="推送位置">
             <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
               <el-option label="消息推送" value="0"></el-option>
@@ -195,7 +194,9 @@ const fetchAdList = async () => {
               <el-option label="首页轮播图" value="3"></el-option>
             </el-select>
           </el-form-item>
+        </div>
 
+        <div class="right-column">
           <el-form-item label="目标学院">
             <el-input v-model="form.targetFacultyRange" placeholder="请选择..."></el-input>
           </el-form-item>

@@ -18,13 +18,15 @@
           </el-form-item> -->
 
           <!-- 文本内容 -->
-          <!-- <el-form-item label="文本内容">
-            <el-input v-model="form.wordsContent" type="textarea"></el-input>
-          </el-form-item> -->
+          <el-form-item label="广告标题">
+            <el-input v-model="form.wordsContent"></el-input>
+          </el-form-item>
 
-          <!-- 图片/视频内容 -->
-          <el-form-item label="图片/视频内容">
-            <UploadFile @urls="setURL"></UploadFile>
+          <!-- 广告 -->
+          <el-form-item label="广告图片">
+            <UploadImg @urls="setURL"></UploadImg>
+            <!-- 视频功能废弃 -->
+            <!-- <UploadFile @urls="setURL"></UploadFile> -->
           </el-form-item>
 
           <!-- 跳转链接 -->
@@ -129,6 +131,7 @@ import { ref, onBeforeMount, reactive, computed } from 'vue'
 import UploadFile from '@/components/UploadFile.vue' // 确保路径正确
 import { getFacultyApi, putAdApi } from '@/api/api' // 确保API路径正确
 import { ElNotification } from 'element-plus'
+import UploadImg from '@/components/UploadImg.vue'
 
 const loading = ref(false)
 const form = reactive({
