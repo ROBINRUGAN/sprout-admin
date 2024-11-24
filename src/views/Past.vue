@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { getPastApi, getPastChildApi } from '@/api/api'
 import { onMounted } from 'vue'
 import { ElNotification } from 'element-plus'
@@ -26,6 +26,8 @@ interface brief {
   Audit: false
   taskName: ''
   taskDescription: ''
+  taskDescription1: ''
+  taskDescription2: ''
   taskType: ''
   taskImages: ''
   taskPoints: 0
@@ -38,7 +40,9 @@ interface brief {
   taskPriority: 0
   requiresGrade: ''
   requiresFaculty: ''
+  requiresFacultyName: ''
   requiresMajor: ''
+  requiresMajorName: ''
   requiresPhoto: 0
   requiresAttitude: ''
   requiresItem: ''
@@ -60,6 +64,8 @@ const form = ref({
   taskName: '',
   Audit: false,
   taskDescription: '',
+  taskDescription1: '',
+  taskDescription2: '',
   taskType: '',
   taskImages: '',
   taskPoints: 0,
@@ -72,7 +78,9 @@ const form = ref({
   taskPriority: 0,
   requiresGrade: '',
   requiresFaculty: '',
+  requiresFacultyName: '',
   requiresMajor: '',
+  requiresMajorName: '',
   requiresPhoto: 0,
   requiresAttitude: '',
   requiresItem: '',
@@ -118,21 +126,16 @@ const getDetail = async (data: any, index: number) => {
       }, 1000)
       detailItems.value = res.data.data.subTaskList
       showSon.value = true
+      showDetail.value = false
 
       if (data.parentId == '0') {
         showDetail.value = true
         form.value = data
-        authStore.fetchColleges().then(() =>
-          authStore.fetchMajors(form.value.requiresFaculty).then(() => {
-            form.value.requiresFaculty = authStore.collegeName(form.value.requiresFaculty)
-            form.value.requiresMajor = authStore.majorName(form.value.requiresMajor)
 
-            form.value.Audit = form.value.requiresAudit === 1 ? true : false
-            form.value.water = parseInt(form.value.taskRewards.split(',')[0])
-            form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
-            form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
-          })
-        )
+        form.value.Audit = form.value.requiresAudit === 1 ? true : false
+        form.value.water = parseInt(form.value.taskRewards.split(',')[0])
+        form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
+        form.value.tree = parseInt(form.value.taskRewards.split(',')[2])
       }
     } else {
       ElNotification.error(res.data.message)
@@ -143,6 +146,7 @@ const getDetail = async (data: any, index: number) => {
 const getDetailInfo = async (id: number) => {
   showDetail.value = true
   form.value = detailItems.value[id]
+  console.log(form.value)
   await authStore.fetchColleges()
   await authStore.fetchMajors(form.value.requiresFaculty)
 
@@ -151,8 +155,10 @@ const getDetailInfo = async (id: number) => {
   } else {
     form.value.Audit = false
   }
-  form.value.requiresFaculty = authStore.collegeName(form.value.requiresFaculty)
-  form.value.requiresMajor = authStore.majorName(form.value.requiresMajor)
+  form.value.taskDescription1 = form.value.taskDescription.split('\n')[0]
+  form.value.taskDescription2 = form.value.taskDescription.split('\n')[1]
+  form.value.requiresFacultyName = authStore.collegeName(form.value.requiresFaculty)
+  form.value.requiresMajorName = authStore.majorName(form.value.requiresMajor)
   form.value.water = parseInt(detailItems.value[id].taskRewards.split(',')[0])
   form.value.chan = parseInt(detailItems.value[id].taskRewards.split(',')[1])
   form.value.tree = parseInt(detailItems.value[id].taskRewards.split(',')[2])
@@ -236,10 +242,10 @@ const getDetailInfo = async (id: number) => {
             <el-input v-model="form.requiresGrade" disabled />
           </el-form-item>
           <el-form-item label="学院">
-            <el-input v-model="form.requiresFaculty" disabled />
+            <el-input v-model="form.requiresFacultyName" disabled />
           </el-form-item>
           <el-form-item label="专业">
-            <el-input v-model="form.requiresMajor" disabled />
+            <el-input v-model="form.requiresMajorName" disabled />
           </el-form-item>
           <el-form-item label="任务名称">
             <el-input v-model="form.taskName" disabled />
@@ -273,12 +279,27 @@ const getDetailInfo = async (id: number) => {
               />
             </div>
           </el-form-item>
-          <el-form-item label="任务描述">
+          <!-- <el-form-item label="任务描述">
             <el-input v-model="form.taskDescription" type="textarea" :rows="6" disabled />
+          </el-form-item> -->
+
+          <el-form-item label="任务简介">
+            <el-input v-model="form.taskDescription1" disabled />
           </el-form-item>
         </div>
 
         <div class="form-column">
+          <el-form-item
+            :label="
+              form.taskRequiresType === 1
+                ? '答题链接'
+                : form.taskRequiresType === 2
+                  ? '网页链接'
+                  : '任务描述'
+            "
+          >
+            <el-input v-model="form.taskDescription2" type="textarea" :rows="4" disabled />
+          </el-form-item>
           <el-form-item label="任务奖励">
             <div class="reward-container">
               <div>
@@ -339,9 +360,9 @@ const getDetailInfo = async (id: number) => {
               <el-option label="其他" :value="4" />
             </el-select>
           </el-form-item>
-          <el-form-item label="是否人工审核">
+          <!-- <el-form-item label="是否人工审核">
             <el-switch v-model="form.Audit" active-text="是" inactive-text="否" disabled />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="优先级">
             <el-slider v-model="form.taskPriority" :step="1" :min="1" :max="5" disabled />
           </el-form-item>
