@@ -122,10 +122,37 @@ import RegisterPie from '@/components/RegisterPie.vue'
 import { ElIcon, ElNotification } from 'element-plus'
 import { useToolSelectStore } from '@/stores/toolSelectStore'
 import { getTaskCountApi } from '@/api/api'
+import { useRouter, useRoute } from 'vue-router';
 
 const count = ref(0)
 const toolSelect = useToolSelectStore()
 const loading = ref(false)
+const route = useRoute();
+const router = useRouter();
+
+// 根据路由更新选中状态
+function updateFocusByRoute() {
+  const path = route.path;
+
+  if (path.includes('/home/dashboard/main')) {
+    setFocus(1);
+  } else if (path.includes('/home/dashboard/find')) {
+    setFocus(2);
+  } else if (path.includes('/home/dashboard/where')) {
+    setFocus(3);
+  } else if (path.includes('/home/pastAd')) {
+    setFocus(4);
+  } else if (path.includes('/home/dashboard/ad')) {
+    setFocus(5);
+  }
+}
+
+// 监听页面变化
+onMounted(() => {
+  updateFocusByRoute(); // 初始化时检查路径
+  router.afterEach(updateFocusByRoute); // 每次路由变化时更新
+});
+
 function isFocused(index: number) {
   return toolSelect.focused === index
 }
