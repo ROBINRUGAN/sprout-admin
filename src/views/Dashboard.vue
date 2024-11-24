@@ -89,16 +89,17 @@
 
     <!-- 信息模块 -->
     <div class="info animate-shake" :style="{ animationDelay: `${getRandomDelay()}s` }">
-      <InfoItem type="info"> 欢迎每一位新苗er～ </InfoItem>
-      <InfoItem type="activity"> 任务“新苗任务一——浏览网页”开始啦 </InfoItem>
-      <InfoItem type="activity"> 任务“新苗任务二——查看项目”开始啦 </InfoItem>
-      <InfoItem type="activity"> 任务“新苗单项任务测试”开始啦 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务三——定位打卡 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务四 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务五 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务六 </InfoItem>
-      <InfoItem type="msg"> 你有新的审核：新苗任务七 </InfoItem>
-      <InfoItem type="info"> 快去发布广告吧～ </InfoItem>
+      <!-- 这个msg是写死的 -->
+      <InfoItem type="msg"> 新苗管理员辛苦了～ </InfoItem>
+      <InfoItem type="passed">
+        自动审核: <strong>徐煜晖</strong> ➡️ 新苗任务十四——识别吹风机
+      </InfoItem>
+      <InfoItem type="unaudited">
+        自动审核: <strong>徐煜晖</strong> ➡️ 新苗任务十四——识别吹风机
+      </InfoItem>
+      <InfoItem type="rejected">
+        自动审核: <strong>徐煜晖</strong> ➡️ 新苗任务十四——识别吹风机
+      </InfoItem>
     </div>
 
     <!-- Bottompart模块 -->
