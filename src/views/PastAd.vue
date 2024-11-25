@@ -161,12 +161,7 @@ const fetchAdList = async () => {
 
           <el-form-item label="广告图片" v-if="form.adType == 2 || form.adType == 4">
             <el-image
-              style="
-                height: 200px;
-                width: 200px;
-                border-radius: 5px;
-                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
-              "
+              class="detailed-image"
               :src="form.imgContent"
               :preview-src-list="[form.imgContent]"
               fit="cover"
@@ -319,6 +314,12 @@ const fetchAdList = async () => {
   padding: 0 8px;
   text-align: center;
 }
+.detailed-image {
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+}
 
 @media (max-width: 1024px) {
   .form-grid {
@@ -329,6 +330,32 @@ const fetchAdList = async () => {
 @media (max-width: 768px) {
   #time_range {
     flex-wrap: wrap;
+  }
+}
+@media (max-width: 768px) {
+  .detailed-image {
+    width: 100%;
+    height: fit-content;
+  }
+  :deep().el-form-item {
+    display: flex;
+    flex-direction: column;
+    align-items: start; /* 保持内容宽度自适应 */
+    margin-bottom: 5px;
+  }
+  .el-form-item .el-form-item__label {
+    text-align: left; /* 保持标签左对齐 */
+    margin-bottom: 5px; /* 增加标签与输入框之间的间距 */
+  }
+  .el-form-item .el-form-item__content {
+    width: 100%; /* 确保输入框或下拉框宽度充满父容器 */
+  }
+  .el-select,
+  .el-input,
+  .el-input-number,
+  .el-date-picker {
+    width: calc(100vw - 140px);
+    /* width: 50vw; 保证下拉框、输入框、时间选择器等控件宽度充满父容器 */
   }
 }
 </style>

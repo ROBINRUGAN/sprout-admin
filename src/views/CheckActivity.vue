@@ -322,60 +322,53 @@ const getTaskInfo = (id: number, item: any) => {
           <el-button type="primary" @click="openAuditDialog" class="audit-button"
             >进行审核</el-button
           >
-          <div style="display: flex; margin-top: 20px">
+          <div class="audit-info" style="margin-top: 20px">
             <p v-if="taskInfo.auditsSuggestion">
-              <strong>审核意见：</strong>{{ taskInfo.auditsSuggestion }}
+              <strong>审核意见：</strong>
+              <span>{{ taskInfo.auditsSuggestion }}</span>
             </p>
-
-            <p v-if="taskInfo.auditsStatus !== null" style="margin-left: 20px">
-              <strong>审核状态：</strong
-              >{{
-                taskInfo.auditsStatus === 2
-                  ? '不通过'
-                  : taskInfo.auditsStatus === 1
-                    ? '通过'
-                    : '暂未审核'
-              }}
+            <p v-if="taskInfo.auditsStatus !== null">
+              <strong>审核状态：</strong>
+              <span>
+                {{
+                  taskInfo.auditsStatus === 2
+                    ? '不通过'
+                    : taskInfo.auditsStatus === 1
+                      ? '通过'
+                      : '暂未审核'
+                }}
+              </span>
             </p>
           </div>
         </div>
         <!-- 右侧详细信息 -->
         <div class="right-section">
           <el-descriptions :column="1" class="details-info">
-            <el-descriptions-item label="用户ID" v-if="taskInfo.userId">{{
-              taskInfo.userId
-            }}</el-descriptions-item>
-            <el-descriptions-item label="用户名" v-if="taskInfo.username">{{
-              taskInfo.username
-            }}</el-descriptions-item>
-            <el-descriptions-item label="真实姓名" v-if="taskInfo.realName">{{
-              taskInfo.realName
-            }}</el-descriptions-item>
-            <el-descriptions-item label="学号" v-if="taskInfo.studentId">{{
-              taskInfo.studentId
-            }}</el-descriptions-item>
-            <!-- <el-descriptions-item label="任务ID" v-if="taskInfo.taskId">{{
-              taskInfo.taskId
-            }}</el-descriptions-item>
-            <el-descriptions-item label="父任务ID" v-if="taskInfo.parentTaskId">{{
-              taskInfo.parentTaskId
-            }}</el-descriptions-item> -->
+            <!-- <el-descriptions-item label="用户ID" v-if="taskInfo.userId">
+              {{ taskInfo.userId }}
+            </el-descriptions-item> -->
+            <el-descriptions-item label="用户名" v-if="taskInfo.username">
+              {{ taskInfo.username }}
+            </el-descriptions-item>
+            <el-descriptions-item label="真实姓名" v-if="taskInfo.realName">
+              {{ taskInfo.realName }}
+            </el-descriptions-item>
+            <el-descriptions-item label="学号" v-if="taskInfo.studentId">
+              {{ taskInfo.studentId }}
+            </el-descriptions-item>
             <el-descriptions-item
               label="定位信息"
               v-if="taskInfo.location != '-1' && taskInfo.location != null"
-              >{{ taskInfo.location }}</el-descriptions-item
             >
-            <el-descriptions-item label="提交备注" v-if="taskInfo.submitNote">{{
-              taskInfo.submitNote
-            }}</el-descriptions-item>
+              {{ taskInfo.location }}
+            </el-descriptions-item>
+            <el-descriptions-item label="提交备注" v-if="taskInfo.submitNote">
+              {{ taskInfo.submitNote }}
+            </el-descriptions-item>
             <el-descriptions-item label="任务提交时间" v-if="taskInfo.submitTime">
               {{ new Date(taskInfo.submitTime).toLocaleString() }}
             </el-descriptions-item>
-            <!-- <el-descriptions-item label="审核管理员ID" v-if="taskInfo.auditsAdminId">{{
-              taskInfo.auditsAdminId
-            }}</el-descriptions-item> -->
             <el-descriptions-item label="提交图片" v-if="taskInfo.photo">
-              <!-- <el-descriptions-item label="提交图片" > -->
               <el-image
                 :src="taskInfo.photo"
                 fit="cover"
@@ -515,6 +508,45 @@ const getTaskInfo = (id: number, item: any) => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .large-avatar {
+    width: 100px; /* 缩小头像尺寸 */
+    height: 100px;
+  }
+
+  .task-info-container {
+    flex-direction: column; /* 窄屏下改为垂直布局 */
+    align-items: flex-start; /* 左对齐 */
+    gap: 10px;
+  }
+
+  .el-descriptions {
+    width: 100%; /* 全宽显示 */
+  }
+
+  :deep(.el-descriptions__cell) {
+    display: flex; /* 强制换行 */
+    flex-wrap: wrap;
+    flex-direction: column; /* 换行显示 */
+    align-items: flex-start; /* 左对齐标签和内容 */
+  }
+
+  .el-descriptions__label {
+    font-weight: bold; /* 标签加粗 */
+    margin-bottom: 5px; /* 标签和内容间距 */
+  }
+
+  .audit-info {
+    display: flex;
+    flex-direction: column; /* 审核内容换行 */
+    align-items: flex-start;
+  }
+
+  .audit-info p {
+    margin: 5px 0; /* 审核信息的上下间距 */
   }
 }
 </style>
