@@ -131,7 +131,15 @@ const getDetail = async (data: any, index: number) => {
       if (data.parentId == '0') {
         showDetail.value = true
         form.value = data
+        authStore.fetchColleges().then(() => {
+          form.value.requiresFacultyName = authStore.collegeName(form.value.requiresFaculty)
+        })
+        authStore.fetchMajors(form.value.requiresFaculty).then(() => {
+          form.value.requiresMajorName = authStore.majorName(form.value.requiresMajor)
+        })
 
+        form.value.taskDescription1 = form.value.taskDescription.split('\n')[0]
+        form.value.taskDescription2 = form.value.taskDescription.split('\n')[1]
         form.value.Audit = form.value.requiresAudit === 1 ? true : false
         form.value.water = parseInt(form.value.taskRewards.split(',')[0])
         form.value.chan = parseInt(form.value.taskRewards.split(',')[1])
