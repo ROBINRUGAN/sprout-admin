@@ -60,6 +60,9 @@ const getDetail = (id: number) => {
       form.value.targetFacultyRange = authStore.collegeName(form.value.targetFacultyRange)
       form.value.targetGradeRange =
         form.value.targetGradeRange == '-1' ? '全部' : form.value.targetGradeRange
+      form.value.linkUrl = form.value.linkUrl == '-1' ? '无跳转捏' : form.value.linkUrl
+      form.value.targetGradeRange =
+        form.value.targetGradeRange == '-1' ? '全部' : form.value.targetGradeRange
     })
   )
 }
