@@ -91,7 +91,7 @@ const fetchAdList = async () => {
     <!-- 查询部分 -->
     <el-form :model="searchForm">
       <div style="display: flex; gap: 20px; flex-wrap: wrap">
-        <el-form-item label="广告类型" style="flex: 1; min-width: 200px">
+        <!-- <el-form-item label="广告类型" style="flex: 1; min-width: 200px">
           <el-select v-model="searchForm.adType" placeholder="请选择">
             <el-option label="文本" :value="1"></el-option>
             <el-option label="图片" :value="2"></el-option>
@@ -99,7 +99,7 @@ const fetchAdList = async () => {
             <el-option label="文本+图片" :value="4"></el-option>
             <el-option label="文本+视频" :value="5"></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
 
         <el-form-item label="时间范围" style="flex-wrap: wrap">
           <div id="time_range" style="display: flex; width: 100%; justify-content: center">
