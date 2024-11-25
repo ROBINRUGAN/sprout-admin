@@ -416,6 +416,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-around;
   font-size: 12px;
+  flex-wrap: wrap;
   text-align: center;
   gap: 10px;
   margin-top: 20px;
