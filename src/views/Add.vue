@@ -304,13 +304,13 @@ onBeforeMount(async () => {
                 </div>
               </div>
             </el-form-item>
-            <el-form-item label="任务类型">
+            <!-- <el-form-item label="任务类型">
               <el-select v-model="form.taskType" placeholder="请选择...">
                 <el-option label="开学前" :value="0" />
                 <el-option label="注册时" :value="1" />
                 <el-option label="开学后" :value="2" />
               </el-select>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item
               label="图片打卡"
               v-if="(form.faorson === 0 || form.parentId === 0) && form.taskRequiresType == 5"

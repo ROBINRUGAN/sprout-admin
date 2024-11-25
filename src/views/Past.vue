@@ -347,13 +347,13 @@ const getDetailInfo = async (id: number) => {
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="任务类型">
+          <!-- <el-form-item label="任务类型">
             <el-select v-model="form.taskType" disabled>
               <el-option label="开学前" :value="0" />
               <el-option label="注册时" :value="1" />
               <el-option label="开学后" :value="2" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="图片打卡">
             <el-select v-model="form.requiresPhoto" disabled>
               <el-option label="不需要" :value="0" />
