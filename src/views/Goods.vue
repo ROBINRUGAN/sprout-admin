@@ -113,7 +113,7 @@ onMounted(() => {
     </div>
 
     <!-- 商品详情弹框 -->
-    <el-dialog v-model="showDialog" title="商品详情" style="min-width: 400px; max-width: 500px">
+    <el-dialog v-model="showDialog" title="商品详情" style="width: 70%; max-width: 700px">
       <div style="width: 100%; justify-content: center; display: flex">
         <el-image
           :src="selectedProduct.productImg"
@@ -140,7 +140,7 @@ onMounted(() => {
     </el-dialog>
 
     <!-- 添加商品弹框 -->
-    <el-dialog v-model="showAddDialog" title="添加商品">
+    <el-dialog v-model="showAddDialog" title="添加商品" style="width: 70%; max-width: 700px">
       <el-form :model="newProduct">
         <el-form-item label="商品名称">
           <el-input v-model="newProduct.productName" />
@@ -150,7 +150,7 @@ onMounted(() => {
           <UploadImg @urls="setURL"></UploadImg>
         </el-form-item>
         <el-form-item label="商品介绍">
-          <el-input v-model="newProduct.productIntroduction" type="textarea" />
+          <el-input v-model="newProduct.productIntroduction" />
         </el-form-item>
         <el-form-item label="所需积分">
           <el-input-number v-model="newProduct.needPoints" />
@@ -223,5 +223,35 @@ onMounted(() => {
   overflow: hidden; /* 超出部分隐藏 */
   text-overflow: ellipsis; /* 超出部分用省略号表示 */
   white-space: normal; /* 防止单行时使用 nowrap */
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    width: 100%;
+  }
+  .card-image {
+    height: 150px;
+  }
+  .card-content {
+    padding: 12px;
+  }
+  .card-title {
+    font-size: 1em;
+  }
+  .card-description {
+    font-size: 0.8em;
+  }
+  .card-points,
+  .card-stocks {
+    font-size: 0.8em;
+  }
+
+  :deep(.el-upload--picture-card) {
+    width: 120px !important;
+    height: 120px !important;
+  }
 }
 </style>

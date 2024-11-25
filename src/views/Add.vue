@@ -358,7 +358,7 @@ onBeforeMount(async () => {
             <!-- <el-form-item label="是否人工审核" v-if="form.faorson === 0 || form.parentId === 0">
               <el-switch v-model="form.requiresAudit" active-text="是" inactive-text="否" />
             </el-form-item> -->
-            <el-form-item label="优先级">
+            <!-- <el-form-item label="优先级">
               <el-slider
                 v-model="form.taskPriority"
                 :step="1"
@@ -377,7 +377,7 @@ onBeforeMount(async () => {
                 show-stops
                 show-input
               />
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
               <el-button
                 size="large"
@@ -416,6 +416,7 @@ onBeforeMount(async () => {
 
 .form-item {
   padding: 0 20px;
+  /* display: flex; */
 }
 
 .time-picker {
@@ -436,6 +437,27 @@ onBeforeMount(async () => {
 @media (max-width: 1024px) {
   .form-grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .el-form-item {
+    display: flex;
+    flex-direction: column;
+    align-items: start; /* 保持内容宽度自适应 */
+  }
+  .el-form-item .el-form-item__label {
+    text-align: left; /* 保持标签左对齐 */
+    margin-bottom: 5px; /* 增加标签与输入框之间的间距 */
+  }
+  .el-form-item .el-form-item__content {
+    width: 100%; /* 确保输入框或下拉框宽度充满父容器 */
+  }
+  .el-select,
+  .el-input,
+  .el-input-number,
+  .el-date-picker {
+    width: calc(100vw - 180px);
+    /* width: 50vw; 保证下拉框、输入框、时间选择器等控件宽度充满父容器 */
   }
 }
 </style>

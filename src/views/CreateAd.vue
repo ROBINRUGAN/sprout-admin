@@ -3,7 +3,7 @@
     <h1 style="font-size: 24px; margin-top: 15px; margin-left: 15px; margin-bottom: 15px">
       广告发布
     </h1>
-    <el-form ref="adForm" :model="form" label-width="120px">
+    <el-form ref="adForm" :model="form">
       <div class="grid-container">
         <div class="grid-item">
           <!-- 广告类型 -->
@@ -212,6 +212,27 @@ onBeforeMount(() => {
 @media (max-width: 1024px) {
   .grid-container {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .el-form-item {
+    display: flex;
+    flex-direction: column;
+    align-items: start; /* 保持内容宽度自适应 */
+  }
+  .el-form-item .el-form-item__label {
+    text-align: left; /* 保持标签左对齐 */
+    margin-bottom: 5px; /* 增加标签与输入框之间的间距 */
+  }
+  .el-form-item .el-form-item__content {
+    width: 100%; /* 确保输入框或下拉框宽度充满父容器 */
+  }
+  .el-select,
+  .el-input,
+  .el-input-number,
+  .el-date-picker {
+    width: calc(100vw - 140px);
+    /* width: 50vw; 保证下拉框、输入框、时间选择器等控件宽度充满父容器 */
   }
 }
 </style>

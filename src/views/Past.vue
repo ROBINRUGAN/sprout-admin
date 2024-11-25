@@ -235,12 +235,7 @@ const getDetailInfo = async (id: number) => {
         <div class="form-column">
           <el-form-item label="任务封面">
             <el-image
-              style="
-                height: 180px;
-                width: 180px;
-                box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.5);
-                border-radius: 5px;
-              "
+              class="detailed-image"
               :src="form.taskImages"
               :preview-src-list="[form.taskImages]"
               fit="cover"
@@ -371,12 +366,12 @@ const getDetailInfo = async (id: number) => {
           <!-- <el-form-item label="是否人工审核">
             <el-switch v-model="form.Audit" active-text="是" inactive-text="否" disabled />
           </el-form-item> -->
-          <el-form-item label="优先级">
+          <!-- <el-form-item label="优先级">
             <el-slider v-model="form.taskPriority" :step="1" :min="1" :max="5" disabled />
           </el-form-item>
           <el-form-item label="难易程度">
             <el-slider v-model="form.taskDifficulty" :step="1" :min="1" :max="5" disabled />
-          </el-form-item>
+          </el-form-item> -->
         </div>
       </div>
     </el-form>
@@ -446,6 +441,13 @@ const getDetailInfo = async (id: number) => {
 .form-column {
   /* flex: 1; */
 }
+
+.detailed-image {
+  height: 180px;
+  width: 180px;
+  box-shadow: 3px 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
 .reward-container {
   border: 1px solid rgba(187, 187, 187, 1);
   border-radius: 5px;
@@ -468,6 +470,31 @@ const getDetailInfo = async (id: number) => {
   }
   .form-detail {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 768px) {
+  .detailed-image {
+    width: 100%;
+    height: fit-content;
+  }
+  .el-form-item {
+    display: flex;
+    flex-direction: column;
+    align-items: start; /* 保持内容宽度自适应 */
+  }
+  .el-form-item .el-form-item__label {
+    text-align: left; /* 保持标签左对齐 */
+    margin-bottom: 5px; /* 增加标签与输入框之间的间距 */
+  }
+  .el-form-item .el-form-item__content {
+    width: 100%; /* 确保输入框或下拉框宽度充满父容器 */
+  }
+  .el-select,
+  .el-input,
+  .el-input-number,
+  .el-date-picker {
+    width: calc(100vw - 180px);
+    /* width: 50vw; 保证下拉框、输入框、时间选择器等控件宽度充满父容器 */
   }
 }
 </style>

@@ -12,12 +12,12 @@ const handleFileChange = (file, files) => {
   const allowedFormats = ['.xlsx', '.xls']
   const maxSize = 5 * 1024 * 1024 // 最大文件限制
 
-  if (!allowedFormats.some(format => file.name.endsWith(format))) {
+  if (!allowedFormats.some((format) => file.name.endsWith(format))) {
     ElNotification.error('文件格式不正确，仅支持 .xlsx 或 .xls 文件')
     resetFileList()
     return false
   }
-  
+
   fileList.value = files // 更新文件列表
   return true
 }
@@ -53,7 +53,9 @@ const submitUpload = async () => {
   } catch (error) {
     // 捕获异常并显示通知
     console.error('上传失败:', error)
-    ElNotification.error(`上传失败：${error.response?.data?.message || error.message || '服务器异常'}`)
+    ElNotification.error(
+      `上传失败：${error.response?.data?.message || error.message || '服务器异常'}`
+    )
   } finally {
     // 确保结束加载状态
     setTimeout(() => {
@@ -74,7 +76,7 @@ const resetFileList = () => {
       学生Excel批量录入
     </h1>
     <!-- 下载按钮 -->
-    <el-button type="primary" style="margin-left: 15px; margin-bottom: 15px">
+    <el-button type="primary" style="margin-bottom: 15px">
       <a
         href="https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/f852a587-389e-46d4-8422-b708c3693e0f.xlsx"
         style="color: white; text-decoration: none"
