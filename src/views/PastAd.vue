@@ -155,11 +155,11 @@ const fetchAdList = async () => {
             </el-select>
           </el-form-item> -->
 
-          <el-form-item label="广告标题">
+          <el-form-item :label="form.adType == 6 ? '投放标题' : '广告标题'">
             <el-input v-model="form.wordsContent"></el-input>
           </el-form-item>
 
-          <el-form-item label="广告图片" v-if="form.adType == 2 || form.adType == 4">
+          <el-form-item :label="form.adType == 6 ? '投放内容' : '广告内容'">
             <el-image
               class="detailed-image"
               :src="form.imgContent"
@@ -172,11 +172,11 @@ const fetchAdList = async () => {
             <el-input v-model="form.linkUrl" placeholder="请输入跳转链接或-1代表无跳转"></el-input>
           </el-form-item>
 
-          <el-form-item label="关键字">
+          <el-form-item label="关键字" v-if="form.keywords">
             <el-input v-model="form.keywords" placeholder="请输入关键字，用逗号分隔"></el-input>
           </el-form-item>
 
-          <el-form-item label="推送方式">
+          <el-form-item label="推送方式" v-if="form.pushMethod">
             <el-select v-model="form.pushMethod" placeholder="请选择">
               <el-option label="app内展示" :value="1"></el-option>
               <el-option label="消息推送" :value="2"></el-option>
@@ -184,7 +184,7 @@ const fetchAdList = async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="推送位置">
+          <el-form-item label="推送位置" v-if="form.pushPosition">
             <el-select v-model="form.pushPosition" placeholder="请选择推送位置">
               <el-option label="消息推送" value="0"></el-option>
               <el-option label="开屏页" value="1"></el-option>
@@ -194,12 +194,12 @@ const fetchAdList = async () => {
           </el-form-item>
         </div>
 
-        <div class="right-column">
+        <div class="right-column" v-if="form.targetFacultyRange">
           <el-form-item label="目标学院">
             <el-input v-model="form.targetFacultyRange" placeholder="请选择..."></el-input>
           </el-form-item>
 
-          <el-form-item label="目标性别">
+          <el-form-item label="目标性别" v-if="form.targetGenderRange">
             <el-select v-model="form.targetGenderRange" placeholder="请选择">
               <el-option label="女" value="0"></el-option>
               <el-option label="男" value="1"></el-option>
@@ -207,14 +207,14 @@ const fetchAdList = async () => {
             </el-select>
           </el-form-item>
 
-          <el-form-item label="目标年级范围">
+          <el-form-item label="目标年级范围" v-if="form.targetGradeRange">
             <el-input
               v-model="form.targetGradeRange"
               placeholder="请输入目标年级范围，用逗号分隔或-1代表全部"
             ></el-input>
           </el-form-item>
 
-          <el-form-item label="广告时间范围">
+          <el-form-item label="广告时间范围" v-if="form.startTime && form.endTime">
             <div class="date-picker-group">
               <el-date-picker
                 v-model="form.startTime"
@@ -234,7 +234,7 @@ const fetchAdList = async () => {
             </div>
           </el-form-item>
 
-          <el-form-item label="广告费用">
+          <el-form-item label="广告费用" v-if="form.cost">
             <el-input v-model="form.cost" type="number" placeholder="请输入广告费用"></el-input>
           </el-form-item>
         </div>

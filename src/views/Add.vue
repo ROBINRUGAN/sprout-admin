@@ -325,20 +325,15 @@ onBeforeMount(async () => {
             </el-form-item>
             <el-form-item label="物品识别类型" v-if="form.requiresPhoto === 1">
               <el-select v-model="form.requiresItem">
-                <el-option label="背包" :value="24" />
+                <el-option label="手机" :value="67" />
+                <el-option label="行李箱" :value="28" />
                 <el-option label="雨伞" :value="25" />
-                <el-option label="杯子" :value="41" />
-                <el-option label="笔记本电脑" :value="63" />
+                <el-option label="背包" :value="24" />
+                <el-option label="电脑" :value="63" />
+                <el-option label="水壶" :value="39" />
                 <el-option label="书" :value="73" />
-                <el-option label="吹风机" :value="78" />
                 <el-option label="牙刷" :value="79" />
-                <el-option label="身份证" :value="1" />
-                <el-option label="录取通知书" :value="2" />
-                <el-option label="银行卡" :value="3" />
-                <el-option label="证件照" :value="4" />
-                <el-option label="手机" :value="5" />
-                <el-option label="衣物" :value="6" />
-                <el-option label="文具" :value="7" />
+                <el-option label="吹风机" :value="78" />
               </el-select>
             </el-form-item>
             <el-form-item label="动作识别类型" v-if="form.requiresPhoto === 3">

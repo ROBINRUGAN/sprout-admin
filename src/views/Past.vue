@@ -363,6 +363,33 @@ const getDetailInfo = async (id: number) => {
               <el-option label="其他" :value="4" />
             </el-select>
           </el-form-item>
+          <el-form-item label="物品识别类型" v-if="form.requiresPhoto === 1">
+            <el-select v-model="form.requiresItem" disabled>
+              <el-option label="手机" :value="'67'" />
+              <el-option label="行李箱" :value="'28'" />
+              <el-option label="雨伞" :value="'25'" />
+              <el-option label="背包" :value="'24'" />
+              <el-option label="电脑" :value="'63'" />
+              <el-option label="水壶" :value="'39'" />
+              <el-option label="书" :value="'73'" />
+              <el-option label="牙刷" :value="'79'" />
+              <el-option label="吹风机" :value="'78'" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="动作识别类型" v-if="form.requiresPhoto === 3">
+            <el-select v-model="form.requiresAttitude" disabled>
+              <el-option label="水平摆放" :value="'1'" />
+              <el-option label="立正站直" :value="'2'" />
+              <el-option label="加油动作" :value="'3'" />
+              <el-option label="V动作" :value="'4'" />
+              <el-option label="手摆成三角形" :value="'5'" />
+              <el-option label="大字状" :value="'6'" />
+              <el-option label="扎马步" :value="'7'" />
+              <el-option label="右手举手" :value="'8'" />
+              <el-option label="左手举手" :value="'9'" />
+              <el-option label="双手比x" :value="'10'" />
+            </el-select>
+          </el-form-item>
           <!-- <el-form-item label="是否人工审核">
             <el-switch v-model="form.Audit" active-text="是" inactive-text="否" disabled />
           </el-form-item> -->
