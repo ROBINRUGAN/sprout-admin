@@ -120,7 +120,7 @@ const userData = ref({
     <h1 class="title">查询用户</h1>
     <div class="wrapper">
       <label for="student-id">学号</label>
-      <input
+      <el-input
         id="student-id"
         v-model="studentAccount"
         type="number"
@@ -128,7 +128,7 @@ const userData = ref({
         @keydown.enter="showMewch"
         class="inputField"
       />
-      <button class="search" @click="showMewch">查询</button>
+      <el-button class="search" @click="showMewch">查询</el-button>
     </div>
 
     <el-empty
@@ -208,25 +208,26 @@ const userData = ref({
 .wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+
+  width: 100%;
 }
 
 label {
+  min-width: fit-content;
   font-size: 14px;
   color: #666;
   margin-right: 5px;
 }
 
 .inputField {
-  flex: 1;
+  display: flex;
   padding: 8px;
   font-size: 14px;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .search {
+  min-width: fit-content;
   padding: 8px 16px;
   background-color: #409eff;
   color: #fff;

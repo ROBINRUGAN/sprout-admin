@@ -26,9 +26,9 @@ const option = {
     trigger: 'item',
     backgroundColor: 'rgba(236,245,253,0.7)',
     formatter: function (params) {
-      let result = '<h1>' + params.name + '</h1>'
+      let result = '<h4>' + params.name + '</h4>'
       result +=
-        '<div style="background: #fff; padding: 10px; border-radius: 5px; margin-top: 5px; width:200px; display: flex; justify-content: space-between">'
+        '<div style="background: #fff; padding: 10%; border-radius: 5px; margin-top: 5px; width:100%; min-width:max-content; display: flex; justify-content: space-between">'
       result += '<p>'
       result += params.seriesName
       result += '</p>'
@@ -40,10 +40,10 @@ const option = {
     }
   },
   visualMap: {
-    // min: 50,
+    show: false,
     max: 10,
-    left: 'left',
-    top: 'top',
+    left: '0',
+    top: '0',
     text: ['高', '低'],
     realtime: true,
     calculable: true,
@@ -56,9 +56,9 @@ const option = {
       name: '人数',
       type: 'map',
       mapType: 'china',
-      roam: false, // 允许缩放和平移
-      layoutCenter: ['50%', '70%'], // 地图位置
-      layoutSize: '120%', // 地图大小
+      roam: true, // 允许缩放和平移
+      // layoutCenter: ['50%', '70%'], // 地图位置
+      layoutSize: '100%', // 地图大小
       label: {
         show: false,
         color: 'rgba(0,0,0,0.6)'
@@ -147,5 +147,6 @@ onMounted(() => {
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 </style>

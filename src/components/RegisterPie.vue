@@ -1,5 +1,5 @@
 <template>
-  <div ref="chartContainer" style="width: 250px; height: 250px"></div>
+  <div ref="chartContainer" style="width: 99%; height: 340px"></div>
 </template>
 
 <script setup>
@@ -24,18 +24,6 @@ const option = {
       color: '#000'
     },
     trigger: 'item'
-    // position: function (point, params, dom, rect, size) {
-    //   var x = point[0] * 1.01
-    //   var y = point[1] * 1.01
-    //   var boxWidth = size.contentSize[0]
-    //   var boxHeight = size.contentSize[1]
-    //   var graphWidth = size.viewSize[0]
-
-    //   x = x < graphWidth + boxWidth ? x : x + boxWidth
-    //   x = x < graphWidth - boxWidth ? x : x - boxWidth
-    //   y = y < boxHeight ? y : y - boxHeight
-    //   return [x, y]
-    // }
   },
   legend: {
     left: 'center',
@@ -45,9 +33,6 @@ const option = {
   toolbox: {
     show: true,
     feature: {
-      // mark: { show: true },
-      // dataView: { show: true, readOnly: false },
-      // restore: { show: true },
       saveAsImage: { show: true }
     }
   },
@@ -55,7 +40,9 @@ const option = {
     {
       name: '学生注册情况',
       type: 'pie',
-      // radius: ['10%', '50%'],
+      radius: ['40%', '70%'],
+      roseType: 'area',
+
       data: [
         { value: 0, name: '已注册' },
         { value: 0, name: '未注册' }
@@ -80,6 +67,9 @@ function resizeChart() {
     myChart.resize()
   }
 }
+window.addEventListener('resize', function () {
+  myChart.resize()
+})
 
 onMounted(async () => {
   await nextTick() // 等待 DOM 更新完成
@@ -95,17 +85,6 @@ onMounted(async () => {
       // 更新图表的数据
       updateChart()
     })
-
-    // // 延迟触发 resize
-    // setTimeout(() => {
-    //   myChart.resize()
-    // }, 100)
-
-    // requestAnimationFrame(() => {
-    //   myChart.resize()
-    // })
-
-    // window.addEventListener('resize', resizeChart)
   }
 })
 
