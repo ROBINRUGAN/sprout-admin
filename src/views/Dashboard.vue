@@ -123,7 +123,7 @@ import InfoItem from '@/components/InfoItem.vue'
 import RegisterPie from '@/components/RegisterPie.vue'
 import { ElIcon, ElNotification } from 'element-plus'
 import { useToolSelectStore } from '@/stores/toolSelectStore'
-import { getTaskCountApi } from '@/api/api'
+import { getAnnouncementListApi, getTaskCountApi } from '@/api/api'
 import { useRouter, useRoute } from 'vue-router'
 
 const count = ref(0)
