@@ -73,8 +73,7 @@ onMounted(async () => {
 })
 
 const downloadAndroid = () => {
-  window.location.href =
-    'https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/8458f780-d023-4e7c-a6a7-9632a25395ed.APK'
+  window.location.href = 'https://mewww.w2fzu.com/upmew/Sprout.Apk'
 }
 
 interface Intro {
