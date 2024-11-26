@@ -78,7 +78,7 @@ const resetFileList = () => {
     <!-- 下载按钮 -->
     <el-button type="primary" style="margin-bottom: 15px">
       <a
-        href="https://engroc.oss-cn-fuzhou.aliyuncs.com/new-sprout/f852a587-389e-46d4-8422-b708c3693e0f.xlsx"
+        href="https://mewww.w2fzu.com/upmew/%E7%A4%BA%E4%BE%8B%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6.xlsx"
         style="color: white; text-decoration: none"
         >点击下载样例Excel文档</a
       >
